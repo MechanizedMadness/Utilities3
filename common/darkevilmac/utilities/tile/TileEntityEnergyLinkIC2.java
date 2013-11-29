@@ -15,7 +15,7 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 import cpw.mods.fml.common.FMLCommonHandler;
-import darkevilmac.utilities.fluid.ModFluids;
+import darkevilmac.utilities.tile.prefab.TileEntityEnergyLinkBase;
 
 public class TileEntityEnergyLinkIC2 extends TileEntityEnergyLinkBase implements IFluidHandler, IEnergySink,
         IEnergySource {
@@ -33,7 +33,7 @@ public class TileEntityEnergyLinkIC2 extends TileEntityEnergyLinkBase implements
 
     @Override
     public FluidStack drain(ForgeDirection from, FluidStack resource, boolean doDrain) {
-        if (resource == null || !resource.isFluidEqual(tank.getFluid())) {
+        if (resource == null || !resource.isFluidEqual(energyTank.getFluid())) {
             return null;
         }
         return energyTank.drain(resource.amount, doDrain);
@@ -155,9 +155,9 @@ public class TileEntityEnergyLinkIC2 extends TileEntityEnergyLinkBase implements
         if (getMeta() == 0) {
             if (energyTank.getFluidAmount() >= 72) {
                 if (currentEnergy != maxEnergy) {
-                    int fluidAmount = energyTank.getFluidAmount();
-                    energyTank.setFluid(new FluidStack(ModFluids.fluidEnergy, fluidAmount - 72));
                     currentEnergy++;
+                    int flAmount = energyTank.getFluidAmount();
+                    energyTank.setFluid(new FluidStack(energyTank.getFluid().getFluid(), flAmount - 72));
                 }
             }
         }
@@ -165,7 +165,13 @@ public class TileEntityEnergyLinkIC2 extends TileEntityEnergyLinkBase implements
         /* EU-->Fluid Energy */
         // {{
         if (getMeta() == 1) {
-            System.out.println(currentEnergy);
+            if (currentEnergy >= 1) {
+                if (energyTank.getFluidAmount() <= energyTankSize - 72) {
+                    currentEnergy--;
+                    int flAmount = energyTank.getFluidAmount();
+                    energyTank.setFluid(new FluidStack(energyTank.getFluid().getFluid(), flAmount + 72));
+                }
+            }
         }
         // }}
     }

@@ -10,8 +10,9 @@ public class Strings {
 
     // {{ Fluid Energy Related
     public static final String FLUID_ENERGY_UNLOCALIZEDNAME = "fluidEnergy";
-    public static final String ENERGY_LINK_IC2_UNLOCALIZEDNAME = "energyLinkIC2";
-    public static final String ENERGY_LINK_STEAM_UNLOCALIZEDNAME = "energyLinkSteam";
+    public static final String IC2_LINK_UNLOCALIZEDNAME = "ic2Link";
+    public static final String STEAM_LINK_UNLOCALIZEDNAME = "steamLink";
+    public static final String BC_LINK_UNLOCALIZEDNAME = "bcLink";
     // }}
 
     // In Game Names
@@ -22,8 +23,9 @@ public class Strings {
 
     // {{ Fluid Energy Related
     public static final String FLUID_ENERGY_INGAMENAME = "Fluid Energy";
-    public static final String ENERGY_LINK_IC2_INGAMENAME = "Energy Link IC2 Producer";
-    public static final String ENERGY_LINK_STEAM_INGAMENAME = "Energy Link Steam Producer";
+    public static final String IC2_LINK_INGAMENAME = "IC2 Link";
+    public static final String STEAM_LINK_INGAMENAME = "Steam Link";
+    public static final String BC_LINK_INGAMENAME = "Buildcraft Link";
     // }}
 
 }

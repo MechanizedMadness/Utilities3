@@ -4,7 +4,6 @@ import net.minecraftforge.common.Configuration;
 import darkevilmac.utilities.Utilities;
 import darkevilmac.utilities.lib.BlockIds;
 import darkevilmac.utilities.lib.Strings;
-import darkevilmac.utilities.utils.Utils;
 
 public class UtilitiesConfiguration {
 
@@ -16,14 +15,12 @@ public class UtilitiesConfiguration {
         // Items
 
         // Fluids
-        BlockIds.FLUID_ENERGY_ID = cfg.get("fluid", Strings.FLUID_ENERGY_INGAMENAME, Utils.getBlockID()).getInt();
-        Utils.addToBlockID(1);
+        BlockIds.FLUID_ENERGY_ID = cfg.get("fluid", Strings.FLUID_ENERGY_INGAMENAME, BlockIds.FLUID_ENERGY_ID_DEFAULT).getInt();
 
         // Blocks
-        BlockIds.ENERGY_LINK_IC2_ID = cfg.get(Configuration.CATEGORY_BLOCK, Strings.ENERGY_LINK_IC2_INGAMENAME,
-                Utils.getBlockID()).getInt();
-        BlockIds.ENERGY_LINK_STEAM_ID = cfg.get(Configuration.CATEGORY_BLOCK, Strings.ENERGY_LINK_STEAM_INGAMENAME,
-                Utils.getBlockID()).getInt();
+        BlockIds.IC2_LINK_ID = cfg.get(Configuration.CATEGORY_BLOCK, Strings.IC2_LINK_INGAMENAME, BlockIds.IC2_LINK_ID_DEFAULT).getInt();
+        BlockIds.STEAM_LINK_ID = cfg.get(Configuration.CATEGORY_BLOCK, Strings.STEAM_LINK_INGAMENAME, BlockIds.STEAM_LINK_ID_DEFAULT).getInt();
+        BlockIds.BC_LINK_ID = cfg.get(Configuration.CATEGORY_BLOCK, Strings.BC_LINK_INGAMENAME, BlockIds.BC_LINK_ID_DEFAULT).getInt();
         cfg.save();
     }
 

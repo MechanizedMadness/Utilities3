@@ -10,6 +10,7 @@ import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 import darkevilmac.utilities.fluid.ModFluids;
+import darkevilmac.utilities.tile.prefab.TileEntityEnergyLinkBase;
 
 public class TileEntityEnergyLinkSteam extends TileEntityEnergyLinkBase implements IFluidHandler {
 

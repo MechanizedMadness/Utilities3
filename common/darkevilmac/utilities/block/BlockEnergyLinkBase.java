@@ -8,9 +8,10 @@ import net.minecraft.world.World;
 
 public class BlockEnergyLinkBase extends BlockContainer {
 
-    protected BlockEnergyLinkBase(int id) {
+    protected BlockEnergyLinkBase(int id,String unlocalizedName) {
         super(id, Material.iron);
         this.setHardness(1F);
+        this.setUnlocalizedName(unlocalizedName);
     }
 
     @Override
@@ -23,9 +24,11 @@ public class BlockEnergyLinkBase extends BlockContainer {
             float par8, float par9) {
         if (world.getBlockMetadata(x, y, z) == 0) {
             world.setBlockMetadataWithNotify(x, y, z, 1, 2);
+            System.out.println("Meta is now 1");
             return true;
         } else if (world.getBlockMetadata(x, y, z) == 1) {
             world.setBlockMetadataWithNotify(x, y, z, 0, 2);
+            System.out.println("Meta is now 2");
             return true;
         } else {
             return false;

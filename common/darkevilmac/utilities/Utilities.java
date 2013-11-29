@@ -11,6 +11,7 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.NetworkMod;
 import darkevilmac.utilities.block.ModBlocks;
 import darkevilmac.utilities.configuration.UtilitiesConfiguration;
+import darkevilmac.utilities.events.ModEvents;
 import darkevilmac.utilities.fluid.ModFluids;
 import darkevilmac.utilities.item.ModItems;
 import darkevilmac.utilities.lib.Reference;
@@ -34,6 +35,7 @@ public class Utilities {
         UtilitiesConfiguration.init();
         ModItems.init();
         ModBlocks.init();
+        ModEvents.init();
     }
 
     @EventHandler
