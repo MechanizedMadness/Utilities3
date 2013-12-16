@@ -46,33 +46,35 @@ public class TileEntityEnergyLinkSteam extends TileEntityEnergyLinkBase implemen
 
     @Override
     public void updateEntity() {
-        /* Steam<--Fluid Energy */
-        // {{
-        if (getMeta() == 0) {
-            checkSetFluid(energyEmptyFluid, ModFluids.fluidEnergy, energyTank);
-            if (energyTank.getFluidAmount() >= 35) {
-                flAmount = energyTank.getFluidAmount();
-                int oflAmount = steamTank.getFluidAmount();
-                energyTank.setFluid(new FluidStack(ModFluids.fluidEnergy, flAmount - 35));
-                steamTank.setFluid(new FluidStack(FluidRegistry.getFluid("steam"), oflAmount + 1));
-                flAmount = 0;
+        super.updateEntity();
+        if (worldObj.isRemote == false) {
+            /* Steam<--Fluid Energy */
+            // {{
+            if (getMeta() == 0) {
+                checkSetFluid(energyEmptyFluid, ModFluids.fluidEnergy, energyTank);
+                if (energyPoints >= 35) {
+                    if (steamTank.getFluidAmount() + 35 >= steamTank.getCapacity()) {
+                        int oflAmount = steamTank.getFluidAmount();
+                        steamTank.setFluid(new FluidStack(FluidRegistry.getFluid("steam"), oflAmount + 1));
+                        energyPoints = energyPoints - 35;
+                        if (steamTank.getFluidAmount() >= 200)
+                            pushToConsumers(steamTank);
+                    }
+                }
             }
-        }
-        // }}
-        /* Steam-->Fluid Energy */
-        // {{
-        if (getMeta() == 1) {
-            checkSetFluid(steamEmptyFluid, FluidRegistry.getFluid("steam"), steamTank);
-            if (steamTank.getFluidAmount() >= 1) {
-                flAmount = steamTank.getFluidAmount();
-                int oflAmount = energyTank.getFluidAmount();
-                steamTank.setFluid(new FluidStack(FluidRegistry.getFluid("steam"), flAmount - 1));
-                energyTank.setFluid(new FluidStack(ModFluids.fluidEnergy, oflAmount + 35));
-                flAmount = 0;
-                oflAmount = 0;
+            // }}
+            /* Steam-->Fluid Energy */
+            // {{
+            if (getMeta() == 1) {
+                checkSetFluid(steamEmptyFluid, FluidRegistry.getFluid("steam"), steamTank);
+                if (steamTank.getFluidAmount() >= 1) {
+                    flAmount = steamTank.getFluidAmount();
+                    steamTank.setFluid(new FluidStack(FluidRegistry.getFluid("steam"), flAmount - 1));
+                    energyPoints = energyPoints + 35;
+                }
             }
+            // }}
         }
-        // }}
     }
 
     /* IFluidHandler */

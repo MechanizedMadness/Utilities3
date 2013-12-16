@@ -17,8 +17,7 @@ import net.minecraftforge.fluids.IFluidHandler;
 import cpw.mods.fml.common.FMLCommonHandler;
 import darkevilmac.utilities.tile.prefab.TileEntityEnergyLinkBase;
 
-public class TileEntityEnergyLinkIC2 extends TileEntityEnergyLinkBase implements IFluidHandler, IEnergySink,
-        IEnergySource {
+public class TileEntityEnergyLinkIC2 extends TileEntityEnergyLinkBase implements IFluidHandler, IEnergySink, IEnergySource {
 
     protected boolean addedToEnet;
     protected int currentEnergy = 0;
@@ -146,39 +145,38 @@ public class TileEntityEnergyLinkIC2 extends TileEntityEnergyLinkBase implements
 
     @Override
     public void updateEntity() {
+        super.updateEntity();
         if (!addedToEnet) {
             onLoaded();
         }
-        checkFluid();
-        /* EU<--Fluid Energy */
-        // {{
-        if (getMeta() == 0) {
-            if (energyTank.getFluidAmount() >= 72) {
-                if (currentEnergy != maxEnergy) {
-                    currentEnergy++;
-                    int flAmount = energyTank.getFluidAmount();
-                    energyTank.setFluid(new FluidStack(energyTank.getFluid().getFluid(), flAmount - 72));
+        if (worldObj.isRemote == false) {
+            /* EU<--Fluid Energy */
+            // {{
+            if (getMeta() == 0) {
+                if (energyPoints >= 72) {
+                    if (currentEnergy != maxEnergy) {
+                        currentEnergy++;
+                        energyPoints = energyPoints - 72;
+                    }
                 }
             }
-        }
-        // }}
-        /* EU-->Fluid Energy */
-        // {{
-        if (getMeta() == 1) {
-            if (currentEnergy >= 1) {
-                if (energyTank.getFluidAmount() <= energyTankSize - 72) {
-                    currentEnergy--;
-                    int flAmount = energyTank.getFluidAmount();
-                    energyTank.setFluid(new FluidStack(energyTank.getFluid().getFluid(), flAmount + 72));
+            // }}
+            /* EU-->Fluid Energy */
+            // {{
+            if (getMeta() == 1) {
+                if (currentEnergy >= 1) {
+                    if (energyPoints <= maxEnergyPoints - 72) {
+                        currentEnergy--;
+                        energyPoints = energyPoints + 72;
+                    }
                 }
             }
+            // }}
         }
-        // }}
     }
 
     public void onLoaded() {
         if (!addedToEnet && !FMLCommonHandler.instance().getEffectiveSide().isClient() && Info.isIc2Available()) {
-
             MinecraftForge.EVENT_BUS.post(new EnergyTileLoadEvent(this));
 
             addedToEnet = true;
