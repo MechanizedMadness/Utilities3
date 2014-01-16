@@ -31,6 +31,11 @@ public class TileEntityEnergyLinkSteam extends TileEntityEnergyLinkBase implemen
     }
 
     @Override
+    public void onNeighborBlockChange() {
+
+    }
+
+    @Override
     public void readFromNBT(NBTTagCompound tag) {
         super.readFromNBT(tag);
         energyTank.readFromNBT(tag);
@@ -57,7 +62,7 @@ public class TileEntityEnergyLinkSteam extends TileEntityEnergyLinkBase implemen
                         int oflAmount = steamTank.getFluidAmount();
                         steamTank.setFluid(new FluidStack(FluidRegistry.getFluid("steam"), oflAmount + 1));
                         energyPoints = energyPoints - 35;
-                        if (steamTank.getFluidAmount() >= 200)
+                        if (steamTank.getFluidAmount() >= 20)
                             pushToConsumers(steamTank);
                     }
                 }

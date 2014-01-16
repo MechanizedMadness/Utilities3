@@ -36,6 +36,7 @@ public class TileEntityEnergyLinkBC extends TileEntityEnergyLinkBase implements 
         receptorDir = ForgeDirection.UNKNOWN;
         emitterDir = ForgeDirection.UNKNOWN;
         initPowerProvider();
+        checkReceptor();
     }
 
     private void initPowerProvider() {
@@ -54,19 +55,12 @@ public class TileEntityEnergyLinkBC extends TileEntityEnergyLinkBase implements 
             /* MJ<--Fluid Energy */
             // {{
             if (getMeta() == 0) {
-                checkReceptor();
                 if (receptorDir != ForgeDirection.UNKNOWN) {
-                    System.out.println(receptorDir + " is good.");
                     if (receptor != null) {
-                        System.out.println("Receptor isn't null");
                         if (receptor.getPowerReceiver(receptorDir.getOpposite()) != null) {
-                            System.out.println("Receptor reciever isn't null");
-                            if (receptor.getPowerReceiver(receptorDir.getOpposite()).powerRequest() >= 0F) {
-                                System.out.println("Power Wanted");
+                            if (receptor.getPowerReceiver(receptorDir.getOpposite()).powerRequest() >= 1F) {
                                 if (energyPoints >= 175) {
-                                    System.out.println("Has fluid to do it.");
-                                    receptor.getPowerReceiver(receptorDir.getOpposite()).receiveEnergy(Type.PIPE, 1, receptorDir.getOpposite());
-                                    energyPoints = energyPoints - 175;
+                                    receptor.getPowerReceiver(receptorDir.getOpposite()).receiveEnergy(Type.PIPE, getMJFromPoints(), receptorDir.getOpposite());
                                 }
                             }
                         }
@@ -92,6 +86,40 @@ public class TileEntityEnergyLinkBC extends TileEntityEnergyLinkBase implements 
 
     // BCPOWER
     // {{
+
+    public float getMJFromPoints() {
+        float MJ = 0F;
+        int falsePoints = energyPoints;
+        while (falsePoints >= 175) {
+            falsePoints = falsePoints - 175;
+            MJ++;
+        }
+        // The following should be impossible but I'm weird and plan for mess ups.
+        if (energyPoints - 175 * MJ < 0) {
+            MJ--;
+        }
+        energyPoints = (int) (energyPoints - 175 * MJ);
+        return MJ;
+    }
+
+    public int getPointsFromMJ() {
+        double MJ = powerHandler.getEnergyStored();
+        int falsePoints = energyPoints;
+
+        while (MJ >= 1F) {
+            MJ = MJ - 1;
+            falsePoints = falsePoints + 175;
+            if (falsePoints > maxEnergyPoints) {
+                falsePoints = falsePoints - 175;
+                MJ = MJ + 1;
+                break;
+            }
+        }
+        powerHandler.setEnergy(MJ);
+        energyPoints = falsePoints;
+        return energyPoints;
+    }
+
     private void checkReceptor() {
         TileEntity tile;
         if (world != null) {
@@ -212,6 +240,12 @@ public class TileEntityEnergyLinkBC extends TileEntityEnergyLinkBase implements 
     }
 
     // }}
+
+    @Override
+    public void onNeighborBlockChange() {
+        super.onNeighborBlockChange();
+        checkReceptor();
+    }
 
     @Override
     public void readFromNBT(NBTTagCompound tag) {

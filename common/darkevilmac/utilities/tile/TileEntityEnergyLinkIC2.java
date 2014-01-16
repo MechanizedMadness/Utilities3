@@ -155,8 +155,8 @@ public class TileEntityEnergyLinkIC2 extends TileEntityEnergyLinkBase implements
             if (getMeta() == 0) {
                 if (energyPoints >= 72) {
                     if (currentEnergy != maxEnergy) {
-                        currentEnergy++;
-                        energyPoints = energyPoints - 72;
+                        convertEUFromPoints();
+
                     }
                 }
             }
@@ -166,13 +166,51 @@ public class TileEntityEnergyLinkIC2 extends TileEntityEnergyLinkBase implements
             if (getMeta() == 1) {
                 if (currentEnergy >= 1) {
                     if (energyPoints <= maxEnergyPoints - 72) {
-                        currentEnergy--;
-                        energyPoints = energyPoints + 72;
+                        convertPointsFromEU();
                     }
                 }
             }
             // }}
         }
+    }
+
+    public void convertEUFromPoints() {
+        int EU = 0;
+        int falsePoints = energyPoints;
+        while (falsePoints >= 72) {
+            falsePoints = falsePoints - 72;
+            EU++;
+
+        }
+        // The following should be impossible but I'm weird and plan for mess ups.
+        if (energyPoints - 72 * EU < 0) {
+            EU--;
+        }
+        while (EU + currentEnergy > maxEnergy) {
+            EU--;
+
+        }
+        currentEnergy = EU + currentEnergy;
+        energyPoints = (int) (energyPoints - 72 * EU);
+    }
+
+    public void convertPointsFromEU() {
+        int EU = currentEnergy;
+        int falsePoints = energyPoints;
+
+        while (EU >= 1) {
+            EU--;
+            falsePoints = falsePoints + 72;
+
+            if (falsePoints > maxEnergyPoints) {
+                falsePoints = falsePoints - 72;
+                EU++;
+
+                break;
+            }
+        }
+        currentEnergy = EU;
+        energyPoints = falsePoints;
     }
 
     public void onLoaded() {
