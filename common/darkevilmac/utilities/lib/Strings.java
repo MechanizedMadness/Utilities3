@@ -6,6 +6,7 @@ public class Strings {
 
     // {{ World Creation Related
     public static final String BIOME_BLOCK_UNLOCALIZEDNAME = "biomeBlock";
+    public static final String NOT_A_LINKINGBOOK_UNLOCALIZEDNAME = "notALinkingBook";
     // }}
 
     // {{ Fluid Energy Related
@@ -19,6 +20,7 @@ public class Strings {
 
     // {{ World Creation Related
     public static final String BIOME_BLOCK_INGAMENAME = "Biome Block";
+    public static final String NOT_A_LINKINGBOOK_INGAMENAME = "Not A Linking Book";
     // }}
 
     // {{ Fluid Energy Related

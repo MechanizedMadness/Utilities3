@@ -182,7 +182,8 @@ public class TileEntityEnergyLinkIC2 extends TileEntityEnergyLinkBase implements
             EU++;
 
         }
-        // The following should be impossible but I'm weird and plan for mess ups.
+        // The following should be impossible but I'm weird and plan for mess
+        // ups.
         if (energyPoints - 72 * EU < 0) {
             EU--;
         }

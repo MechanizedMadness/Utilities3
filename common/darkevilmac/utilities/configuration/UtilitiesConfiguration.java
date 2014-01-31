@@ -3,6 +3,7 @@ package darkevilmac.utilities.configuration;
 import net.minecraftforge.common.Configuration;
 import darkevilmac.utilities.Utilities;
 import darkevilmac.utilities.lib.BlockIds;
+import darkevilmac.utilities.lib.ItemIds;
 import darkevilmac.utilities.lib.Strings;
 
 public class UtilitiesConfiguration {
@@ -13,6 +14,7 @@ public class UtilitiesConfiguration {
         cfg.load();
 
         // Items
+        ItemIds.NOT_A_LINKINGBOOK_ID = cfg.getItem(Strings.NOT_A_LINKINGBOOK_INGAMENAME, ItemIds.NOT_A_LINKINGBOOK_ID_DEFAULT).getInt(ItemIds.NOT_A_LINKINGBOOK_ID_DEFAULT);
 
         // Fluids
         BlockIds.FLUID_ENERGY_ID = cfg.get("fluid", Strings.FLUID_ENERGY_INGAMENAME, BlockIds.FLUID_ENERGY_ID_DEFAULT).getInt();

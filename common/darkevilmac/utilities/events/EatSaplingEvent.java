@@ -41,12 +41,8 @@ public class EatSaplingEvent {
                             if (event.entityPlayer.canEat(true)) {
                                 event.entityPlayer.addPotionEffect(new PotionEffect(2, 1, 2));
                                 event.entityPlayer.getFoodStats().addStats(1, 4);
-                                event.entityPlayer.worldObj.playSoundAtEntity(event.entityPlayer, "random.burp", 0.5F,
-                                        event.entityPlayer.worldObj.rand.nextFloat() * 0.1F + 0.9F);
-                                event.entityPlayer.setCurrentItemOrArmor(
-                                        0,
-                                        makeItem2(Block.sapling,
-                                                --event.entityPlayer.getCurrentEquippedItem().stackSize));
+                                event.entityPlayer.worldObj.playSoundAtEntity(event.entityPlayer, "random.burp", 0.5F, event.entityPlayer.worldObj.rand.nextFloat() * 0.1F + 0.9F);
+                                event.entityPlayer.setCurrentItemOrArmor(0, makeItem2(Block.sapling, --event.entityPlayer.getCurrentEquippedItem().stackSize));
                             }
                         }
                     }

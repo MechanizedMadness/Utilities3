@@ -94,7 +94,8 @@ public class TileEntityEnergyLinkBC extends TileEntityEnergyLinkBase implements 
             falsePoints = falsePoints - 175;
             MJ++;
         }
-        // The following should be impossible but I'm weird and plan for mess ups.
+        // The following should be impossible but I'm weird and plan for mess
+        // ups.
         if (energyPoints - 175 * MJ < 0) {
             MJ--;
         }
@@ -103,7 +104,7 @@ public class TileEntityEnergyLinkBC extends TileEntityEnergyLinkBase implements 
     }
 
     public int getPointsFromMJ() {
-        double MJ = powerHandler.getEnergyStored();
+        float MJ = powerHandler.getEnergyStored();
         int falsePoints = energyPoints;
 
         while (MJ >= 1F) {

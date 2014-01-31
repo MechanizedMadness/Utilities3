@@ -33,14 +33,15 @@ public class Utilities {
     public static void preInit(FMLPreInitializationEvent event) {
         config = new Configuration(event.getSuggestedConfigurationFile());
         UtilitiesConfiguration.init();
-        ModItems.init();
-        ModBlocks.init();
-        ModEvents.init();
     }
 
     @EventHandler
     public static void init(FMLInitializationEvent event) {
+        ModItems.init();
+        ModBlocks.init();
+        ModEvents.init();
         ModFluids.init();
+        System.out.println(ModItems.notALinkingBook.itemID);
     }
 
     @EventHandler
