@@ -1,13 +1,12 @@
 package darkevilmac.utilities.item;
 
 import cpw.mods.fml.common.registry.GameRegistry;
-import net.minecraft.item.Item;
 import darkevilmac.utilities.lib.ItemIds;
 import darkevilmac.utilities.lib.Strings;
 
 public class ModItems {
 
-    public static Item notALinkingBook;
+    public static ItemUtilities notALinkingBook;
 
     public static void init() {
 
