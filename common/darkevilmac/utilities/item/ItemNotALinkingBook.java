@@ -23,27 +23,27 @@ public class ItemNotALinkingBook extends ItemUtilities {
     public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player) {
         if (!stack.hasTagCompound())
             stack.setTagCompound(new NBTTagCompound());
+        World originWorld = player.worldObj;
 
         NBTTagCompound nbt = stack.getTagCompound();
         if (nbt.getBoolean("HasInfo") == false) {
             nbt.setDouble("x", player.posX);
             nbt.setDouble("y", player.posY);
             nbt.setDouble("z", player.posZ);
-            if (world != null) {
+            if (originWorld != null) {
                 System.out.println("World is null D:");
-                nbt.setInteger("WorldId", world.provider.dimensionId);
+                nbt.setInteger("WorldId", originWorld.provider.dimensionId);
             } else {
-
                 nbt.setBoolean("HasInfo", true);
+                System.out.println(nbt.getDouble("x") + " " + nbt.getDouble("y") + " " + nbt.getDouble("z"));
+                player.addChatMessage("Location has been set for the book.");
             }
-            System.out.println(nbt.getDouble("x") + " " + nbt.getDouble("y") + " " + nbt.getDouble("z"));
-            player.addChatMessage("Location has been set for the book.");
         } else {
-            World tpWorld;
-            WorldProvider tpWorldProvider = null;
-            tpWorldProvider.setDimension(nbt.getInteger("WorldId"));
-            tpWorld = tpWorldProvider.worldObj;
-            player.setWorld(tpWorld);
+            World destinationWorld;
+            WorldProvider destinationWorldProvider = null;
+            destinationWorldProvider.setDimension(nbt.getInteger("WorldId"));
+            destinationWorld = destinationWorldProvider.worldObj;
+            player.setWorld(destinationWorld);
             player.setPosition(nbt.getDouble("x"), nbt.getDouble("y"), nbt.getDouble("z"));
             player.addChatMessage("Teleporting you to the location set in the book.");
         }
