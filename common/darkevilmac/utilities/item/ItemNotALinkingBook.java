@@ -29,8 +29,9 @@ public class ItemNotALinkingBook extends ItemUtilities {
             nbt.setDouble("x", player.posX);
             nbt.setDouble("y", player.posY);
             nbt.setDouble("z", player.posZ);
-            if (player.worldObj != null) {
-                nbt.setInteger("WorldId", player.worldObj.provider.dimensionId);
+            if (world != null) {
+                System.out.println("World is null D:");
+                nbt.setInteger("WorldId", world.provider.dimensionId);
             } else {
 
                 nbt.setBoolean("HasInfo", true);
