@@ -6,7 +6,6 @@ public class ItemUtilities extends Item {
 
     public ItemUtilities(int id) {
         super(id - 256);
-
     }
 
 }

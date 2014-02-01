@@ -1,5 +1,7 @@
 package darkevilmac.utilities.item;
 
+import java.util.List;
+
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -19,6 +21,9 @@ public class ItemNotALinkingBook extends ItemUtilities {
 
     @Override
     public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player) {
+        if (!stack.hasTagCompound())
+            stack.setTagCompound(new NBTTagCompound());
+
         NBTTagCompound nbt = stack.getTagCompound();
         if (nbt.getBoolean("HasInfo") == false) {
             nbt.setInteger("x", player.serverPosX);
@@ -38,6 +43,11 @@ public class ItemNotALinkingBook extends ItemUtilities {
             player.addChatMessage("Teleporting you to the location set in the book.");
         }
         return stack;
+    }
+
+    @Override
+    public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean par4) {
+
     }
 
 }
