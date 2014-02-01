@@ -26,12 +26,16 @@ public class ItemNotALinkingBook extends ItemUtilities {
 
         NBTTagCompound nbt = stack.getTagCompound();
         if (nbt.getBoolean("HasInfo") == false) {
-            nbt.setInteger("x", player.serverPosX);
-            nbt.setInteger("y", player.serverPosY);
-            nbt.setInteger("z", player.serverPosZ);
-            nbt.setInteger("WorldId", world.provider.dimensionId);
+            nbt.setDouble("x", player.posX);
+            nbt.setDouble("y", player.posY);
+            nbt.setDouble("z", player.posZ);
+            if (player.worldObj != null) {
+                nbt.setInteger("WorldId", player.worldObj.provider.dimensionId);
+            } else {
 
-            nbt.setBoolean("HasInfo", true);
+                nbt.setBoolean("HasInfo", true);
+            }
+            System.out.println(nbt.getDouble("x") + " " + nbt.getDouble("y") + " " + nbt.getDouble("z"));
             player.addChatMessage("Location has been set for the book.");
         } else {
             World tpWorld;
@@ -39,7 +43,7 @@ public class ItemNotALinkingBook extends ItemUtilities {
             tpWorldProvider.setDimension(nbt.getInteger("WorldId"));
             tpWorld = tpWorldProvider.worldObj;
             player.setWorld(tpWorld);
-            player.setPosition(nbt.getInteger("x"), nbt.getInteger("y"), nbt.getInteger("z"));
+            player.setPosition(nbt.getDouble("x"), nbt.getDouble("y"), nbt.getDouble("z"));
             player.addChatMessage("Teleporting you to the location set in the book.");
         }
         return stack;
