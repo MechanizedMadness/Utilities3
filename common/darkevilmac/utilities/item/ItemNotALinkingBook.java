@@ -18,7 +18,7 @@ public class ItemNotALinkingBook extends ItemUtilities {
     }
 
     @Override
-    public boolean onItemUseFirst(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ) {
+    public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player) {
         NBTTagCompound nbt = stack.getTagCompound();
         if (nbt.getBoolean("HasInfo") == false) {
             nbt.setInteger("x", player.serverPosX);
@@ -37,7 +37,7 @@ public class ItemNotALinkingBook extends ItemUtilities {
             player.setPosition(nbt.getInteger("x"), nbt.getInteger("y"), nbt.getInteger("z"));
             player.addChatMessage("Teleporting you to the location set in the book.");
         }
-        return true;
+        return stack;
     }
 
 }
