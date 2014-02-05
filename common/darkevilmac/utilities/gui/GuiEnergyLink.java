@@ -1,11 +1,13 @@
 package darkevilmac.utilities.gui;
 
-import darkevilmac.utilities.lib.Reference;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
+
 import org.lwjgl.opengl.GL11;
+
+import darkevilmac.utilities.lib.Reference;
 
 /**
  * Created by Darkevilmac @ 5:32 AM on 01/14/2014

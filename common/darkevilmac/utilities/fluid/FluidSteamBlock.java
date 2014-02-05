@@ -10,11 +10,12 @@ import cpw.mods.fml.relauncher.SideOnly;
 import darkevilmac.utilities.lib.BlockIds;
 import darkevilmac.utilities.lib.Strings;
 
-public class FluidEnergyBlock extends BlockFluidClassic {
-    public FluidEnergyBlock(int Id) {
-        super(BlockIds.FLUID_ENERGY_ID, ModFluids.fluidEnergy, Material.water);
-        setUnlocalizedName(Strings.FLUID_ENERGY_UNLOCALIZEDNAME);
-        ModFluids.fluidEnergy.setBlockID(BlockIds.FLUID_ENERGY_ID);
+public class FluidSteamBlock extends BlockFluidClassic {
+
+    public FluidSteamBlock(int Id) {
+        super(BlockIds.FLUID_STEAM_ID, ModFluids.fluidSteam, Material.water);
+        setUnlocalizedName(Strings.FLUID_STEAM_UNLOCALIZEDNAME);
+        ModFluids.fluidSteam.setBlockID(BlockIds.FLUID_STEAM_ID);
     }
 
     @Override
@@ -25,6 +26,7 @@ public class FluidEnergyBlock extends BlockFluidClassic {
 
     @Override
     public int colorMultiplier(IBlockAccess iblockaccess, int x, int y, int z) {
-        return 0xFF0000;
+        return 0xF0F0F0;
     }
+
 }

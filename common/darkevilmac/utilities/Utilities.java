@@ -11,6 +11,7 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.NetworkMod;
 import darkevilmac.utilities.block.ModBlocks;
 import darkevilmac.utilities.configuration.UtilitiesConfiguration;
+import darkevilmac.utilities.crafting.ModCrafting;
 import darkevilmac.utilities.events.ModEvents;
 import darkevilmac.utilities.fluid.ModFluids;
 import darkevilmac.utilities.item.ModItems;
@@ -33,15 +34,15 @@ public class Utilities {
     public static void preInit(FMLPreInitializationEvent event) {
         config = new Configuration(event.getSuggestedConfigurationFile());
         UtilitiesConfiguration.init();
+        ModItems.init();
+        ModBlocks.init();
+        ModEvents.init();
     }
 
     @EventHandler
     public static void init(FMLInitializationEvent event) {
-        ModItems.init();
-        ModBlocks.init();
-        ModEvents.init();
         ModFluids.init();
-        System.out.println(ModItems.notALinkingBook.itemID);
+        ModCrafting.init();
     }
 
     @EventHandler

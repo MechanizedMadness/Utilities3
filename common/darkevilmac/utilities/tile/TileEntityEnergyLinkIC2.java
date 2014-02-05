@@ -149,7 +149,7 @@ public class TileEntityEnergyLinkIC2 extends TileEntityEnergyLinkBase implements
         if (!addedToEnet) {
             onLoaded();
         }
-        if (worldObj.isRemote == false) {
+        if (!worldObj.isRemote) {
             /* EU<--Fluid Energy */
             // {{
             if (getMeta() == 0) {

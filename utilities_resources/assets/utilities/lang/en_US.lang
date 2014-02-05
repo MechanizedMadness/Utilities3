@@ -1,8 +1,10 @@
-item.notALinkingBook.name=Not A Linking Book
+item.telePebble.name=Telepebble
 
-block.fluidEnergy.name=Fluid Energy
-block.ic2Link.name=IC2 Link
-block.steamLink.name=Steam Link
-block.bcLink.name=Buildcraft Link
+tile.fluidEnergy.name=Fluid Energy
+tile.steam.name=Steam
+tile.ic2Link.name=IC2 Link
+tile.steamLink.name=Steam Link
+tile.bcLink.name=Buildcraft Link
 
 fluid.fluidEnergy.name=Fluid Energy
+fluid.steam.name=Steam

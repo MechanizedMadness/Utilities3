@@ -15,7 +15,9 @@ import buildcraft.api.power.PowerHandler.PowerReceiver;
 import buildcraft.api.power.PowerHandler.Type;
 import buildcraft.api.transport.IPipeConnection;
 import buildcraft.api.transport.IPipeTile.PipeType;
+import darkevilmac.utilities.shadows.TileBuffer;
 import darkevilmac.utilities.tile.prefab.TileEntityEnergyLinkBase;
+import darkevilmac.utilities.utils.MJUtils;
 
 public class TileEntityEnergyLinkBC extends TileEntityEnergyLinkBase implements IPowerEmitter, IPowerReceptor, IFluidHandler, IPipeConnection {
 
@@ -24,6 +26,7 @@ public class TileEntityEnergyLinkBC extends TileEntityEnergyLinkBase implements 
     private ForgeDirection emitterDir;
     private IPowerReceptor receptor;
     private IPowerEmitter emitter;
+    private TileBuffer[] energyTileBuffer = null;
 
     public TileEntityEnergyLinkBC() {
 
@@ -36,12 +39,11 @@ public class TileEntityEnergyLinkBC extends TileEntityEnergyLinkBase implements 
         receptorDir = ForgeDirection.UNKNOWN;
         emitterDir = ForgeDirection.UNKNOWN;
         initPowerProvider();
-        checkReceptor();
     }
 
     private void initPowerProvider() {
         if (powerHandler != null) {
-            powerHandler.configure(50, 300, 1, 5000);
+            powerHandler.configure(50, 300, 1, 900000000);
             powerHandler.configurePowerPerdition(1, 1);
         }
     }
@@ -51,34 +53,20 @@ public class TileEntityEnergyLinkBC extends TileEntityEnergyLinkBase implements 
         super.updateEntity();
 
         int flAmount = energyTank.getFluidAmount();
-        if (worldObj.isRemote == false) {
+        if (!worldObj.isRemote) {
             /* MJ<--Fluid Energy */
             // {{
             if (getMeta() == 0) {
-                if (receptorDir != ForgeDirection.UNKNOWN) {
-                    if (receptor != null) {
-                        if (receptor.getPowerReceiver(receptorDir.getOpposite()) != null) {
-                            if (receptor.getPowerReceiver(receptorDir.getOpposite()).powerRequest() >= 1F) {
-                                if (energyPoints >= 175) {
-                                    receptor.getPowerReceiver(receptorDir.getOpposite()).receiveEnergy(Type.PIPE, getMJFromPoints(), receptorDir.getOpposite());
-                                }
-                            }
-                        }
-                    }
-                }
+                convertMJFromPoints();
+                if (energyTileBuffer == null)
+                    energyTileBuffer = TileBuffer.makeBuffer(world, xCoord, yCoord, zCoord, false);
+                MJUtils.pushToPowerReceptors(powerHandler, getTileType(), energyTileBuffer);
             }
             // }}
             /* MJ-->Fluid Energy */
             // {{
             if (getMeta() == 1) {
-                if (powerHandler != null) {
-                    if (powerHandler.getEnergyStored() >= 1F) {
-                        if (energyPoints <= maxEnergyPoints - 175) {
-                            energyPoints = energyPoints + 175;
-                            powerHandler.setEnergy(powerHandler.getEnergyStored() - 1F);
-                        }
-                    }
-                }
+                convertPointsFromMJ();
             }
             // }}
         }
@@ -87,7 +75,11 @@ public class TileEntityEnergyLinkBC extends TileEntityEnergyLinkBase implements 
     // BCPOWER
     // {{
 
-    public float getMJFromPoints() {
+    public void pushToPowerReceptors() {
+
+    }
+
+    public void convertMJFromPoints() {
         float MJ = 0F;
         int falsePoints = energyPoints;
         while (falsePoints >= 175) {
@@ -99,11 +91,12 @@ public class TileEntityEnergyLinkBC extends TileEntityEnergyLinkBase implements 
         if (energyPoints - 175 * MJ < 0) {
             MJ--;
         }
+
+        powerHandler.addEnergy(MJ);
         energyPoints = (int) (energyPoints - 175 * MJ);
-        return MJ;
     }
 
-    public int getPointsFromMJ() {
+    public void convertPointsFromMJ() {
         float MJ = powerHandler.getEnergyStored();
         int falsePoints = energyPoints;
 
@@ -118,7 +111,12 @@ public class TileEntityEnergyLinkBC extends TileEntityEnergyLinkBase implements 
         }
         powerHandler.setEnergy(MJ);
         energyPoints = falsePoints;
-        return energyPoints;
+    }
+
+    protected TileEntity getEnergyTile(ForgeDirection side) {
+        if (energyTileBuffer == null)
+            energyTileBuffer = TileBuffer.makeBuffer(world, xCoord, yCoord, zCoord, false);
+        return energyTileBuffer[side.ordinal()].getTile();
     }
 
     private void checkReceptor() {

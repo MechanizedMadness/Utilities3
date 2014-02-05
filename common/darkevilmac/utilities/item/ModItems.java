@@ -6,13 +6,13 @@ import darkevilmac.utilities.lib.Strings;
 
 public class ModItems {
 
-    public static ItemUtilities notALinkingBook;
+    public static ItemUtilities telePebble;
 
     public static void init() {
 
-        notALinkingBook = new ItemNotALinkingBook(ItemIds.NOT_A_LINKINGBOOK_ID);
+        telePebble = new ItemTelePebble(ItemIds.TELEPEBBLE_ID);
 
-        GameRegistry.registerItem(notALinkingBook, "item." + Strings.NOT_A_LINKINGBOOK_UNLOCALIZEDNAME);
+        GameRegistry.registerItem(telePebble, "item." + Strings.TELEPEBBLE_UNLOCALIZEDNAME);
 
     }
 

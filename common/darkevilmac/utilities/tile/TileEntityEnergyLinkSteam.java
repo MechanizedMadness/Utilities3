@@ -52,19 +52,14 @@ public class TileEntityEnergyLinkSteam extends TileEntityEnergyLinkBase implemen
     @Override
     public void updateEntity() {
         super.updateEntity();
-        if (worldObj.isRemote == false) {
+        if (!worldObj.isRemote) {
             /* Steam<--Fluid Energy */
             // {{
             if (getMeta() == 0) {
                 checkSetFluid(energyEmptyFluid, ModFluids.fluidEnergy, energyTank);
                 if (energyPoints >= 35) {
-                    if (steamTank.getFluidAmount() + 35 >= steamTank.getCapacity()) {
-                        int oflAmount = steamTank.getFluidAmount();
-                        steamTank.setFluid(new FluidStack(FluidRegistry.getFluid("steam"), oflAmount + 1));
-                        energyPoints = energyPoints - 35;
-                        if (steamTank.getFluidAmount() >= 20)
-                            pushToConsumers(steamTank);
-                    }
+                    convertSteamFromPoints();
+                    pushToConsumers(steamTank);
                 }
             }
             // }}
@@ -73,13 +68,51 @@ public class TileEntityEnergyLinkSteam extends TileEntityEnergyLinkBase implemen
             if (getMeta() == 1) {
                 checkSetFluid(steamEmptyFluid, FluidRegistry.getFluid("steam"), steamTank);
                 if (steamTank.getFluidAmount() >= 1) {
-                    flAmount = steamTank.getFluidAmount();
-                    steamTank.setFluid(new FluidStack(FluidRegistry.getFluid("steam"), flAmount - 1));
-                    energyPoints = energyPoints + 35;
+                    convertSteamToPoints();
                 }
             }
             // }}
         }
+    }
+
+    private void convertSteamToPoints() {
+        int steam = steamTank.getFluidAmount();
+        int falsePoints = energyPoints;
+
+        while (steam >= 1) {
+            steam--;
+            falsePoints = falsePoints + 35;
+
+            if (falsePoints > maxEnergyPoints) {
+                falsePoints = falsePoints - 35;
+                steam++;
+
+                break;
+            }
+        }
+        steamTank.setFluid(new FluidStack(FluidRegistry.getFluid("steam"), steam));
+        energyPoints = falsePoints;
+    }
+
+    private void convertSteamFromPoints() {
+        int steam = 0;
+        int falsePoints = energyPoints;
+        while (falsePoints >= 35) {
+            falsePoints = falsePoints - 35;
+            steam++;
+
+        }
+        // The following should be impossible but I'm weird and plan for mess
+        // ups.
+        if (energyPoints - 35 * steam < 0) {
+            steam--;
+        }
+        while (steam + steamTank.getFluidAmount() > steamTank.getCapacity()) {
+            steam--;
+
+        }
+        steamTank.setFluid(new FluidStack(FluidRegistry.getFluid("steam"), steam + steamTank.getFluidAmount()));
+        energyPoints = (int) (energyPoints - 35 * steam);
     }
 
     /* IFluidHandler */
