@@ -5,7 +5,7 @@ import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidHandler;
 import net.minecraftforge.fluids.IFluidTank;
-import darkevilmac.utilities.tile.prefab.TileEntityEnergyLinkBase;
+import darkevilmac.utilities.tile.base.TileEntityEnergyLinkBase;
 
 /**
  * 

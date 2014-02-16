@@ -1,4 +1,4 @@
-package darkevilmac.utilities.tile;
+package darkevilmac.utilities.addons.tile.railcraft;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.ForgeDirection;
@@ -10,7 +10,7 @@ import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 import darkevilmac.utilities.fluid.ModFluids;
-import darkevilmac.utilities.tile.prefab.TileEntityEnergyLinkBase;
+import darkevilmac.utilities.tile.base.TileEntityEnergyLinkBase;
 
 public class TileEntityEnergyLinkSteam extends TileEntityEnergyLinkBase implements IFluidHandler {
 
@@ -112,7 +112,7 @@ public class TileEntityEnergyLinkSteam extends TileEntityEnergyLinkBase implemen
 
         }
         steamTank.setFluid(new FluidStack(FluidRegistry.getFluid("steam"), steam + steamTank.getFluidAmount()));
-        energyPoints = (int) (energyPoints - 35 * steam);
+        energyPoints = energyPoints - 35 * steam;
     }
 
     /* IFluidHandler */

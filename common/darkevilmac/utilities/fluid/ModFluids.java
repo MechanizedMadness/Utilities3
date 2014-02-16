@@ -15,19 +15,18 @@ public class ModFluids {
     public static BlockFluidClassic fluidSteamBlock;
 
     public static void init() {
-        fluidEnergy = new FluidEnergy();
+        ModFluids.fluidEnergy = new FluidEnergy();
 
-        fluidEnergyBlock = new FluidEnergyBlock(BlockIds.FLUID_ENERGY_ID);
+        ModFluids.fluidEnergyBlock = new FluidEnergyBlock(BlockIds.FLUID_ENERGY_ID);
 
-        GameRegistry.registerBlock(fluidEnergyBlock, Strings.FLUID_ENERGY_UNLOCALIZEDNAME);
-        
-        
-        if(!Loader.isModLoaded("Railcraft")){
-            fluidSteam = new FluidSteam();
-            
-            fluidSteamBlock = new FluidSteamBlock(BlockIds.FLUID_STEAM_ID);
-            
-            GameRegistry.registerBlock(fluidSteamBlock, Strings.FLUID_STEAM_UNLOCALIZEDNAME);
+        GameRegistry.registerBlock(ModFluids.fluidEnergyBlock, Strings.FLUID_ENERGY_UNLOCALIZEDNAME);
+
+        if (!Loader.isModLoaded("Railcraft")) {
+            ModFluids.fluidSteam = new FluidSteam();
+
+            ModFluids.fluidSteamBlock = new FluidSteamBlock(BlockIds.FLUID_STEAM_ID);
+
+            GameRegistry.registerBlock(ModFluids.fluidSteamBlock, Strings.FLUID_STEAM_UNLOCALIZEDNAME);
         }
     }
 }

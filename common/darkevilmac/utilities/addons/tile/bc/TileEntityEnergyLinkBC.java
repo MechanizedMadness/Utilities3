@@ -1,4 +1,4 @@
-package darkevilmac.utilities.tile;
+package darkevilmac.utilities.addons.tile.bc;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -16,7 +16,7 @@ import buildcraft.api.power.PowerHandler.Type;
 import buildcraft.api.transport.IPipeConnection;
 import buildcraft.api.transport.IPipeTile.PipeType;
 import darkevilmac.utilities.shadows.TileBuffer;
-import darkevilmac.utilities.tile.prefab.TileEntityEnergyLinkBase;
+import darkevilmac.utilities.tile.base.TileEntityEnergyLinkBase;
 import darkevilmac.utilities.utils.MJUtils;
 
 public class TileEntityEnergyLinkBC extends TileEntityEnergyLinkBase implements IPowerEmitter, IPowerReceptor, IFluidHandler, IPipeConnection {
@@ -284,7 +284,7 @@ public class TileEntityEnergyLinkBC extends TileEntityEnergyLinkBase implements 
 
     @Override
     public World getWorld() {
-        return this.worldObj;
+        return worldObj;
     }
 
     @Override

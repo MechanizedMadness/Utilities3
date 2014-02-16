@@ -1,21 +1,16 @@
 package darkevilmac.utilities.block;
 
+import darkevilmac.utilities.block.base.BlockUtilitiesContainer;
+import darkevilmac.utilities.lib.Strings;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
-public class BlockEnergyLinkBase extends BlockUtilitiesContainer {
+public class BlockFluidPipe extends BlockUtilitiesContainer {
 
-    protected BlockEnergyLinkBase(int id, String unlocalizedName) {
+    protected BlockFluidPipe(int id) {
         super(id, Material.iron);
-        this.setHardness(1F);
-        this.setUnlocalizedName(unlocalizedName);
-    }
-
-    @Override
-    public TileEntity createNewTileEntity(World world) {
-        return null;
+        setUnlocalizedName(Strings.FLUIDPIPE_UNLOCALIZEDNAME);
     }
 
     @Override
@@ -23,11 +18,11 @@ public class BlockEnergyLinkBase extends BlockUtilitiesContainer {
         if (!world.isRemote) {
             if (world.getBlockMetadata(x, y, z) == 0) {
                 world.setBlockMetadataWithNotify(x, y, z, 1, 2);
-                player.addChatMessage("Converting to Fluid");
+                player.addChatMessage("Inputting to network");
                 return true;
             } else if (world.getBlockMetadata(x, y, z) == 1) {
                 world.setBlockMetadataWithNotify(x, y, z, 0, 2);
-                player.addChatMessage("Converting to Energy");
+                player.addChatMessage("Outputting from network");
                 return true;
             } else {
                 return false;
@@ -35,4 +30,5 @@ public class BlockEnergyLinkBase extends BlockUtilitiesContainer {
         }
         return false;
     }
+
 }

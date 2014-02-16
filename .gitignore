@@ -1,0 +1,7 @@
+build.gradle/
+.gradle/
+api/
+lib/
+build/
+bin/
+libs/

@@ -1,4 +1,4 @@
-package darkevilmac.utilities.tile.prefab;
+package darkevilmac.utilities.tile.base;
 
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
@@ -8,15 +8,14 @@ import net.minecraft.world.World;
 
 public class TileEntityUtilities extends TileEntity {
 
-    private String owner;
-    protected World world;
+    protected String owner;
+    protected static World world;
 
     @Override
     public void validate() {
         super.validate();
-        this.owner = null;
-        this.world = worldObj;
-
+        owner = null;
+        world = worldObj;
     }
 
     @Override
@@ -37,7 +36,7 @@ public class TileEntityUtilities extends TileEntity {
     }
 
     public TileEntityUtilities getTile() {
-        return (TileEntityUtilities) world.getBlockTileEntity(xCoord, yCoord, zCoord);
+        return (TileEntityUtilities) TileEntityUtilities.world.getBlockTileEntity(xCoord, yCoord, zCoord);
     }
 
     /**
@@ -75,14 +74,17 @@ public class TileEntityUtilities extends TileEntity {
      * Returns the owner of the tile.
      */
     public String getOwner() {
-        return this.owner;
+        return owner;
     }
 
     /**
      * Sets the owner of the tile.
      */
     public void setOwner(String newOwner) {
-        this.owner = newOwner;
+        owner = newOwner;
+    }
+
+    public void onBlockDestroyedByPlayer(World world, int x, int y, int z, int par5) {
     }
 
 }

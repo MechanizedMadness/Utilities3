@@ -3,32 +3,24 @@ package darkevilmac.utilities.block;
 import cpw.mods.fml.common.registry.GameRegistry;
 import darkevilmac.utilities.lib.BlockIds;
 import darkevilmac.utilities.lib.Strings;
-import darkevilmac.utilities.tile.TileEntityEnergyLinkBC;
-import darkevilmac.utilities.tile.TileEntityEnergyLinkIC2;
-import darkevilmac.utilities.tile.TileEntityEnergyLinkSteam;
+import darkevilmac.utilities.tile.TileEntityEnergyPipe;
+import darkevilmac.utilities.tile.TileEntityEnergyPipeBrain;
 
 public class ModBlocks {
 
-    public static BlockEnergyLinkBase steamLink;
-    public static BlockEnergyLinkBase ic2Link;
-    public static BlockEnergyLinkBase bcLink;
+    public static BlockEnergyPipeBrain energyPipeBrain;
+    public static BlockEnergyPipe energyPipe;
 
     public static void init() {
 
-        GameRegistry.registerTileEntity(TileEntityEnergyLinkSteam.class, "tile" + Strings.STEAM_LINK_UNLOCALIZEDNAME);
-        GameRegistry.registerTileEntity(TileEntityEnergyLinkIC2.class, "tile" + Strings.IC2_LINK_UNLOCALIZEDNAME);
-        GameRegistry.registerTileEntity(TileEntityEnergyLinkBC.class, "tile" + Strings.BC_LINK_UNLOCALIZEDNAME);
+        /*GameRegistry.registerTileEntity(TileEntityEnergyPipe.class, "tile" + Strings.ENERGYPIPE_UNLOCALIZEDNAME);
+        GameRegistry.registerTileEntity(TileEntityEnergyPipeBrain.class, "tile" + Strings.ENERGYPIPE_BRAIN_UNLOCALIZEDNAME);
 
-        // energyLink = new BlockEnergyLink(BlockIds.ENERGY_LINK_ID);
-        steamLink = new BlockEnergyLinkSteam(BlockIds.STEAM_LINK_ID);
-        ic2Link = new BlockEnergyLinkIC2(BlockIds.IC2_LINK_ID);
-        bcLink = new BlockEnergyLinkBC(BlockIds.BC_LINK_ID);
+        energyPipeBrain = new BlockEnergyPipeBrain(BlockIds.ENERGYPIPE_BRAIN_ID);
+        energyPipe = new BlockEnergyPipe(BlockIds.ENERGYPIPE_ID);
 
-        // GameRegistry.registerBlock(energyLink,
-        // Strings.ENERGY_LINK_UNLOCALIZEDNAME);
-        GameRegistry.registerBlock(steamLink, Strings.STEAM_LINK_UNLOCALIZEDNAME);
-        GameRegistry.registerBlock(ic2Link, Strings.IC2_LINK_UNLOCALIZEDNAME);
-        GameRegistry.registerBlock(bcLink, Strings.BC_LINK_UNLOCALIZEDNAME);
+        GameRegistry.registerBlock(energyPipeBrain, Strings.ENERGYPIPE_BRAIN_UNLOCALIZEDNAME);
+        GameRegistry.registerBlock(energyPipe, Strings.ENERGYPIPE_UNLOCALIZEDNAME);*/
 
     }
 

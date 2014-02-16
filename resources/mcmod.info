@@ -1,0 +1,20 @@
+[
+{
+  "modid": "EE3",
+  "name": "Equivalent Exchange 3",
+  "description": "A minecraft mod that adds stuff for minecraft and other mods.",
+  "version": "A2",
+  "url": "",
+  "updateUrl": "",
+  "authorList": [
+    "darkevilmac"
+  ],
+  "credits": "darkevilmac for everything he's just a fantastic person.",
+  "logoFile": "/assets/utilities/textures/logo/logo.png",
+  "screenshots": [
+  ],
+  "parent":"",
+  "dependencies": [
+  ]
+}
+]

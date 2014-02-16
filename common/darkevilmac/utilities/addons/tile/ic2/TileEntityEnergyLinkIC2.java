@@ -1,4 +1,4 @@
-package darkevilmac.utilities.tile;
+package darkevilmac.utilities.addons.tile.ic2;
 
 import ic2.api.energy.EnergyNet;
 import ic2.api.energy.event.EnergyTileLoadEvent;
@@ -15,7 +15,7 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 import cpw.mods.fml.common.FMLCommonHandler;
-import darkevilmac.utilities.tile.prefab.TileEntityEnergyLinkBase;
+import darkevilmac.utilities.tile.base.TileEntityEnergyLinkBase;
 
 public class TileEntityEnergyLinkIC2 extends TileEntityEnergyLinkBase implements IFluidHandler, IEnergySink, IEnergySource {
 
@@ -72,7 +72,7 @@ public class TileEntityEnergyLinkIC2 extends TileEntityEnergyLinkBase implements
     @Override
     public void writeToNBT(NBTTagCompound tag) {
         super.writeToNBT(tag);
-        tag.setInteger("energyLevel", (int) currentEnergy);
+        tag.setInteger("energyLevel", currentEnergy);
         energyTank.readFromNBT(tag);
     }
 
@@ -192,7 +192,7 @@ public class TileEntityEnergyLinkIC2 extends TileEntityEnergyLinkBase implements
 
         }
         currentEnergy = EU + currentEnergy;
-        energyPoints = (int) (energyPoints - 72 * EU);
+        energyPoints = energyPoints - 72 * EU;
     }
 
     public void convertPointsFromEU() {

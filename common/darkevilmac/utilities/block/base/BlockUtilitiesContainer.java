@@ -1,26 +1,28 @@
-package darkevilmac.utilities.block;
+package darkevilmac.utilities.block.base;
 
-import net.minecraft.block.Block;
+import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
-import darkevilmac.utilities.tile.prefab.TileEntityUtilities;
+import darkevilmac.utilities.tile.base.TileEntityUtilities;
 
-public class BlockUtilities extends Block {
+public class BlockUtilitiesContainer extends BlockContainer {
 
-    public BlockUtilities(int id, Material material) {
+    protected BlockUtilitiesContainer(int id, Material material) {
         super(id, material);
     }
 
+    @Override
+    public TileEntity createNewTileEntity(World world) {
+        return null;
+    }
+
     public TileEntityUtilities getTile(World world, int x, int y, int z) {
-        if (world.getBlockTileEntity(x, y, z) != null) {
-            if (world.getBlockTileEntity(x, y, z) instanceof TileEntityUtilities) {
-                return (TileEntityUtilities) world.getBlockTileEntity(x, y, z);
-            } else {
-                return null;
-            }
+        if (world.getBlockTileEntity(x, y, z) instanceof TileEntityUtilities) {
+            return (TileEntityUtilities) world.getBlockTileEntity(x, y, z);
         } else {
             return null;
         }
@@ -28,14 +30,17 @@ public class BlockUtilities extends Block {
 
     @Override
     public void onNeighborBlockChange(World world, int x, int y, int z, int par5) {
+        super.onNeighborBlockChange(world, x, y, z, par5);
         if (getTile(world, x, y, z) != null)
             getTile(world, x, y, z).onNeighborBlockChange();
     }
 
     @Override
-    public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entity, ItemStack par6ItemStack) {
+    public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entity, ItemStack itemstack) {
         if (!world.isRemote) {
             if (world.getBlockTileEntity(x, y, z) instanceof TileEntityUtilities) {
+                TileEntityUtilities tile = getTile(world, x, y, z);
+                tile.onBlockPlacedBy(world, x, y, z, entity, itemstack);
                 if (entity instanceof EntityPlayer) {
                     EntityPlayer entityPlayer = (EntityPlayer) entity;
                     getTile(world, x, y, z).setOwner(entityPlayer.username);
@@ -43,4 +48,5 @@ public class BlockUtilities extends Block {
             }
         }
     }
+
 }

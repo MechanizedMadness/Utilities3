@@ -1,4 +1,4 @@
-package darkevilmac.utilities.tile.prefab;
+package darkevilmac.utilities.tile.base;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -10,17 +10,15 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
+import darkevilmac.utilities.addons.tile.bc.TileEntityEnergyLinkBC;
+import darkevilmac.utilities.addons.tile.ic2.TileEntityEnergyLinkIC2;
+import darkevilmac.utilities.addons.tile.railcraft.TileEntityEnergyLinkSteam;
 import darkevilmac.utilities.fluid.ModFluids;
 import darkevilmac.utilities.shadows.FluidUtils;
 import darkevilmac.utilities.shadows.TileBuffer;
-import darkevilmac.utilities.tile.TileEntityEnergyLinkBC;
-import darkevilmac.utilities.tile.TileEntityEnergyLinkIC2;
-import darkevilmac.utilities.tile.TileEntityEnergyLinkSteam;
-import darkevilmac.utilities.tile.TileEntityFluidLink;
 
 public class TileEntityEnergyLinkBase extends TileEntityUtilities implements IFluidHandler {
 
-    protected TileEntityFluidLink fluidLink;
     protected TileBuffer[] tileBuffer = null;
     protected World world;
     protected IFluidHandler fluidHandler;
@@ -153,6 +151,7 @@ public class TileEntityEnergyLinkBase extends TileEntityUtilities implements IFl
         }
     }
 
+    @Override
     public void onNeighborBlockChange() {
         super.onNeighborBlockChange();
 

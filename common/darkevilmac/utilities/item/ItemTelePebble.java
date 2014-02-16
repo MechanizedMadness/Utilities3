@@ -17,10 +17,10 @@ public class ItemTelePebble extends ItemUtilities {
 
     public ItemTelePebble(int id) {
         super(id);
-        this.setCreativeTab(CreativeTabs.tabAllSearch);
-        this.setUnlocalizedName(Strings.TELEPEBBLE_UNLOCALIZEDNAME);
-        this.setHasSubtypes(true);
-        this.setMaxDamage(0);
+        setCreativeTab(CreativeTabs.tabAllSearch);
+        setUnlocalizedName(Strings.TELEPEBBLE_UNLOCALIZEDNAME);
+        setHasSubtypes(true);
+        setMaxDamage(0);
         maxStackSize = 1;
     }
 
@@ -77,7 +77,7 @@ public class ItemTelePebble extends ItemUtilities {
             }
             if ((int) player.posX != x || (int) player.posY != y || (int) player.posZ != z) {
                 if (!world.isRemote) {
-                    player.setPositionAndUpdate((double) x, (double) y, (double) z);
+                    player.setPositionAndUpdate(x, y, z);
                     player.addChatMessage("The pebble reacts to your use and teleports you to a place you remember.");
                 }
             }

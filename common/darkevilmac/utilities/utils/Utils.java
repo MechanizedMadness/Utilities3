@@ -5,12 +5,12 @@ public class Utils {
     public static int curBlockID = 1749;
 
     public static void addToBlockID(int add) {
-        curBlockID = curBlockID + add;
+        Utils.curBlockID = Utils.curBlockID + add;
     }
 
     public static int getBlockID() {
-        curBlockID = curBlockID + 1;
-        return curBlockID;
+        Utils.curBlockID = Utils.curBlockID + 1;
+        return Utils.curBlockID;
     }
 
     public static void print(String input) {
