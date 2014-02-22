@@ -284,7 +284,7 @@ public class TileEntityEnergyLinkBC extends TileEntityEnergyLinkBase implements 
 
     @Override
     public World getWorld() {
-        return worldObj;
+        return this.world;
     }
 
     @Override
@@ -333,4 +333,5 @@ public class TileEntityEnergyLinkBC extends TileEntityEnergyLinkBase implements 
         return new FluidTankInfo[] { energyTank.getInfo() };
     }
     // }}
+
 }

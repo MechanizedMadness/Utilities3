@@ -8,14 +8,22 @@ import net.minecraft.world.World;
 
 public class TileEntityUtilities extends TileEntity {
 
-    protected String owner;
-    protected static World world;
+    public static String owner;
+    public static World world;
+    public static int worldid;
+    public static int xCoordinate;
+    public static int yCoordinate;
+    public static int zCoordinate;
 
     @Override
     public void validate() {
         super.validate();
         owner = null;
         world = worldObj;
+        worldid = world.provider.dimensionId;
+        xCoordinate = xCoord;
+        yCoordinate = yCoord;
+        zCoordinate = zCoord;
     }
 
     @Override
@@ -86,5 +94,4 @@ public class TileEntityUtilities extends TileEntity {
 
     public void onBlockDestroyedByPlayer(World world, int x, int y, int z, int par5) {
     }
-
 }

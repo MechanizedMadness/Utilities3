@@ -13,14 +13,14 @@ public class ModBlocks {
 
     public static void init() {
 
-        /*GameRegistry.registerTileEntity(TileEntityEnergyPipe.class, "tile" + Strings.ENERGYPIPE_UNLOCALIZEDNAME);
+        GameRegistry.registerTileEntity(TileEntityEnergyPipe.class, "tile" + Strings.ENERGYPIPE_UNLOCALIZEDNAME);
         GameRegistry.registerTileEntity(TileEntityEnergyPipeBrain.class, "tile" + Strings.ENERGYPIPE_BRAIN_UNLOCALIZEDNAME);
 
         energyPipeBrain = new BlockEnergyPipeBrain(BlockIds.ENERGYPIPE_BRAIN_ID);
         energyPipe = new BlockEnergyPipe(BlockIds.ENERGYPIPE_ID);
 
         GameRegistry.registerBlock(energyPipeBrain, Strings.ENERGYPIPE_BRAIN_UNLOCALIZEDNAME);
-        GameRegistry.registerBlock(energyPipe, Strings.ENERGYPIPE_UNLOCALIZEDNAME);*/
+        GameRegistry.registerBlock(energyPipe, Strings.ENERGYPIPE_UNLOCALIZEDNAME);
 
     }
 

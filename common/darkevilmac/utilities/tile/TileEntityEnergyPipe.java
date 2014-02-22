@@ -8,6 +8,7 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
+import darkevilmac.utilities.fluid.ModFluids;
 import darkevilmac.utilities.shadows.TileBuffer;
 import darkevilmac.utilities.tile.base.TileEntityUtilities;
 
@@ -39,12 +40,26 @@ public class TileEntityEnergyPipe extends TileEntityUtilities implements IFluidH
     @Override
     public void updateEntity() {
         super.updateEntity();
+        if (tileBuffer == null)
+            tileBuffer = TileBuffer.makeBuffer(TileEntityUtilities.world, xCoord, yCoord, zCoord, false);
 
         if (hasBrain()) {
             for (ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
-                TileEntity tile = tileBuffer[side.ordinal()].getTile();
-                if (tile != null) {
+                if (getMeta() == 0) {
+                    TileEntity tile = tileBuffer[side.ordinal()].getTile();
+                    if (tile != null && tile instanceof IFluidHandler) {
+                        IFluidHandler fluidTile = ((IFluidHandler) tile);
+                        if (fluidTile.canFill(side.getOpposite(), ModFluids.fluidEnergy)) {
+                            fluidTile.fill(side.getOpposite(), getBrain().internalFluidBuffer, true);
+                        }
+                    }
+                }
+                if (getMeta() == 1) {
+                    TileEntity tile = tileBuffer[side.ordinal()].getTile();
+                    if (tile != null && tile instanceof IFluidHandler) {
+                        IFluidHandler fluidTile = ((IFluidHandler) tile);
 
+                    }
                 }
             }
         }
@@ -62,41 +77,39 @@ public class TileEntityEnergyPipe extends TileEntityUtilities implements IFluidH
 
     @Override
     public void onBlockDestroyedByPlayer(World world, int x, int y, int z, int par5) {
-        if (TileEntityEnergyPipe.pipeBrain != null)
-            TileEntityEnergyPipeBrain.reformPipeNetwork(TileEntityEnergyPipe.pipeBrain.worldObj, TileEntityEnergyPipe.pipeBrain.xCoord,
-                    TileEntityEnergyPipe.pipeBrain.yCoord, TileEntityEnergyPipe.pipeBrain.zCoord);
+        if (pipeBrain != null)
+            pipeBrain.reformPipeNetwork();
     }
 
     @Override
     public void onNeighborBlockChange() {
         super.onNeighborBlockChange();
-        if (TileEntityEnergyPipe.pipeBrain != null)
-            TileEntityEnergyPipeBrain.reformPipeNetwork(TileEntityEnergyPipe.pipeBrain.worldObj, TileEntityEnergyPipe.pipeBrain.xCoord,
-                    TileEntityEnergyPipe.pipeBrain.yCoord, TileEntityEnergyPipe.pipeBrain.zCoord);
+        if (pipeBrain != null)
+            pipeBrain.reformPipeNetwork();
     }
 
     public static void setBrain(TileEntityEnergyPipeBrain brain) {
-        TileEntityEnergyPipe.pipeBrain = brain;
+        pipeBrain = brain;
     }
 
     public static TileEntityEnergyPipeBrain getBrain() {
-        return TileEntityEnergyPipe.pipeBrain;
+        return pipeBrain;
     }
 
     public static void removeBrain() {
-        TileEntityEnergyPipe.pipeBrain = null;
+        pipeBrain = null;
     }
 
     public static void setBrainDir(ForgeDirection dir) {
-        TileEntityEnergyPipe.brainDir = dir;
+        brainDir = dir;
     }
 
     public static ForgeDirection getBrainDir() {
-        return TileEntityEnergyPipe.brainDir;
+        return brainDir;
     }
 
     public static void removeBrainDir() {
-        TileEntityEnergyPipe.brainDir = null;
+        brainDir = null;
     }
 
     public static void checkRequests() {
@@ -105,44 +118,34 @@ public class TileEntityEnergyPipe extends TileEntityUtilities implements IFluidH
 
     public static ForgeDirection getDir(ForgeDirection dir) {
         ForgeDirection replacementDir = ForgeDirection.UNKNOWN;
-        if (TileEntityEnergyPipe.brainDir == ForgeDirection.UP || TileEntityEnergyPipe.brainDir == ForgeDirection.DOWN) {
+        if (brainDir == ForgeDirection.UP || brainDir == ForgeDirection.DOWN) {
             replacementDir = ForgeDirection.NORTH;
         }
-        if (TileEntityEnergyPipe.brainDir == ForgeDirection.NORTH || TileEntityEnergyPipe.brainDir == ForgeDirection.SOUTH) {
+        if (brainDir == ForgeDirection.NORTH || brainDir == ForgeDirection.SOUTH) {
             replacementDir = ForgeDirection.UP;
         }
-        if (TileEntityEnergyPipe.brainDir == ForgeDirection.WEST || TileEntityEnergyPipe.brainDir == ForgeDirection.EAST) {
+        if (brainDir == ForgeDirection.WEST || brainDir == ForgeDirection.EAST) {
             replacementDir = ForgeDirection.UP;
         }
-
-        if (dir == TileEntityEnergyPipe.brainDir || dir == TileEntityEnergyPipe.brainDir.getOpposite()) {
-            return replacementDir;
+        if (dir != null) {
+            if (dir == brainDir || dir.getOpposite() == brainDir) {
+                return replacementDir;
+            } else {
+                return dir;
+            }
         } else {
-            return dir;
+            return ForgeDirection.UNKNOWN;
         }
     }
 
     @Override
     public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
-        if (getBrain() != null) {
+        if (hasBrain()) {
             if (doFill) {
-                int i = 0;
-                getBrain();
-                while (TileEntityEnergyPipeBrain.fluidList.size() <= i) {
-                    getBrain();
-                    if (((FluidStack) TileEntityEnergyPipeBrain.fluidList.get(i)).getFluid().equals(resource.getFluid())) {
-
-                        return resource.amount;
-                    }
-                    i++;
-                }
-                getBrain();
-                TileEntityEnergyPipeBrain.fluidList.add(new FluidStack(resource.getFluid(), resource.amount));
-                return resource.amount;
+                int oldAmount = getBrain().internalFluidBuffer.amount;
+                getBrain().internalFluidBuffer = new FluidStack(ModFluids.fluidEnergy, oldAmount + resource.amount);
             }
-            if (!doFill) {
-                return resource.amount;
-            }
+            return resource.amount;
         }
         return 0;
     }
@@ -159,20 +162,12 @@ public class TileEntityEnergyPipe extends TileEntityUtilities implements IFluidH
 
     @Override
     public boolean canFill(ForgeDirection from, Fluid fluid) {
-        if (getMeta() == 1) {
-            return true;
-        } else {
-            return false;
-        }
+        return getMeta() == 1;
     }
 
     @Override
     public boolean canDrain(ForgeDirection from, Fluid fluid) {
-        if (getMeta() == 0) {
-            return true;
-        } else {
-            return false;
-        }
+        return getMeta() == 0;
     }
 
     @Override
