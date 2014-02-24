@@ -1,6 +1,7 @@
 /build.gradle
 /.gradle
 /.settings
+/gradle
 /api
 /libs
 /build
