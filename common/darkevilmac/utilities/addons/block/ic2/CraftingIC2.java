@@ -1,9 +1,9 @@
 package darkevilmac.utilities.addons.block.ic2;
 
-import cpw.mods.fml.common.registry.GameRegistry;
-import darkevilmac.utilities.crafting.ModCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
+import cpw.mods.fml.common.registry.GameRegistry;
+import darkevilmac.utilities.crafting.ModCrafting;
 
 public class CraftingIC2 {
 
@@ -14,8 +14,8 @@ public class CraftingIC2 {
 
     public static void init() {
 
-        GameRegistry.addRecipe(ic2LinkStack, "rbr", "iqi", "brb", 'r', ModCrafting.redstoneStack, 'b', copperStack, 'i', ModCrafting.ironBlockStack, 'q',
-                ModCrafting.quartzBlockStack);
+        GameRegistry.addRecipe(ic2LinkStack, "rbr", "iqi", "brb", 'r', ModCrafting.redstoneStack, 'b', copperStack, 'i',
+                ModCrafting.ironBlockStack, 'q', ModCrafting.quartzBlockStack);
 
     }
 

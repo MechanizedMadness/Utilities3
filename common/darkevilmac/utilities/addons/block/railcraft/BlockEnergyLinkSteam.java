@@ -1,29 +1,23 @@
 package darkevilmac.utilities.addons.block.railcraft;
 
-import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import darkevilmac.utilities.addons.tile.railcraft.TileEntityEnergyLinkSteam;
 import darkevilmac.utilities.block.base.BlockEnergyLinkBase;
+import darkevilmac.utilities.lib.Reference;
 import darkevilmac.utilities.lib.Strings;
 
 public class BlockEnergyLinkSteam extends BlockEnergyLinkBase {
 
-    protected BlockEnergyLinkSteam(int id) {
-        super(id, Strings.STEAM_LINK_UNLOCALIZEDNAME);
+    protected BlockEnergyLinkSteam() {
+        super();
+        setBlockName(Strings.STEAM_LINK_BLOCKNAME);
+        setBlockTextureName(Reference.MOD_TEXTURE_ID + getUnlocalizedName().substring(5));
     }
 
     @Override
-    public TileEntity createNewTileEntity(World world) {
+    public TileEntity createNewTileEntity(World world, int var2) {
         return new TileEntityEnergyLinkSteam();
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void registerIcons(IconRegister register) {
-        blockIcon = register.registerIcon("utilities:" + Strings.STEAM_LINK_UNLOCALIZEDNAME);
     }
 
 }

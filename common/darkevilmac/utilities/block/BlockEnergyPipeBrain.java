@@ -9,13 +9,13 @@ import darkevilmac.utilities.tile.TileEntityEnergyPipeBrain;
 
 public class BlockEnergyPipeBrain extends BlockUtilitiesContainer {
 
-    public BlockEnergyPipeBrain(int id) {
-        super(id, Material.iron);
-        setUnlocalizedName(Strings.ENERGYPIPE_BRAIN_UNLOCALIZEDNAME);
+    public BlockEnergyPipeBrain() {
+        super(Material.iron);
+        setBlockName(Strings.ENERGYPIPE_BRAIN_BLOCKNAME);
     }
 
     @Override
-    public TileEntity createNewTileEntity(World world) {
+    public TileEntity createNewTileEntity(World world, int var2) {
         return new TileEntityEnergyPipeBrain();
     }
 

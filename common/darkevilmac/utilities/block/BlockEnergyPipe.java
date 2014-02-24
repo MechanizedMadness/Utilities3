@@ -9,13 +9,13 @@ import darkevilmac.utilities.tile.TileEntityEnergyPipe;
 
 public class BlockEnergyPipe extends BlockUtilitiesContainer {
 
-    public BlockEnergyPipe(int id) {
-        super(id, Material.iron);
-        setUnlocalizedName(Strings.ENERGYPIPE_UNLOCALIZEDNAME);
+    public BlockEnergyPipe() {
+        super(Material.iron);
+        setBlockName(Strings.ENERGYPIPE_BLOCKNAME);
     }
 
     @Override
-    public TileEntity createNewTileEntity(World world) {
+    public TileEntity createNewTileEntity(World world, int var2) {
         return new TileEntityEnergyPipe();
     }
 

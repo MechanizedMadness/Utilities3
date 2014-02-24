@@ -44,7 +44,7 @@ public class TileEntityUtilities extends TileEntity {
     }
 
     public TileEntityUtilities getTile() {
-        return (TileEntityUtilities) TileEntityUtilities.world.getBlockTileEntity(xCoord, yCoord, zCoord);
+        return (TileEntityUtilities) TileEntityUtilities.world.getTileEntity(xCoord, yCoord, zCoord);
     }
 
     /**

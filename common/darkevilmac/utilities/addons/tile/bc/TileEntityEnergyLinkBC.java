@@ -3,7 +3,7 @@ package darkevilmac.utilities.addons.tile.bc;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
-import net.minecraftforge.common.ForgeDirection;
+import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
@@ -19,7 +19,8 @@ import darkevilmac.utilities.shadows.TileBuffer;
 import darkevilmac.utilities.tile.base.TileEntityEnergyLinkBase;
 import darkevilmac.utilities.utils.MJUtils;
 
-public class TileEntityEnergyLinkBC extends TileEntityEnergyLinkBase implements IPowerEmitter, IPowerReceptor, IFluidHandler, IPipeConnection {
+public class TileEntityEnergyLinkBC extends TileEntityEnergyLinkBase implements IPowerEmitter, IPowerReceptor, IFluidHandler,
+        IPipeConnection {
 
     private PowerHandler powerHandler;
     private ForgeDirection receptorDir;
@@ -97,7 +98,7 @@ public class TileEntityEnergyLinkBC extends TileEntityEnergyLinkBase implements 
     }
 
     public void convertPointsFromMJ() {
-        float MJ = powerHandler.getEnergyStored();
+        float MJ = (float) powerHandler.getEnergyStored();
         int falsePoints = energyPoints;
 
         while (MJ >= 1F) {
@@ -122,61 +123,67 @@ public class TileEntityEnergyLinkBC extends TileEntityEnergyLinkBase implements 
     private void checkReceptor() {
         TileEntity tile;
         if (world != null) {
-            if (world.getBlockTileEntity(xCoord, yCoord + 1, zCoord) != null) {
-                if (world.getBlockTileEntity(xCoord, yCoord + 1, zCoord) instanceof IPowerReceptor) {
-                    if (((IPowerReceptor) world.getBlockTileEntity(xCoord, yCoord + 1, zCoord)).getPowerReceiver(ForgeDirection.UP.getOpposite()) != null) {
+            if (world.getTileEntity(xCoord, yCoord + 1, zCoord) != null) {
+                if (world.getTileEntity(xCoord, yCoord + 1, zCoord) instanceof IPowerReceptor) {
+                    if (((IPowerReceptor) world.getTileEntity(xCoord, yCoord + 1, zCoord))
+                            .getPowerReceiver(ForgeDirection.UP.getOpposite()) != null) {
                         receptorDir = ForgeDirection.UP;
-                        tile = world.getBlockTileEntity(xCoord, yCoord + 1, zCoord);
+                        tile = world.getTileEntity(xCoord, yCoord + 1, zCoord);
                         receptor = (IPowerReceptor) tile;
                         return;
                     }
                 }
             }
-            if (world.getBlockTileEntity(xCoord, yCoord - 1, zCoord) != null) {
-                if (world.getBlockTileEntity(xCoord, yCoord - 1, zCoord) instanceof IPowerReceptor) {
-                    if (((IPowerReceptor) world.getBlockTileEntity(xCoord, yCoord - 1, zCoord)).getPowerReceiver(ForgeDirection.DOWN.getOpposite()) != null) {
+            if (world.getTileEntity(xCoord, yCoord - 1, zCoord) != null) {
+                if (world.getTileEntity(xCoord, yCoord - 1, zCoord) instanceof IPowerReceptor) {
+                    if (((IPowerReceptor) world.getTileEntity(xCoord, yCoord - 1, zCoord)).getPowerReceiver(ForgeDirection.DOWN
+                            .getOpposite()) != null) {
                         receptorDir = ForgeDirection.DOWN;
-                        tile = world.getBlockTileEntity(xCoord, yCoord - 1, zCoord);
+                        tile = world.getTileEntity(xCoord, yCoord - 1, zCoord);
                         receptor = (IPowerReceptor) tile;
                         return;
                     }
                 }
             }
-            if (world.getBlockTileEntity(xCoord + 1, yCoord, zCoord) != null) {
-                if (world.getBlockTileEntity(xCoord + 1, yCoord, zCoord) instanceof IPowerReceptor) {
-                    if (((IPowerReceptor) world.getBlockTileEntity(xCoord + 1, yCoord, zCoord)).getPowerReceiver(ForgeDirection.EAST.getOpposite()) != null) {
+            if (world.getTileEntity(xCoord + 1, yCoord, zCoord) != null) {
+                if (world.getTileEntity(xCoord + 1, yCoord, zCoord) instanceof IPowerReceptor) {
+                    if (((IPowerReceptor) world.getTileEntity(xCoord + 1, yCoord, zCoord)).getPowerReceiver(ForgeDirection.EAST
+                            .getOpposite()) != null) {
                         receptorDir = ForgeDirection.EAST;
-                        tile = world.getBlockTileEntity(xCoord + 1, yCoord, zCoord);
+                        tile = world.getTileEntity(xCoord + 1, yCoord, zCoord);
                         receptor = (IPowerReceptor) tile;
                         return;
                     }
                 }
             }
-            if (world.getBlockTileEntity(xCoord - 1, yCoord, zCoord) != null) {
-                if (world.getBlockTileEntity(xCoord - 1, yCoord, zCoord) instanceof IPowerReceptor) {
-                    if (((IPowerReceptor) world.getBlockTileEntity(xCoord - 1, yCoord, zCoord)).getPowerReceiver(ForgeDirection.WEST.getOpposite()) != null) {
+            if (world.getTileEntity(xCoord - 1, yCoord, zCoord) != null) {
+                if (world.getTileEntity(xCoord - 1, yCoord, zCoord) instanceof IPowerReceptor) {
+                    if (((IPowerReceptor) world.getTileEntity(xCoord - 1, yCoord, zCoord)).getPowerReceiver(ForgeDirection.WEST
+                            .getOpposite()) != null) {
                         receptorDir = ForgeDirection.WEST;
-                        tile = world.getBlockTileEntity(xCoord - 1, yCoord, zCoord);
+                        tile = world.getTileEntity(xCoord - 1, yCoord, zCoord);
                         receptor = (IPowerReceptor) tile;
                         return;
                     }
                 }
             }
-            if (world.getBlockTileEntity(xCoord, yCoord, zCoord + 1) != null) {
-                if (world.getBlockTileEntity(xCoord, yCoord, zCoord + 1) instanceof IPowerReceptor) {
-                    if (((IPowerReceptor) world.getBlockTileEntity(xCoord, yCoord, zCoord + 1)).getPowerReceiver(ForgeDirection.SOUTH.getOpposite()) != null) {
+            if (world.getTileEntity(xCoord, yCoord, zCoord + 1) != null) {
+                if (world.getTileEntity(xCoord, yCoord, zCoord + 1) instanceof IPowerReceptor) {
+                    if (((IPowerReceptor) world.getTileEntity(xCoord, yCoord, zCoord + 1)).getPowerReceiver(ForgeDirection.SOUTH
+                            .getOpposite()) != null) {
                         receptorDir = ForgeDirection.SOUTH;
-                        tile = world.getBlockTileEntity(xCoord, yCoord, zCoord + 1);
+                        tile = world.getTileEntity(xCoord, yCoord, zCoord + 1);
                         receptor = (IPowerReceptor) tile;
                         return;
                     }
                 }
             }
-            if (world.getBlockTileEntity(xCoord, yCoord, zCoord - 1) != null) {
-                if (world.getBlockTileEntity(xCoord, yCoord, zCoord - 1) instanceof IPowerReceptor) {
-                    if (((IPowerReceptor) world.getBlockTileEntity(xCoord, yCoord, zCoord - 1)).getPowerReceiver(ForgeDirection.NORTH.getOpposite()) != null) {
+            if (world.getTileEntity(xCoord, yCoord, zCoord - 1) != null) {
+                if (world.getTileEntity(xCoord, yCoord, zCoord - 1) instanceof IPowerReceptor) {
+                    if (((IPowerReceptor) world.getTileEntity(xCoord, yCoord, zCoord - 1)).getPowerReceiver(ForgeDirection.NORTH
+                            .getOpposite()) != null) {
                         receptorDir = ForgeDirection.NORTH;
-                        tile = world.getBlockTileEntity(xCoord, yCoord, zCoord - 1);
+                        tile = world.getTileEntity(xCoord, yCoord, zCoord - 1);
                         receptor = (IPowerReceptor) tile;
                         return;
                     }
@@ -191,45 +198,45 @@ public class TileEntityEnergyLinkBC extends TileEntityEnergyLinkBase implements 
     private IPowerEmitter getEmitter() {
         TileEntity tile;
         if (world != null) {
-            if (world.getBlockTileEntity(xCoord, yCoord + 1, zCoord) != null) {
-                if (world.getBlockTileEntity(xCoord, yCoord + 1, zCoord) instanceof IPowerEmitter) {
+            if (world.getTileEntity(xCoord, yCoord + 1, zCoord) != null) {
+                if (world.getTileEntity(xCoord, yCoord + 1, zCoord) instanceof IPowerEmitter) {
                     emitterDir = ForgeDirection.UP;
-                    tile = world.getBlockTileEntity(xCoord, yCoord + 1, zCoord);
+                    tile = world.getTileEntity(xCoord, yCoord + 1, zCoord);
                     return ((IPowerEmitter) tile);
                 }
             }
-            if (world.getBlockTileEntity(xCoord, yCoord - 1, zCoord) != null) {
-                if (world.getBlockTileEntity(xCoord, yCoord - 1, zCoord) instanceof IPowerEmitter) {
+            if (world.getTileEntity(xCoord, yCoord - 1, zCoord) != null) {
+                if (world.getTileEntity(xCoord, yCoord - 1, zCoord) instanceof IPowerEmitter) {
                     emitterDir = ForgeDirection.DOWN;
-                    tile = world.getBlockTileEntity(xCoord, yCoord - 1, zCoord);
+                    tile = world.getTileEntity(xCoord, yCoord - 1, zCoord);
                     return ((IPowerEmitter) tile);
                 }
             }
-            if (world.getBlockTileEntity(xCoord + 1, yCoord, zCoord) != null) {
-                if (world.getBlockTileEntity(xCoord + 1, yCoord, zCoord) instanceof IPowerEmitter) {
+            if (world.getTileEntity(xCoord + 1, yCoord, zCoord) != null) {
+                if (world.getTileEntity(xCoord + 1, yCoord, zCoord) instanceof IPowerEmitter) {
                     emitterDir = ForgeDirection.EAST;
-                    tile = world.getBlockTileEntity(xCoord + 1, yCoord, zCoord);
+                    tile = world.getTileEntity(xCoord + 1, yCoord, zCoord);
                     return ((IPowerEmitter) tile);
                 }
             }
-            if (world.getBlockTileEntity(xCoord - 1, yCoord, zCoord) != null) {
-                if (world.getBlockTileEntity(xCoord - 1, yCoord, zCoord) instanceof IPowerEmitter) {
+            if (world.getTileEntity(xCoord - 1, yCoord, zCoord) != null) {
+                if (world.getTileEntity(xCoord - 1, yCoord, zCoord) instanceof IPowerEmitter) {
                     emitterDir = ForgeDirection.WEST;
-                    tile = world.getBlockTileEntity(xCoord - 1, yCoord, zCoord);
+                    tile = world.getTileEntity(xCoord - 1, yCoord, zCoord);
                     return ((IPowerEmitter) tile);
                 }
             }
-            if (world.getBlockTileEntity(xCoord, yCoord, zCoord + 1) != null) {
-                if (world.getBlockTileEntity(xCoord, yCoord, zCoord + 1) instanceof IPowerEmitter) {
+            if (world.getTileEntity(xCoord, yCoord, zCoord + 1) != null) {
+                if (world.getTileEntity(xCoord, yCoord, zCoord + 1) instanceof IPowerEmitter) {
                     emitterDir = ForgeDirection.SOUTH;
-                    tile = world.getBlockTileEntity(xCoord, yCoord, zCoord + 1);
+                    tile = world.getTileEntity(xCoord, yCoord, zCoord + 1);
                     return ((IPowerEmitter) tile);
                 }
             }
-            if (world.getBlockTileEntity(xCoord, yCoord, zCoord - 1) != null) {
-                if (world.getBlockTileEntity(xCoord, yCoord, zCoord - 1) instanceof IPowerEmitter) {
+            if (world.getTileEntity(xCoord, yCoord, zCoord - 1) != null) {
+                if (world.getTileEntity(xCoord, yCoord, zCoord - 1) instanceof IPowerEmitter) {
                     emitterDir = ForgeDirection.NORTH;
-                    tile = world.getBlockTileEntity(xCoord, yCoord, zCoord - 1);
+                    tile = world.getTileEntity(xCoord, yCoord, zCoord - 1);
                     return ((IPowerEmitter) tile);
                 }
             }

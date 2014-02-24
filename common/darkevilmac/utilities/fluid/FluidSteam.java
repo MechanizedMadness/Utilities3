@@ -9,8 +9,8 @@ public class FluidSteam extends Fluid {
     public FluidSteam() {
         super(Strings.FLUID_STEAM_INGAMENAME);
         setDensity(1);
-        setViscosity(-6);
-        setUnlocalizedName(Strings.FLUID_STEAM_UNLOCALIZEDNAME);
+        setViscosity(4);
+        setUnlocalizedName(Strings.FLUID_STEAM_BLOCKNAME);
         FluidRegistry.registerFluid(this);
     }
 

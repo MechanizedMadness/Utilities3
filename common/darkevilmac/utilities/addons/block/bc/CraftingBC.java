@@ -1,9 +1,9 @@
 package darkevilmac.utilities.addons.block.bc;
 
-import cpw.mods.fml.common.registry.GameRegistry;
-import darkevilmac.utilities.crafting.ModCrafting;
 import net.minecraft.item.ItemStack;
 import buildcraft.BuildCraftEnergy;
+import cpw.mods.fml.common.registry.GameRegistry;
+import darkevilmac.utilities.crafting.ModCrafting;
 
 public class CraftingBC {
 
@@ -13,8 +13,8 @@ public class CraftingBC {
 
     public static void init() {
 
-        GameRegistry.addRecipe(bcLinkStack, "zrz", "iqi", "zrz", 'z', ModCrafting.quartzStack, 'r', redstoneEngineStack, 'i', ModCrafting.ironBlockStack, 'q',
-                ModCrafting.quartzBlockStack);
+        GameRegistry.addRecipe(bcLinkStack, "zrz", "iqi", "zrz", 'z', ModCrafting.quartzStack, 'r', redstoneEngineStack, 'i',
+                ModCrafting.ironBlockStack, 'q', ModCrafting.quartzBlockStack);
 
     }
 

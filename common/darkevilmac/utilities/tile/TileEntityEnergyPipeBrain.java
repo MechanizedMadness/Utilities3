@@ -6,7 +6,7 @@ import java.util.List;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import net.minecraftforge.common.DimensionManager;
-import net.minecraftforge.common.ForgeDirection;
+import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 import darkevilmac.utilities.fluid.ModFluids;
 import darkevilmac.utilities.tile.base.TileEntityUtilities;
@@ -27,7 +27,6 @@ public class TileEntityEnergyPipeBrain extends TileEntityUtilities {
     public void validate() {
         super.validate();
 
-        reformPipeNetwork();
         if (internalFluidBuffer == null)
             internalFluidBuffer = new FluidStack(ModFluids.fluidEnergy, 0);
     }
@@ -39,8 +38,9 @@ public class TileEntityEnergyPipeBrain extends TileEntityUtilities {
             if (!pipeList.isEmpty() && checked >= 5) {
                 int i = 0;
                 while (i <= pipeList.size()) {
-                    System.out.println("Brain has " + ((TileEntityEnergyPipe) pipeList.get(i)).xCoord + " " + ((TileEntityEnergyPipe) pipeList.get(i)).yCoord
-                            + " " + ((TileEntityEnergyPipe) pipeList.get(i)).zCoord + " in it's network");
+                    System.out.println("Brain has " + ((TileEntityEnergyPipe) pipeList.get(i)).xCoord + " "
+                            + ((TileEntityEnergyPipe) pipeList.get(i)).yCoord + " " + ((TileEntityEnergyPipe) pipeList.get(i)).zCoord
+                            + " in it's network");
                     i++;
                 }
             }
@@ -52,6 +52,25 @@ public class TileEntityEnergyPipeBrain extends TileEntityUtilities {
         super.writeToNBT(nbt);
 
         nbt.setInteger("BufferAmount", internalFluidBuffer.amount);
+        if (!pipeList.isEmpty()) {
+            int[] pipeX = new int[pipeList.size()];
+            int[] pipeY = new int[pipeList.size()];
+            int[] pipeZ = new int[pipeList.size()];
+
+            int i = 0;
+            while (i >= pipeList.size()) {
+                pipeX[i] = ((TileEntityEnergyPipe) pipeList.get(i)).xCoord;
+                pipeY[i] = ((TileEntityEnergyPipe) pipeList.get(i)).yCoord;
+                pipeZ[i] = ((TileEntityEnergyPipe) pipeList.get(i)).zCoord;
+                i++;
+            }
+            nbt.setIntArray("PipeListXCoordArray", pipeX);
+            nbt.setIntArray("PipeListYCoordArray", pipeY);
+            nbt.setIntArray("PipeListZCoordArray", pipeZ);
+            nbt.setBoolean("PipeListStored", true);
+        } else {
+            nbt.setBoolean("PipeListStored", false);
+        }
     }
 
     @Override
@@ -59,6 +78,15 @@ public class TileEntityEnergyPipeBrain extends TileEntityUtilities {
         super.readFromNBT(nbt);
 
         internalFluidBuffer = new FluidStack(ModFluids.fluidEnergy, nbt.getInteger("BufferAmount"));
+
+        if (nbt.getBoolean("PipeListStored") && pipeList.isEmpty()) {
+            int i = 0;
+            while (i >= nbt.getIntArray("PipeListXCoordArray").length) {
+                pipeList.add(world.getTileEntity(nbt.getIntArray("PipeListXCoordArray")[i], nbt.getIntArray("PipeListYCoordArray")[i],
+                        nbt.getIntArray("PipeListZCoordArray")[i]));
+                i++;
+            }
+        }
     }
 
     @Override
@@ -93,57 +121,57 @@ public class TileEntityEnergyPipeBrain extends TileEntityUtilities {
         int iZ = 1;
 
         // Form PipeNetwork for WEST and EAST
-        while (world.getBlockTileEntity(checkPipeX + iX, checkPipeY, checkPipeZ) != null
-                && world.getBlockTileEntity(checkPipeX + iX, checkPipeY, checkPipeZ) instanceof TileEntityEnergyPipe) {
-            pipeList.add(world.getBlockTileEntity(checkPipeX + iX, checkPipeY, checkPipeZ));
-            TileEntityEnergyPipe pipeToSet = ((TileEntityEnergyPipe) world.getBlockTileEntity(checkPipeX + iX, checkPipeY, checkPipeZ));
-            pipeToSet.setBrain(((TileEntityEnergyPipeBrain) world.getBlockTileEntity(x, y, z)));
+        while (world.getTileEntity(checkPipeX + iX, checkPipeY, checkPipeZ) != null
+                && world.getTileEntity(checkPipeX + iX, checkPipeY, checkPipeZ) instanceof TileEntityEnergyPipe) {
+            pipeList.add(world.getTileEntity(checkPipeX + iX, checkPipeY, checkPipeZ));
+            TileEntityEnergyPipe pipeToSet = ((TileEntityEnergyPipe) world.getTileEntity(checkPipeX + iX, checkPipeY, checkPipeZ));
+            pipeToSet.setBrain(((TileEntityEnergyPipeBrain) world.getTileEntity(x, y, z)));
             iX++;
         }
         iX = 1;
-        while (world.getBlockTileEntity(checkPipeX - iX, checkPipeY, checkPipeZ) != null
-                && world.getBlockTileEntity(checkPipeX - iX, checkPipeY, checkPipeZ) instanceof TileEntityEnergyPipe) {
-            pipeList.add(world.getBlockTileEntity(checkPipeX - iX, checkPipeY, checkPipeZ));
-            TileEntityEnergyPipe pipeToSet = ((TileEntityEnergyPipe) world.getBlockTileEntity(checkPipeX - iX, checkPipeY, checkPipeZ));
-            pipeToSet.setBrain(((TileEntityEnergyPipeBrain) world.getBlockTileEntity(x, y, z)));
+        while (world.getTileEntity(checkPipeX - iX, checkPipeY, checkPipeZ) != null
+                && world.getTileEntity(checkPipeX - iX, checkPipeY, checkPipeZ) instanceof TileEntityEnergyPipe) {
+            pipeList.add(world.getTileEntity(checkPipeX - iX, checkPipeY, checkPipeZ));
+            TileEntityEnergyPipe pipeToSet = ((TileEntityEnergyPipe) world.getTileEntity(checkPipeX - iX, checkPipeY, checkPipeZ));
+            pipeToSet.setBrain(((TileEntityEnergyPipeBrain) world.getTileEntity(x, y, z)));
             iX++;
         }
         iX = 1;
         // Formed WEST and EAST
 
         // Form PipeNetwork for UP and DOWN
-        while (world.getBlockTileEntity(checkPipeX, checkPipeY + iY, checkPipeZ) != null
-                && world.getBlockTileEntity(checkPipeX, checkPipeY + iY, checkPipeZ) instanceof TileEntityEnergyPipe) {
-            pipeList.add(world.getBlockTileEntity(checkPipeX, checkPipeY + iY, checkPipeZ));
-            TileEntityEnergyPipe pipeToSet = ((TileEntityEnergyPipe) world.getBlockTileEntity(checkPipeX, checkPipeY + iY, checkPipeZ));
-            pipeToSet.setBrain(((TileEntityEnergyPipeBrain) world.getBlockTileEntity(x, y, z)));
+        while (world.getTileEntity(checkPipeX, checkPipeY + iY, checkPipeZ) != null
+                && world.getTileEntity(checkPipeX, checkPipeY + iY, checkPipeZ) instanceof TileEntityEnergyPipe) {
+            pipeList.add(world.getTileEntity(checkPipeX, checkPipeY + iY, checkPipeZ));
+            TileEntityEnergyPipe pipeToSet = ((TileEntityEnergyPipe) world.getTileEntity(checkPipeX, checkPipeY + iY, checkPipeZ));
+            pipeToSet.setBrain(((TileEntityEnergyPipeBrain) world.getTileEntity(x, y, z)));
             iY++;
         }
         iY = 1;
-        while (world.getBlockTileEntity(checkPipeX, checkPipeY - iY, checkPipeZ) != null
-                && world.getBlockTileEntity(checkPipeX, checkPipeY - iY, checkPipeZ) instanceof TileEntityEnergyPipe) {
-            pipeList.add(world.getBlockTileEntity(checkPipeX, checkPipeY - iY, checkPipeZ));
-            TileEntityEnergyPipe pipeToSet = ((TileEntityEnergyPipe) world.getBlockTileEntity(checkPipeX, checkPipeY - iY, checkPipeZ));
-            pipeToSet.setBrain(((TileEntityEnergyPipeBrain) world.getBlockTileEntity(x, y, z)));
+        while (world.getTileEntity(checkPipeX, checkPipeY - iY, checkPipeZ) != null
+                && world.getTileEntity(checkPipeX, checkPipeY - iY, checkPipeZ) instanceof TileEntityEnergyPipe) {
+            pipeList.add(world.getTileEntity(checkPipeX, checkPipeY - iY, checkPipeZ));
+            TileEntityEnergyPipe pipeToSet = ((TileEntityEnergyPipe) world.getTileEntity(checkPipeX, checkPipeY - iY, checkPipeZ));
+            pipeToSet.setBrain(((TileEntityEnergyPipeBrain) world.getTileEntity(x, y, z)));
             iY++;
         }
         iY = 1;
         // Formed UP and DOWN
 
         // Form PipeNetwork for NORTH and SOUTH
-        while (world.getBlockTileEntity(checkPipeX, checkPipeY, checkPipeZ + iZ) != null
-                && world.getBlockTileEntity(checkPipeX, checkPipeY, checkPipeZ + iZ) instanceof TileEntityEnergyPipe) {
-            pipeList.add(world.getBlockTileEntity(checkPipeX, checkPipeY, checkPipeZ + iZ));
-            TileEntityEnergyPipe pipeToSet = ((TileEntityEnergyPipe) world.getBlockTileEntity(checkPipeX, checkPipeY, checkPipeZ + iZ));
-            pipeToSet.setBrain(((TileEntityEnergyPipeBrain) world.getBlockTileEntity(x, y, z)));
+        while (world.getTileEntity(checkPipeX, checkPipeY, checkPipeZ + iZ) != null
+                && world.getTileEntity(checkPipeX, checkPipeY, checkPipeZ + iZ) instanceof TileEntityEnergyPipe) {
+            pipeList.add(world.getTileEntity(checkPipeX, checkPipeY, checkPipeZ + iZ));
+            TileEntityEnergyPipe pipeToSet = ((TileEntityEnergyPipe) world.getTileEntity(checkPipeX, checkPipeY, checkPipeZ + iZ));
+            pipeToSet.setBrain(((TileEntityEnergyPipeBrain) world.getTileEntity(x, y, z)));
             iZ++;
         }
         iZ = 1;
-        while (world.getBlockTileEntity(checkPipeX, checkPipeY, checkPipeZ - iZ) != null
-                && world.getBlockTileEntity(checkPipeX, checkPipeY, checkPipeZ - iZ) instanceof TileEntityEnergyPipe) {
-            pipeList.add(world.getBlockTileEntity(checkPipeX, checkPipeY, checkPipeZ - iZ));
-            TileEntityEnergyPipe pipeToSet = ((TileEntityEnergyPipe) world.getBlockTileEntity(checkPipeX, checkPipeY, checkPipeZ - iZ));
-            pipeToSet.setBrain(((TileEntityEnergyPipeBrain) world.getBlockTileEntity(x, y, z)));
+        while (world.getTileEntity(checkPipeX, checkPipeY, checkPipeZ - iZ) != null
+                && world.getTileEntity(checkPipeX, checkPipeY, checkPipeZ - iZ) instanceof TileEntityEnergyPipe) {
+            pipeList.add(world.getTileEntity(checkPipeX, checkPipeY, checkPipeZ - iZ));
+            TileEntityEnergyPipe pipeToSet = ((TileEntityEnergyPipe) world.getTileEntity(checkPipeX, checkPipeY, checkPipeZ - iZ));
+            pipeToSet.setBrain(((TileEntityEnergyPipeBrain) world.getTileEntity(x, y, z)));
             iZ++;
         }
         iZ = 1;
@@ -167,12 +195,14 @@ public class TileEntityEnergyPipeBrain extends TileEntityUtilities {
 
                 if (dirUp == ForgeDirection.UP) {
                     if (tile.getTile(dirUp) != null && tile.getTile(dirUp) instanceof TileEntityEnergyPipe) {
-                        while (world.getBlockTileEntity(tile.getTile(dirUp).xCoord, tile.getTile(dirUp).yCoord + iY, tile.getTile(dirUp).zCoord) != null
-                                && world.getBlockTileEntity(tile.getTile(dirUp).xCoord, tile.getTile(dirUp).yCoord + iY, tile.getTile(dirUp).zCoord) instanceof TileEntityEnergyPipe) {
-                            pipeList.add(world.getBlockTileEntity(tile.getTile(dirUp).xCoord, tile.getTile(dirUp).yCoord + iY, tile.getTile(dirUp).zCoord));
-                            TileEntityEnergyPipe pipeToSet = ((TileEntityEnergyPipe) world.getBlockTileEntity(tile.getTile(dirUp).xCoord,
+                        while (world.getTileEntity(tile.getTile(dirUp).xCoord, tile.getTile(dirUp).yCoord + iY, tile.getTile(dirUp).zCoord) != null
+                                && world.getTileEntity(tile.getTile(dirUp).xCoord, tile.getTile(dirUp).yCoord + iY,
+                                        tile.getTile(dirUp).zCoord) instanceof TileEntityEnergyPipe) {
+                            pipeList.add(world.getTileEntity(tile.getTile(dirUp).xCoord, tile.getTile(dirUp).yCoord + iY,
+                                    tile.getTile(dirUp).zCoord));
+                            TileEntityEnergyPipe pipeToSet = ((TileEntityEnergyPipe) world.getTileEntity(tile.getTile(dirUp).xCoord,
                                     tile.getTile(dirUp).yCoord + iY, tile.getTile(dirUp).zCoord));
-                            pipeToSet.setBrain((TileEntityEnergyPipeBrain) world.getBlockTileEntity(x, y, z));
+                            pipeToSet.setBrain((TileEntityEnergyPipeBrain) world.getTileEntity(x, y, z));
                             iY++;
                         }
                     }
@@ -181,12 +211,14 @@ public class TileEntityEnergyPipeBrain extends TileEntityUtilities {
 
                 if (dirDown == ForgeDirection.DOWN) {
                     if (tile.getTile(dirDown) != null && tile.getTile(dirDown) instanceof TileEntityEnergyPipe) {
-                        while (world.getBlockTileEntity(tile.getTile(dirUp).xCoord, tile.getTile(dirUp).yCoord - iY, tile.getTile(dirUp).zCoord) != null
-                                && world.getBlockTileEntity(tile.getTile(dirUp).xCoord, tile.getTile(dirUp).yCoord - iY, tile.getTile(dirUp).zCoord) instanceof TileEntityEnergyPipe) {
-                            pipeList.add(world.getBlockTileEntity(tile.getTile(dirUp).xCoord, tile.getTile(dirUp).yCoord - iY, tile.getTile(dirUp).zCoord));
-                            TileEntityEnergyPipe pipeToSet = ((TileEntityEnergyPipe) world.getBlockTileEntity(tile.getTile(dirUp).xCoord,
+                        while (world.getTileEntity(tile.getTile(dirUp).xCoord, tile.getTile(dirUp).yCoord - iY, tile.getTile(dirUp).zCoord) != null
+                                && world.getTileEntity(tile.getTile(dirUp).xCoord, tile.getTile(dirUp).yCoord - iY,
+                                        tile.getTile(dirUp).zCoord) instanceof TileEntityEnergyPipe) {
+                            pipeList.add(world.getTileEntity(tile.getTile(dirUp).xCoord, tile.getTile(dirUp).yCoord - iY,
+                                    tile.getTile(dirUp).zCoord));
+                            TileEntityEnergyPipe pipeToSet = ((TileEntityEnergyPipe) world.getTileEntity(tile.getTile(dirUp).xCoord,
                                     tile.getTile(dirUp).yCoord - iY, tile.getTile(dirUp).zCoord));
-                            pipeToSet.setBrain((TileEntityEnergyPipeBrain) world.getBlockTileEntity(x, y, z));
+                            pipeToSet.setBrain((TileEntityEnergyPipeBrain) world.getTileEntity(x, y, z));
                             iY++;
                         }
                     }
@@ -195,13 +227,15 @@ public class TileEntityEnergyPipeBrain extends TileEntityUtilities {
 
                 if (dirNorth == ForgeDirection.NORTH) {
                     if (tile.getTile(dirNorth) != null && tile.getTile(dirNorth) instanceof TileEntityEnergyPipe) {
-                        while (world.getBlockTileEntity(tile.getTile(dirNorth).xCoord, tile.getTile(dirNorth).yCoord, tile.getTile(dirNorth).zCoord - iZ) != null
-                                && world.getBlockTileEntity(tile.getTile(dirNorth).xCoord, tile.getTile(dirNorth).yCoord, tile.getTile(dirNorth).zCoord - iZ) instanceof TileEntityEnergyPipe) {
-                            pipeList.add(world.getBlockTileEntity(tile.getTile(dirNorth).xCoord, tile.getTile(dirNorth).yCoord, tile.getTile(dirNorth).zCoord
-                                    - iZ));
-                            TileEntityEnergyPipe pipeToSet = ((TileEntityEnergyPipe) world.getBlockTileEntity(tile.getTile(dirNorth).xCoord,
+                        while (world.getTileEntity(tile.getTile(dirNorth).xCoord, tile.getTile(dirNorth).yCoord,
+                                tile.getTile(dirNorth).zCoord - iZ) != null
+                                && world.getTileEntity(tile.getTile(dirNorth).xCoord, tile.getTile(dirNorth).yCoord,
+                                        tile.getTile(dirNorth).zCoord - iZ) instanceof TileEntityEnergyPipe) {
+                            pipeList.add(world.getTileEntity(tile.getTile(dirNorth).xCoord, tile.getTile(dirNorth).yCoord,
+                                    tile.getTile(dirNorth).zCoord - iZ));
+                            TileEntityEnergyPipe pipeToSet = ((TileEntityEnergyPipe) world.getTileEntity(tile.getTile(dirNorth).xCoord,
                                     tile.getTile(dirNorth).yCoord, tile.getTile(dirNorth).zCoord - iZ));
-                            pipeToSet.setBrain((TileEntityEnergyPipeBrain) world.getBlockTileEntity(x, y, z));
+                            pipeToSet.setBrain((TileEntityEnergyPipeBrain) world.getTileEntity(x, y, z));
                             iZ++;
                         }
                     }
@@ -210,13 +244,15 @@ public class TileEntityEnergyPipeBrain extends TileEntityUtilities {
 
                 if (dirSouth == ForgeDirection.SOUTH) {
                     if (tile.getTile(dirSouth) != null && tile.getTile(dirSouth) instanceof TileEntityEnergyPipe) {
-                        while (world.getBlockTileEntity(tile.getTile(dirSouth).xCoord, tile.getTile(dirSouth).yCoord, tile.getTile(dirSouth).zCoord + iZ) != null
-                                && world.getBlockTileEntity(tile.getTile(dirSouth).xCoord, tile.getTile(dirSouth).yCoord, tile.getTile(dirSouth).zCoord + iZ) instanceof TileEntityEnergyPipe) {
-                            pipeList.add(world.getBlockTileEntity(tile.getTile(dirSouth).xCoord, tile.getTile(dirSouth).yCoord, tile.getTile(dirSouth).zCoord
-                                    + iZ));
-                            TileEntityEnergyPipe pipeToSet = ((TileEntityEnergyPipe) world.getBlockTileEntity(tile.getTile(dirSouth).xCoord,
+                        while (world.getTileEntity(tile.getTile(dirSouth).xCoord, tile.getTile(dirSouth).yCoord,
+                                tile.getTile(dirSouth).zCoord + iZ) != null
+                                && world.getTileEntity(tile.getTile(dirSouth).xCoord, tile.getTile(dirSouth).yCoord,
+                                        tile.getTile(dirSouth).zCoord + iZ) instanceof TileEntityEnergyPipe) {
+                            pipeList.add(world.getTileEntity(tile.getTile(dirSouth).xCoord, tile.getTile(dirSouth).yCoord,
+                                    tile.getTile(dirSouth).zCoord + iZ));
+                            TileEntityEnergyPipe pipeToSet = ((TileEntityEnergyPipe) world.getTileEntity(tile.getTile(dirSouth).xCoord,
                                     tile.getTile(dirSouth).yCoord, tile.getTile(dirSouth).zCoord + iZ));
-                            pipeToSet.setBrain((TileEntityEnergyPipeBrain) world.getBlockTileEntity(x, y, z));
+                            pipeToSet.setBrain((TileEntityEnergyPipeBrain) world.getTileEntity(x, y, z));
                             iZ++;
                         }
                     }
@@ -225,12 +261,15 @@ public class TileEntityEnergyPipeBrain extends TileEntityUtilities {
 
                 if (dirWest == ForgeDirection.WEST) {
                     if (tile.getTile(dirWest) != null && tile.getTile(dirWest) instanceof TileEntityEnergyPipe) {
-                        while (world.getBlockTileEntity(tile.getTile(dirWest).xCoord - iX, tile.getTile(dirWest).yCoord, tile.getTile(dirWest).zCoord) != null
-                                && world.getBlockTileEntity(tile.getTile(dirWest).xCoord - iX, tile.getTile(dirWest).yCoord, tile.getTile(dirWest).zCoord) instanceof TileEntityEnergyPipe) {
-                            pipeList.add(world.getBlockTileEntity(tile.getTile(dirWest).xCoord - iX, tile.getTile(dirWest).yCoord, tile.getTile(dirWest).zCoord));
-                            TileEntityEnergyPipe pipeToSet = ((TileEntityEnergyPipe) world.getBlockTileEntity(tile.getTile(dirWest).xCoord - iX,
+                        while (world.getTileEntity(tile.getTile(dirWest).xCoord - iX, tile.getTile(dirWest).yCoord,
+                                tile.getTile(dirWest).zCoord) != null
+                                && world.getTileEntity(tile.getTile(dirWest).xCoord - iX, tile.getTile(dirWest).yCoord,
+                                        tile.getTile(dirWest).zCoord) instanceof TileEntityEnergyPipe) {
+                            pipeList.add(world.getTileEntity(tile.getTile(dirWest).xCoord - iX, tile.getTile(dirWest).yCoord,
+                                    tile.getTile(dirWest).zCoord));
+                            TileEntityEnergyPipe pipeToSet = ((TileEntityEnergyPipe) world.getTileEntity(tile.getTile(dirWest).xCoord - iX,
                                     tile.getTile(dirWest).yCoord, tile.getTile(dirWest).zCoord));
-                            pipeToSet.setBrain((TileEntityEnergyPipeBrain) world.getBlockTileEntity(x, y, z));
+                            pipeToSet.setBrain((TileEntityEnergyPipeBrain) world.getTileEntity(x, y, z));
                             iX++;
                         }
                     }
@@ -239,12 +278,15 @@ public class TileEntityEnergyPipeBrain extends TileEntityUtilities {
 
                 if (dirEast == ForgeDirection.EAST) {
                     if (tile.getTile(dirEast) != null && tile.getTile(dirEast) instanceof TileEntityEnergyPipe) {
-                        while (world.getBlockTileEntity(tile.getTile(dirEast).xCoord + iX, tile.getTile(dirEast).yCoord, tile.getTile(dirEast).zCoord) != null
-                                && world.getBlockTileEntity(tile.getTile(dirEast).xCoord + iX, tile.getTile(dirEast).yCoord, tile.getTile(dirEast).zCoord) instanceof TileEntityEnergyPipe) {
-                            pipeList.add(world.getBlockTileEntity(tile.getTile(dirEast).xCoord + iX, tile.getTile(dirEast).yCoord, tile.getTile(dirEast).zCoord));
-                            TileEntityEnergyPipe pipeToSet = ((TileEntityEnergyPipe) world.getBlockTileEntity(tile.getTile(dirEast).xCoord + iX,
+                        while (world.getTileEntity(tile.getTile(dirEast).xCoord + iX, tile.getTile(dirEast).yCoord,
+                                tile.getTile(dirEast).zCoord) != null
+                                && world.getTileEntity(tile.getTile(dirEast).xCoord + iX, tile.getTile(dirEast).yCoord,
+                                        tile.getTile(dirEast).zCoord) instanceof TileEntityEnergyPipe) {
+                            pipeList.add(world.getTileEntity(tile.getTile(dirEast).xCoord + iX, tile.getTile(dirEast).yCoord,
+                                    tile.getTile(dirEast).zCoord));
+                            TileEntityEnergyPipe pipeToSet = ((TileEntityEnergyPipe) world.getTileEntity(tile.getTile(dirEast).xCoord + iX,
                                     tile.getTile(dirEast).yCoord, tile.getTile(dirEast).zCoord));
-                            pipeToSet.setBrain((TileEntityEnergyPipeBrain) world.getBlockTileEntity(x, y, z));
+                            pipeToSet.setBrain((TileEntityEnergyPipeBrain) world.getTileEntity(x, y, z));
                             iX++;
                         }
                     }

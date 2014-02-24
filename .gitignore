@@ -1,7 +1,9 @@
-build.gradle/
-.gradle/
-api/
-lib/
-build/
-bin/
-libs/
+/build.gradle
+/.gradle
+/.settings
+/api
+/libs
+/build
+/bin
+/gradlew
+/gradle.bat

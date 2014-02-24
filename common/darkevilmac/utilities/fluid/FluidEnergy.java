@@ -11,7 +11,7 @@ public class FluidEnergy extends Fluid {
         setLuminosity(1);
         setDensity(1);
         setViscosity(25);
-        setUnlocalizedName(Strings.FLUID_ENERGY_UNLOCALIZEDNAME);
+        setUnlocalizedName(Strings.FLUID_ENERGY_BLOCKNAME);
         FluidRegistry.registerFluid(this);
     }
 }

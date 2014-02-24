@@ -1,8 +1,8 @@
 package darkevilmac.utilities.addons.block.railcraft;
 
+import net.minecraft.item.ItemStack;
 import cpw.mods.fml.common.registry.GameRegistry;
 import darkevilmac.utilities.crafting.ModCrafting;
-import net.minecraft.item.ItemStack;
 
 public class CraftingRailcraft {
 

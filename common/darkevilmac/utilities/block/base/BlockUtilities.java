@@ -10,14 +10,14 @@ import darkevilmac.utilities.tile.base.TileEntityUtilities;
 
 public class BlockUtilities extends Block {
 
-    public BlockUtilities(int id, Material material) {
-        super(id, material);
+    public BlockUtilities(Material material) {
+        super(Material.iron);
     }
 
     public TileEntityUtilities getTile(World world, int x, int y, int z) {
-        if (world.getBlockTileEntity(x, y, z) != null) {
-            if (world.getBlockTileEntity(x, y, z) instanceof TileEntityUtilities) {
-                return (TileEntityUtilities) world.getBlockTileEntity(x, y, z);
+        if (world.getTileEntity(x, y, z) != null) {
+            if (world.getTileEntity(x, y, z) instanceof TileEntityUtilities) {
+                return (TileEntityUtilities) world.getTileEntity(x, y, z);
             } else {
                 return null;
             }
@@ -27,7 +27,7 @@ public class BlockUtilities extends Block {
     }
 
     @Override
-    public void onNeighborBlockChange(World world, int x, int y, int z, int par5) {
+    public void onNeighborBlockChange(World world, int x, int y, int z, Block block) {
         if (getTile(world, x, y, z) != null)
             getTile(world, x, y, z).onNeighborBlockChange();
     }
@@ -38,7 +38,7 @@ public class BlockUtilities extends Block {
             if (getTile(world, x, y, z) != null && getTile(world, x, y, z) instanceof TileEntityUtilities) {
                 if (entity instanceof EntityPlayer) {
                     EntityPlayer entityPlayer = (EntityPlayer) entity;
-                    getTile(world, x, y, z).setOwner(entityPlayer.username);
+                    getTile(world, x, y, z).setOwner(entityPlayer.getDisplayName());
                 }
             }
         }

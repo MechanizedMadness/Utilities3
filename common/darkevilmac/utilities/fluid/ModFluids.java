@@ -17,16 +17,16 @@ public class ModFluids {
     public static void init() {
         ModFluids.fluidEnergy = new FluidEnergy();
 
-        ModFluids.fluidEnergyBlock = new FluidEnergyBlock(BlockIds.FLUID_ENERGY_ID);
+        ModFluids.fluidEnergyBlock = new FluidEnergyBlock();
 
-        GameRegistry.registerBlock(ModFluids.fluidEnergyBlock, Strings.FLUID_ENERGY_UNLOCALIZEDNAME);
+        GameRegistry.registerBlock(ModFluids.fluidEnergyBlock, Strings.FLUID_ENERGY_BLOCKNAME);
 
         if (!Loader.isModLoaded("Railcraft")) {
             ModFluids.fluidSteam = new FluidSteam();
 
-            ModFluids.fluidSteamBlock = new FluidSteamBlock(BlockIds.FLUID_STEAM_ID);
+            ModFluids.fluidSteamBlock = new FluidSteamBlock();
 
-            GameRegistry.registerBlock(ModFluids.fluidSteamBlock, Strings.FLUID_STEAM_UNLOCALIZEDNAME);
+            GameRegistry.registerBlock(ModFluids.fluidSteamBlock, Strings.FLUID_STEAM_BLOCKNAME);
         }
     }
 }

@@ -6,9 +6,9 @@ import darkevilmac.utilities.lib.Strings;
 
 public class BlockFluidPipeBrain extends BlockUtilities {
 
-    public BlockFluidPipeBrain(int id) {
-        super(id, Material.iron);
-        setUnlocalizedName(Strings.ENERGYPIPE_BRAIN_UNLOCALIZEDNAME);
+    public BlockFluidPipeBrain() {
+        super(Material.iron);
+        setBlockName(Strings.ENERGYPIPE_BRAIN_BLOCKNAME);
     }
 
 }

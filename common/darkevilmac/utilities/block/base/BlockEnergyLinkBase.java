@@ -3,18 +3,18 @@ package darkevilmac.utilities.block.base;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ChatComponentText;
 import net.minecraft.world.World;
 
 public class BlockEnergyLinkBase extends BlockUtilitiesContainer {
 
-    protected BlockEnergyLinkBase(int id, String unlocalizedName) {
-        super(id, Material.iron);
+    protected BlockEnergyLinkBase() {
+        super(Material.iron);
         setHardness(1F);
-        setUnlocalizedName(unlocalizedName);
     }
 
     @Override
-    public TileEntity createNewTileEntity(World world) {
+    public TileEntity createNewTileEntity(World world, int var2) {
         return null;
     }
 
@@ -23,11 +23,11 @@ public class BlockEnergyLinkBase extends BlockUtilitiesContainer {
         if (!world.isRemote) {
             if (world.getBlockMetadata(x, y, z) == 0) {
                 world.setBlockMetadataWithNotify(x, y, z, 1, 2);
-                player.addChatMessage("Converting to Fluid");
+                player.addChatComponentMessage(new ChatComponentText("Converting to Fluid"));
                 return true;
             } else if (world.getBlockMetadata(x, y, z) == 1) {
                 world.setBlockMetadataWithNotify(x, y, z, 0, 2);
-                player.addChatMessage("Converting to Energy");
+                player.addChatComponentMessage(new ChatComponentText("Converting to Energy"));
                 return true;
             } else {
                 return false;

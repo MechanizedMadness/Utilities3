@@ -5,16 +5,26 @@ buildscript {
             name = "forge"
             url = "http://files.minecraftforge.net/maven"
         }
+        maven {
+            name = "sonatype"
+            url = "https://oss.sonatype.org/content/repositories/snapshots/"
+        }
     }
     dependencies {
-        classpath 'net.minecraftforge.gradle:ForgeGradle:1.0-SNAPSHOT'
+        classpath 'net.minecraftforge.gradle:ForgeGradle:1.1-SNAPSHOT'
     }
 }
 
 apply plugin: 'forge'
-minecraft{version = "1.6.4-9.11.1.964"}
-version = "A2"//Set the mod version, is appended to the end of the jar name
-archivesBaseName = project.projectDir.name// Set the jar name as the project root folder name
+
+version = "A3"
+group= "darkevilmac.utilities"
+archivesBaseName = "utilities3"
+
+minecraft {
+    version = "1.7.2-10.12.0.1033"
+    assetDir = "eclipse/assets"
+}
 
 sourceSets {
     main {
@@ -22,7 +32,7 @@ sourceSets {
             srcDir 'common'
         }
         resources {
-            srcDir 'resources'
+            srcDir 'utilities_resources'
         }
     }
     api {
@@ -33,18 +43,16 @@ sourceSets {
 }
 
 dependencies {
-    runtime files('libs/ejml-0.23.jar', 'libs/industrialcraft-2-dev-deobf_2.0.387-experimental.jar')
+    runtime fileTree(dir: 'libs', include: '*.jar')
 }
 
-processResources {
-    // replace stuff in mcmod.info, nothing else
+processResources
+{
     from(sourceSets.main.resources.srcDirs) {
         include 'mcmod.info'
-        // replace $version and $mcversion
         expand 'version':project.version, 'mcversion':project.minecraft.version
     }
-
-    // copy everything else, thats not the mcmod.info
+    
     from(sourceSets.main.resources.srcDirs) {
         exclude 'mcmod.info'
     }

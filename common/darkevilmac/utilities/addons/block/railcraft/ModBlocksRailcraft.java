@@ -12,11 +12,11 @@ public class ModBlocksRailcraft {
 
     public static void init() {
 
-        GameRegistry.registerTileEntity(TileEntityEnergyLinkSteam.class, "tile" + Strings.STEAM_LINK_UNLOCALIZEDNAME);
+        GameRegistry.registerTileEntity(TileEntityEnergyLinkSteam.class, "tile" + Strings.STEAM_LINK_BLOCKNAME);
 
-        steamLink = new BlockEnergyLinkSteam(BlockIds.STEAM_LINK_ID);
+        steamLink = new BlockEnergyLinkSteam();
 
-        GameRegistry.registerBlock(steamLink, Strings.STEAM_LINK_UNLOCALIZEDNAME);
+        GameRegistry.registerBlock(steamLink, Strings.STEAM_LINK_BLOCKNAME);
 
     }
 

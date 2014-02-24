@@ -3,7 +3,7 @@ package darkevilmac.utilities.tile.base;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
-import net.minecraftforge.common.ForgeDirection;
+import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -76,13 +76,13 @@ public class TileEntityEnergyLinkBase extends TileEntityUtilities implements IFl
     }
 
     public int getTileType() {
-        if (world.getBlockTileEntity(xCoord, yCoord, zCoord) instanceof TileEntityEnergyLinkBC) {
+        if (world.getTileEntity(xCoord, yCoord, zCoord) instanceof TileEntityEnergyLinkBC) {
             return 1;
         }
-        if (world.getBlockTileEntity(xCoord, yCoord, zCoord) instanceof TileEntityEnergyLinkIC2) {
+        if (world.getTileEntity(xCoord, yCoord, zCoord) instanceof TileEntityEnergyLinkIC2) {
             return 2;
         }
-        if (world.getBlockTileEntity(xCoord, yCoord, zCoord) instanceof TileEntityEnergyLinkSteam) {
+        if (world.getTileEntity(xCoord, yCoord, zCoord) instanceof TileEntityEnergyLinkSteam) {
             return 3;
         }
         return 0;
@@ -91,8 +91,8 @@ public class TileEntityEnergyLinkBase extends TileEntityUtilities implements IFl
     public boolean isTile(int x, int y, int z, int tileType) {
         boolean bool = false;
         if (tileType == 1) {
-            if (world.getBlockTileEntity(x, y, z) != null) {
-                if (world.getBlockTileEntity(x, y, z) instanceof TileEntityEnergyLinkBC) {
+            if (world.getTileEntity(x, y, z) != null) {
+                if (world.getTileEntity(x, y, z) instanceof TileEntityEnergyLinkBC) {
                     bool = true;
                 } else {
                     bool = false;
@@ -100,8 +100,8 @@ public class TileEntityEnergyLinkBase extends TileEntityUtilities implements IFl
             }
         }
         if (tileType == 2) {
-            if (world.getBlockTileEntity(x, y, z) != null) {
-                if (world.getBlockTileEntity(x, y, z) instanceof TileEntityEnergyLinkIC2) {
+            if (world.getTileEntity(x, y, z) != null) {
+                if (world.getTileEntity(x, y, z) instanceof TileEntityEnergyLinkIC2) {
                     bool = true;
                 } else {
                     bool = false;
@@ -109,8 +109,8 @@ public class TileEntityEnergyLinkBase extends TileEntityUtilities implements IFl
             }
         }
         if (tileType == 3) {
-            if (world.getBlockTileEntity(x, y, z) != null) {
-                if (world.getBlockTileEntity(x, y, z) instanceof TileEntityEnergyLinkSteam) {
+            if (world.getTileEntity(x, y, z) != null) {
+                if (world.getTileEntity(x, y, z) instanceof TileEntityEnergyLinkSteam) {
                     bool = true;
                 } else {
                     bool = false;

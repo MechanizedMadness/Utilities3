@@ -5,27 +5,27 @@ public class Strings {
     // Unlocalized Names
 
     // {{ World Creation Related
-    public static final String BIOME_BLOCK_UNLOCALIZEDNAME = "biomeBlock";
+    public static final String BIOME_BLOCK_BLOCKNAME = "biomeBlock";
     public static final String TELEPEBBLE_UNLOCALIZEDNAME = "telePebble";
     // }}
 
     // {{ Fluid Energy Related
-    public static final String FLUID_ENERGY_UNLOCALIZEDNAME = "fluidEnergy";
-    public static final String FLUID_STEAM_UNLOCALIZEDNAME = "steam";
-    public static final String IC2_LINK_UNLOCALIZEDNAME = "ic2Link";
-    public static final String STEAM_LINK_UNLOCALIZEDNAME = "steamLink";
-    public static final String BC_LINK_UNLOCALIZEDNAME = "bcLink";
+    public static final String FLUID_ENERGY_BLOCKNAME = "fluidEnergy";
+    public static final String FLUID_STEAM_BLOCKNAME = "steam";
+    public static final String IC2_LINK_BLOCKNAME = "ic2Link";
+    public static final String STEAM_LINK_BLOCKNAME = "steamLink";
+    public static final String BC_LINK_BLOCKNAME = "bcLink";
     // }}
 
     // {{ Pipe related
-    public static final String ENERGYPIPE_BRAIN_UNLOCALIZEDNAME = "energyPipeBrain";
-    public static final String ITEMPIPE_BRAIN_UNLOCALIZEDNAME = "itemPipeBrain";
-    public static final String FLUIDPIPE_BRAIN_UNLOCALIZEDNAME = "fluidPipeBrain";
-    public static final String MULTIPIPE_BRAIN_UNLOCALIZEDNAME = "multiPipeBrain";
-    public static final String ENERGYPIPE_UNLOCALIZEDNAME = "energyPipe";
-    public static final String ITEMPIPE_UNLOCALIZEDNAME = "itemPipe";
-    public static final String FLUIDPIPE_UNLOCALIZEDNAME = "fluidPipe";
-    public static final String MULTIPIPE_UNLOCALIZEDNAME = "multiPipe";
+    public static final String ENERGYPIPE_BRAIN_BLOCKNAME = "energyPipeBrain";
+    public static final String ITEMPIPE_BRAIN_BLOCKNAME = "itemPipeBrain";
+    public static final String FLUIDPIPE_BRAIN_BLOCKNAME = "fluidPipeBrain";
+    public static final String MULTIPIPE_BRAIN_BLOCKNAME = "multiPipeBrain";
+    public static final String ENERGYPIPE_BLOCKNAME = "energyPipe";
+    public static final String ITEMPIPE_BLOCKNAME = "itemPipe";
+    public static final String FLUIDPIPE_BLOCKNAME = "fluidPipe";
+    public static final String MULTIPIPE_BLOCKNAME = "multiPipe";
     public static final String PIPELINKER_UNLOCALIZEDNAME = "pipeLinker";
     // }}
 
