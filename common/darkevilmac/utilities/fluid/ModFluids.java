@@ -4,7 +4,6 @@ import net.minecraftforge.fluids.BlockFluidClassic;
 import net.minecraftforge.fluids.Fluid;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.registry.GameRegistry;
-import darkevilmac.utilities.lib.BlockIds;
 import darkevilmac.utilities.lib.Strings;
 
 public class ModFluids {

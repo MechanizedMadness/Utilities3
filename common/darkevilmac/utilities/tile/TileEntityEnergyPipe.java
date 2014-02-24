@@ -78,14 +78,14 @@ public class TileEntityEnergyPipe extends TileEntityUtilities implements IFluidH
     @Override
     public void onBlockDestroyedByPlayer(World world, int x, int y, int z, int par5) {
         if (pipeBrain != null)
-            pipeBrain.reformPipeNetwork();
+            TileEntityEnergyPipeBrain.reformPipeNetwork();
     }
 
     @Override
     public void onNeighborBlockChange() {
         super.onNeighborBlockChange();
         if (pipeBrain != null)
-            pipeBrain.reformPipeNetwork();
+            TileEntityEnergyPipeBrain.reformPipeNetwork();
     }
 
     public static void setBrain(TileEntityEnergyPipeBrain brain) {
@@ -142,8 +142,10 @@ public class TileEntityEnergyPipe extends TileEntityUtilities implements IFluidH
     public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
         if (hasBrain()) {
             if (doFill) {
-                int oldAmount = getBrain().internalFluidBuffer.amount;
-                getBrain().internalFluidBuffer = new FluidStack(ModFluids.fluidEnergy, oldAmount + resource.amount);
+                getBrain();
+                int oldAmount = TileEntityEnergyPipeBrain.internalFluidBuffer.amount;
+                getBrain();
+                TileEntityEnergyPipeBrain.internalFluidBuffer = new FluidStack(ModFluids.fluidEnergy, oldAmount + resource.amount);
             }
             return resource.amount;
         }

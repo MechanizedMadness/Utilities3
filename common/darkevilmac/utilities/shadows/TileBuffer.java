@@ -1,10 +1,10 @@
 package darkevilmac.utilities.shadows;
 
-import buildcraft.api.core.SafeTimeTracker;
 import net.minecraft.block.Block;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+import buildcraft.api.core.SafeTimeTracker;
 
 public final class TileBuffer {
 

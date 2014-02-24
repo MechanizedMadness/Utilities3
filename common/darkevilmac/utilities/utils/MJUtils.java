@@ -29,26 +29,18 @@ public class MJUtils {
                         PowerReceiver tileReciever = tileReceptor.getPowerReceiver(side.getOpposite());
 
                         if (powerHandler.getEnergyStored() >= tileReciever.powerRequest()) {
-                            tileReciever.receiveEnergy(Type.PIPE,
-                                    powerHandler.useEnergy(tileReciever.powerRequest(), tileReciever.powerRequest(), true),
-                                    side.getOpposite());
+                            tileReciever.receiveEnergy(Type.PIPE, powerHandler.useEnergy(tileReciever.powerRequest(), tileReciever.powerRequest(), true), side.getOpposite());
                         } else if (powerHandler.getEnergyStored() > 0) {
-                            tileReciever.receiveEnergy(Type.PIPE,
-                                    powerHandler.useEnergy(powerHandler.getEnergyStored(), powerHandler.getEnergyStored(), true),
-                                    side.getOpposite());
+                            tileReciever.receiveEnergy(Type.PIPE, powerHandler.useEnergy(powerHandler.getEnergyStored(), powerHandler.getEnergyStored(), true), side.getOpposite());
                         }
                     } else if (((TileEntityEnergyLinkBase) tile).getTileType() != linkType) {
                         IPowerReceptor tileReceptor = ((IPowerReceptor) tile);
                         PowerReceiver tileReciever = tileReceptor.getPowerReceiver(side.getOpposite());
 
                         if (powerHandler.getEnergyStored() >= tileReciever.powerRequest()) {
-                            tileReciever.receiveEnergy(Type.PIPE,
-                                    powerHandler.useEnergy(tileReciever.powerRequest(), tileReciever.powerRequest(), true),
-                                    side.getOpposite());
+                            tileReciever.receiveEnergy(Type.PIPE, powerHandler.useEnergy(tileReciever.powerRequest(), tileReciever.powerRequest(), true), side.getOpposite());
                         } else if (powerHandler.getEnergyStored() > 0) {
-                            tileReciever.receiveEnergy(Type.PIPE,
-                                    powerHandler.useEnergy(powerHandler.getEnergyStored(), powerHandler.getEnergyStored(), true),
-                                    side.getOpposite());
+                            tileReciever.receiveEnergy(Type.PIPE, powerHandler.useEnergy(powerHandler.getEnergyStored(), powerHandler.getEnergyStored(), true), side.getOpposite());
                         }
                     }
                 }

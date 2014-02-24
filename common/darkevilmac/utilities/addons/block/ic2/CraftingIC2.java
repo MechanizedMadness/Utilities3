@@ -14,8 +14,8 @@ public class CraftingIC2 {
 
     public static void init() {
 
-        GameRegistry.addRecipe(ic2LinkStack, "rbr", "iqi", "brb", 'r', ModCrafting.redstoneStack, 'b', copperStack, 'i',
-                ModCrafting.ironBlockStack, 'q', ModCrafting.quartzBlockStack);
+        GameRegistry.addRecipe(ic2LinkStack, "rbr", "iqi", "brb", 'r', ModCrafting.redstoneStack, 'b', copperStack, 'i', ModCrafting.ironBlockStack, 'q',
+                ModCrafting.quartzBlockStack);
 
     }
 

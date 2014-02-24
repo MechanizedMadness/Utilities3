@@ -10,6 +10,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import darkevilmac.utilities.lib.Strings;
 
 public class FluidEnergyBlock extends BlockFluidClassic {
+
     public FluidEnergyBlock() {
         super(ModFluids.fluidEnergy, Material.water);
         setBlockName(Strings.FLUID_ENERGY_BLOCKNAME);
@@ -19,7 +20,7 @@ public class FluidEnergyBlock extends BlockFluidClassic {
     @SideOnly(Side.CLIENT)
     public IIcon getIcon(int side, int meta) {
         return ((Block) Block.blockRegistry.getObject("flowing_water")).getIcon(side, meta);
-        
+
     }
 
     @Override

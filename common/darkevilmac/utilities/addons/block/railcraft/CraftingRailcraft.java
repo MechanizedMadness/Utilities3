@@ -10,8 +10,8 @@ public class CraftingRailcraft {
 
     public static void init() {
 
-        GameRegistry.addRecipe(steamLinkStack, "ibi", "rqr", "ini", 'i', ModCrafting.ironStack, 'b', ModCrafting.ironBlockStack, 'r',
-                ModCrafting.redstoneStack, 'q', ModCrafting.quartzStack, 'n', ModCrafting.netherrackStack);
+        GameRegistry.addRecipe(steamLinkStack, "ibi", "rqr", "ini", 'i', ModCrafting.ironStack, 'b', ModCrafting.ironBlockStack, 'r', ModCrafting.redstoneStack, 'q',
+                ModCrafting.quartzStack, 'n', ModCrafting.netherrackStack);
 
     }
 

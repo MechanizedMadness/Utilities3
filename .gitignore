@@ -1,10 +1,12 @@
 /build.gradle
-/.gradle
 /.settings
+/.gradle
 /gradle
-/api
-/libs
 /build
 /bin
-/gradlew
-/gradle.bat
+/eclipse
+/.classpath
+/.project
+/libs
+/api
+/options.txt

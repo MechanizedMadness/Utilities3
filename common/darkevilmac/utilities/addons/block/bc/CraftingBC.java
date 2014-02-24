@@ -13,8 +13,8 @@ public class CraftingBC {
 
     public static void init() {
 
-        GameRegistry.addRecipe(bcLinkStack, "zrz", "iqi", "zrz", 'z', ModCrafting.quartzStack, 'r', redstoneEngineStack, 'i',
-                ModCrafting.ironBlockStack, 'q', ModCrafting.quartzBlockStack);
+        GameRegistry.addRecipe(bcLinkStack, "zrz", "iqi", "zrz", 'z', ModCrafting.quartzStack, 'r', redstoneEngineStack, 'i', ModCrafting.ironBlockStack, 'q',
+                ModCrafting.quartzBlockStack);
 
     }
 

@@ -19,8 +19,7 @@ import darkevilmac.utilities.shadows.TileBuffer;
 import darkevilmac.utilities.tile.base.TileEntityEnergyLinkBase;
 import darkevilmac.utilities.utils.MJUtils;
 
-public class TileEntityEnergyLinkBC extends TileEntityEnergyLinkBase implements IPowerEmitter, IPowerReceptor, IFluidHandler,
-        IPipeConnection {
+public class TileEntityEnergyLinkBC extends TileEntityEnergyLinkBase implements IPowerEmitter, IPowerReceptor, IFluidHandler, IPipeConnection {
 
     private PowerHandler powerHandler;
     private ForgeDirection receptorDir;
@@ -125,8 +124,7 @@ public class TileEntityEnergyLinkBC extends TileEntityEnergyLinkBase implements 
         if (world != null) {
             if (world.getTileEntity(xCoord, yCoord + 1, zCoord) != null) {
                 if (world.getTileEntity(xCoord, yCoord + 1, zCoord) instanceof IPowerReceptor) {
-                    if (((IPowerReceptor) world.getTileEntity(xCoord, yCoord + 1, zCoord))
-                            .getPowerReceiver(ForgeDirection.UP.getOpposite()) != null) {
+                    if (((IPowerReceptor) world.getTileEntity(xCoord, yCoord + 1, zCoord)).getPowerReceiver(ForgeDirection.UP.getOpposite()) != null) {
                         receptorDir = ForgeDirection.UP;
                         tile = world.getTileEntity(xCoord, yCoord + 1, zCoord);
                         receptor = (IPowerReceptor) tile;
@@ -136,8 +134,7 @@ public class TileEntityEnergyLinkBC extends TileEntityEnergyLinkBase implements 
             }
             if (world.getTileEntity(xCoord, yCoord - 1, zCoord) != null) {
                 if (world.getTileEntity(xCoord, yCoord - 1, zCoord) instanceof IPowerReceptor) {
-                    if (((IPowerReceptor) world.getTileEntity(xCoord, yCoord - 1, zCoord)).getPowerReceiver(ForgeDirection.DOWN
-                            .getOpposite()) != null) {
+                    if (((IPowerReceptor) world.getTileEntity(xCoord, yCoord - 1, zCoord)).getPowerReceiver(ForgeDirection.DOWN.getOpposite()) != null) {
                         receptorDir = ForgeDirection.DOWN;
                         tile = world.getTileEntity(xCoord, yCoord - 1, zCoord);
                         receptor = (IPowerReceptor) tile;
@@ -147,8 +144,7 @@ public class TileEntityEnergyLinkBC extends TileEntityEnergyLinkBase implements 
             }
             if (world.getTileEntity(xCoord + 1, yCoord, zCoord) != null) {
                 if (world.getTileEntity(xCoord + 1, yCoord, zCoord) instanceof IPowerReceptor) {
-                    if (((IPowerReceptor) world.getTileEntity(xCoord + 1, yCoord, zCoord)).getPowerReceiver(ForgeDirection.EAST
-                            .getOpposite()) != null) {
+                    if (((IPowerReceptor) world.getTileEntity(xCoord + 1, yCoord, zCoord)).getPowerReceiver(ForgeDirection.EAST.getOpposite()) != null) {
                         receptorDir = ForgeDirection.EAST;
                         tile = world.getTileEntity(xCoord + 1, yCoord, zCoord);
                         receptor = (IPowerReceptor) tile;
@@ -158,8 +154,7 @@ public class TileEntityEnergyLinkBC extends TileEntityEnergyLinkBase implements 
             }
             if (world.getTileEntity(xCoord - 1, yCoord, zCoord) != null) {
                 if (world.getTileEntity(xCoord - 1, yCoord, zCoord) instanceof IPowerReceptor) {
-                    if (((IPowerReceptor) world.getTileEntity(xCoord - 1, yCoord, zCoord)).getPowerReceiver(ForgeDirection.WEST
-                            .getOpposite()) != null) {
+                    if (((IPowerReceptor) world.getTileEntity(xCoord - 1, yCoord, zCoord)).getPowerReceiver(ForgeDirection.WEST.getOpposite()) != null) {
                         receptorDir = ForgeDirection.WEST;
                         tile = world.getTileEntity(xCoord - 1, yCoord, zCoord);
                         receptor = (IPowerReceptor) tile;
@@ -169,8 +164,7 @@ public class TileEntityEnergyLinkBC extends TileEntityEnergyLinkBase implements 
             }
             if (world.getTileEntity(xCoord, yCoord, zCoord + 1) != null) {
                 if (world.getTileEntity(xCoord, yCoord, zCoord + 1) instanceof IPowerReceptor) {
-                    if (((IPowerReceptor) world.getTileEntity(xCoord, yCoord, zCoord + 1)).getPowerReceiver(ForgeDirection.SOUTH
-                            .getOpposite()) != null) {
+                    if (((IPowerReceptor) world.getTileEntity(xCoord, yCoord, zCoord + 1)).getPowerReceiver(ForgeDirection.SOUTH.getOpposite()) != null) {
                         receptorDir = ForgeDirection.SOUTH;
                         tile = world.getTileEntity(xCoord, yCoord, zCoord + 1);
                         receptor = (IPowerReceptor) tile;
@@ -180,8 +174,7 @@ public class TileEntityEnergyLinkBC extends TileEntityEnergyLinkBase implements 
             }
             if (world.getTileEntity(xCoord, yCoord, zCoord - 1) != null) {
                 if (world.getTileEntity(xCoord, yCoord, zCoord - 1) instanceof IPowerReceptor) {
-                    if (((IPowerReceptor) world.getTileEntity(xCoord, yCoord, zCoord - 1)).getPowerReceiver(ForgeDirection.NORTH
-                            .getOpposite()) != null) {
+                    if (((IPowerReceptor) world.getTileEntity(xCoord, yCoord, zCoord - 1)).getPowerReceiver(ForgeDirection.NORTH.getOpposite()) != null) {
                         receptorDir = ForgeDirection.NORTH;
                         tile = world.getTileEntity(xCoord, yCoord, zCoord - 1);
                         receptor = (IPowerReceptor) tile;

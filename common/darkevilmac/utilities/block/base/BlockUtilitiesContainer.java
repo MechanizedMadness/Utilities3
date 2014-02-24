@@ -15,8 +15,17 @@ import darkevilmac.utilities.tile.base.TileEntityUtilities;
 
 public class BlockUtilitiesContainer extends BlockContainer {
 
+    @SideOnly(Side.CLIENT)
+    public IIcon blockTexture;
+
     protected BlockUtilitiesContainer(Material material) {
         super(material);
+    }
+
+    @SideOnly(Side.CLIENT)
+    @Override
+    public IIcon getIcon(int var1, int var2) {
+        return blockTexture;
     }
 
     public TileEntityUtilities getTile(World world, int x, int y, int z) {

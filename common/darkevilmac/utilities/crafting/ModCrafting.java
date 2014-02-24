@@ -40,18 +40,16 @@ public class ModCrafting {
     public static ItemStack telePebbleStack = new ItemStack(ModItems.telePebble);
 
     public static void init() {
-        GameRegistry.addRecipe(ModCrafting.ironHorseArmorStack, "  h", "ici", "lil", 'h', ModCrafting.ironHelmStack, 'l',
-                ModCrafting.ironLegsStack, 'i', ModCrafting.ironStack, 'c', ModCrafting.leatherStack);
-        GameRegistry.addRecipe(ModCrafting.goldHorseArmorStack, "  h", "ici", "lil", 'h', ModCrafting.goldHelmStack, 'l',
-                ModCrafting.goldLegsStack, 'i', ModCrafting.goldStack, 'c', ModCrafting.leatherStack);
-        GameRegistry.addRecipe(ModCrafting.diamondHorseArmorStack, "  h", "ici", "lil", 'h', ModCrafting.diamondHelmStack, 'l',
-                ModCrafting.diamondLegsStack, 'i', ModCrafting.diamondStack, 'c', ModCrafting.leatherStack);
-        GameRegistry.addRecipe(ModCrafting.saddleStack, "lll", "lil", "b b", 'l', ModCrafting.leatherStack, 'i', ModCrafting.ironStack,
-                'b', ModCrafting.ironBlockStack);
+        GameRegistry.addRecipe(ModCrafting.ironHorseArmorStack, "  h", "ici", "lil", 'h', ModCrafting.ironHelmStack, 'l', ModCrafting.ironLegsStack, 'i', ModCrafting.ironStack,
+                'c', ModCrafting.leatherStack);
+        GameRegistry.addRecipe(ModCrafting.goldHorseArmorStack, "  h", "ici", "lil", 'h', ModCrafting.goldHelmStack, 'l', ModCrafting.goldLegsStack, 'i', ModCrafting.goldStack,
+                'c', ModCrafting.leatherStack);
+        GameRegistry.addRecipe(ModCrafting.diamondHorseArmorStack, "  h", "ici", "lil", 'h', ModCrafting.diamondHelmStack, 'l', ModCrafting.diamondLegsStack, 'i',
+                ModCrafting.diamondStack, 'c', ModCrafting.leatherStack);
+        GameRegistry.addRecipe(ModCrafting.saddleStack, "lll", "lil", "b b", 'l', ModCrafting.leatherStack, 'i', ModCrafting.ironStack, 'b', ModCrafting.ironBlockStack);
         GameRegistry.addRecipe(ModCrafting.nameTagStack, "  s", "ps ", "pp ", 'p', ModCrafting.paperStack, 's', ModCrafting.stringStack);
 
-        GameRegistry.addRecipe(ModCrafting.telePebbleStack, "psp", "sls", "psp", 'p', ModCrafting.paperStack, 's', ModCrafting.stoneStack,
-                'l', ModCrafting.lapisStack);
+        GameRegistry.addRecipe(ModCrafting.telePebbleStack, "psp", "sls", "psp", 'p', ModCrafting.paperStack, 's', ModCrafting.stoneStack, 'l', ModCrafting.lapisStack);
     }
 
 }

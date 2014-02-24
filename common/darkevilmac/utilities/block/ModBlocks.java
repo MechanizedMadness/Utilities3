@@ -1,7 +1,6 @@
 package darkevilmac.utilities.block;
 
 import cpw.mods.fml.common.registry.GameRegistry;
-import darkevilmac.utilities.lib.BlockIds;
 import darkevilmac.utilities.lib.Strings;
 import darkevilmac.utilities.tile.TileEntityEnergyPipe;
 import darkevilmac.utilities.tile.TileEntityEnergyPipeBrain;
