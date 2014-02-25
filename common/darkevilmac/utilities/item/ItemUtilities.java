@@ -4,7 +4,7 @@ import net.minecraft.item.Item;
 
 public class ItemUtilities extends Item {
 
-    public ItemUtilities(int id) {
+    public ItemUtilities() {
         super();
     }
 

@@ -29,6 +29,11 @@ public class Strings {
     public static final String PIPELINKER_UNLOCALIZEDNAME = "pipeLinker";
     // }}
 
+    // {{ Misc
+    public static final String DISC_BURNER_BLOCKNAME = "discBurner";
+    public static final String DISC_PLAYER_BLOCKNAME = "discPlayer";
+    // }}
+
     // In Game Names
 
     // {{ World Creation Related
@@ -54,6 +59,11 @@ public class Strings {
     public static final String FLUIDPIPE_INGAMENAME = "Fluid Pipe";
     public static final String MULTIPIPE_INGAMENAME = "Multi Pipe";
     public static final String PIPELINKER_INGAMENAME = "Pipe Linker";
+    // }}
+
+    // {{ Misc
+    public static final String DISC_BURNER_INGAMENAME = "Disc Burner";
+    public static final String DISC_PLAYER_INGAMENAME = "Disc Player";
     // }}
 
 }

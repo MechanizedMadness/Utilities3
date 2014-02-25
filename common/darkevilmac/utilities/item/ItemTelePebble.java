@@ -16,8 +16,8 @@ import darkevilmac.utilities.lib.Strings;
 
 public class ItemTelePebble extends ItemUtilities {
 
-    public ItemTelePebble(int id) {
-        super(id);
+    public ItemTelePebble() {
+        super();
         setCreativeTab(CreativeTabs.tabAllSearch);
         setUnlocalizedName(Strings.TELEPEBBLE_UNLOCALIZEDNAME);
         setHasSubtypes(true);
