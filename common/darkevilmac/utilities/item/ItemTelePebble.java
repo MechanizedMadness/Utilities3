@@ -11,7 +11,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.DimensionManager;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import darkevilmac.utilities.lib.Reference;
 import darkevilmac.utilities.lib.Strings;
 
 public class ItemTelePebble extends ItemUtilities {
@@ -33,8 +32,8 @@ public class ItemTelePebble extends ItemUtilities {
     @SideOnly(Side.CLIENT)
     @Override
     public void registerIcons(IIconRegister iconRegister) {
-        usedIcon = iconRegister.registerIcon(Reference.MOD_TEXTURE_ID + "telePebble");
-        unusedIcon = iconRegister.registerIcon(Reference.MOD_TEXTURE_ID + "telePebbleEmpty");
+        usedIcon = iconRegister.registerIcon("utilities:" + "telePebble");
+        unusedIcon = iconRegister.registerIcon("utilities:" + "telePebbleEmpty");
     }
 
     @SideOnly(Side.CLIENT)
@@ -47,7 +46,6 @@ public class ItemTelePebble extends ItemUtilities {
         }
     }
 
-    @SuppressWarnings({ "unused", "null" })
     @Override
     public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player) {
         if (!stack.hasTagCompound())

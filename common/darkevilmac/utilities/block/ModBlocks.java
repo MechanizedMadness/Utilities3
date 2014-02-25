@@ -15,7 +15,7 @@ public class ModBlocks {
 
     public static void init() {
 
-        GameRegistry.registerTileEntity(TileEntityEnergyPipe.class, "tile" + Strings.ENERGYPIPE_BLOCKNAME);
+        /*GameRegistry.registerTileEntity(TileEntityEnergyPipe.class, "tile" + Strings.ENERGYPIPE_BLOCKNAME);
         GameRegistry.registerTileEntity(TileEntityEnergyPipeBrain.class, "tile" + Strings.ENERGYPIPE_BRAIN_BLOCKNAME);
 
         energyPipeBrain = new BlockEnergyPipeBrain();
@@ -26,7 +26,7 @@ public class ModBlocks {
         GameRegistry.registerBlock(energyPipeBrain, Strings.ENERGYPIPE_BRAIN_BLOCKNAME);
         GameRegistry.registerBlock(energyPipe, Strings.ENERGYPIPE_BLOCKNAME);
         GameRegistry.registerBlock(discBurner, Strings.DISC_BURNER_BLOCKNAME);
-        GameRegistry.registerBlock(discPlayer, Strings.DISC_PLAYER_BLOCKNAME);
+        GameRegistry.registerBlock(discPlayer, Strings.DISC_PLAYER_BLOCKNAME);*/
 
     }
 
