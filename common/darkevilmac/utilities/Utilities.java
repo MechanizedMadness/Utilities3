@@ -35,14 +35,15 @@ public class Utilities {
         UtilitiesConfiguration.init();
         ModItems.init();
         ModBlocks.init();
+        ModFluids.init();
         ModEvents.init();
+        ModAddons.initBlocks();
     }
 
     @EventHandler
     public static void init(FMLInitializationEvent event) {
-        ModFluids.init();
         ModCrafting.init();
-        ModAddons.init();
+        ModAddons.initCrafting();
     }
 
     @EventHandler

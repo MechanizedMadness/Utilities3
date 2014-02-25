@@ -7,25 +7,14 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import darkevilmac.utilities.tile.base.TileEntityUtilities;
 
 public class BlockUtilitiesContainer extends BlockContainer {
 
-    @SideOnly(Side.CLIENT)
-    public IIcon blockTexture;
-
     protected BlockUtilitiesContainer(Material material) {
         super(material);
-    }
-
-    @SideOnly(Side.CLIENT)
-    @Override
-    public IIcon getIcon(int var1, int var2) {
-        return blockTexture;
+        setBlockTextureName("utilities:stub");
     }
 
     public TileEntityUtilities getTile(World world, int x, int y, int z) {

@@ -1,8 +1,9 @@
-package darkevilmac.utilities.addons.block.ic2;
+package darkevilmac.utilities.addons.crafting.ic2;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 import cpw.mods.fml.common.registry.GameRegistry;
+import darkevilmac.utilities.addons.block.ic2.ModBlocksIC2;
 import darkevilmac.utilities.crafting.ModCrafting;
 
 public class CraftingIC2 {
