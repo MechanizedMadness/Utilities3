@@ -5,18 +5,18 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import darkevilmac.utilities.block.base.BlockUtilitiesContainer;
 import darkevilmac.utilities.lib.Strings;
-import darkevilmac.utilities.tile.TileEntityEnergyPipeBrain;
+import darkevilmac.utilities.tile.TileEntityItemNetworkManager;
 
-public class BlockEnergyPipeBrain extends BlockUtilitiesContainer {
+public class BlockItemNetworkManager extends BlockUtilitiesContainer {
 
-    public BlockEnergyPipeBrain() {
+    public BlockItemNetworkManager() {
         super(Material.iron);
-        setBlockName(Strings.ENERGYPIPE_BRAIN_BLOCKNAME);
+        setBlockName(Strings.ITEMNETWORK_MANAGER_BLOCKNAME);
     }
-
+    
     @Override
     public TileEntity createNewTileEntity(World world, int var2) {
-        return new TileEntityEnergyPipeBrain();
+        return new TileEntityItemNetworkManager();
     }
 
 }

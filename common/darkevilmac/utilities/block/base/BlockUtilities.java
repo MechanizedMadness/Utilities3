@@ -30,7 +30,7 @@ public class BlockUtilities extends Block {
     @Override
     public void onNeighborBlockChange(World world, int x, int y, int z, Block block) {
         if (getTile(world, x, y, z) != null)
-            getTile(world, x, y, z).onNeighborBlockChange();
+            getTile(world, x, y, z).onNeighborBlockChange(block);
     }
 
     @Override

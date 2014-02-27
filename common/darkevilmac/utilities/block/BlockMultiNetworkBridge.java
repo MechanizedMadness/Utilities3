@@ -2,18 +2,20 @@ package darkevilmac.utilities.block;
 
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.world.World;
 import darkevilmac.utilities.block.base.BlockUtilitiesContainer;
 import darkevilmac.utilities.lib.Strings;
+import darkevilmac.utilities.tile.TileEntityMultiNetworkBridge;
 
-public class BlockFluidPipe extends BlockUtilitiesContainer {
+public class BlockMultiNetworkBridge extends BlockUtilitiesContainer{
 
-    protected BlockFluidPipe(Material material) {
+    protected BlockMultiNetworkBridge() {
         super(Material.iron);
-        setBlockName(Strings.FLUIDPIPE_BLOCKNAME);
+        setBlockName(Strings.MULTINETWORK_BRIDGE_BLOCKNAME);
     }
-
+    
     @Override
     public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int par6, float par7, float par8, float par9) {
         if (!world.isRemote) {
@@ -30,6 +32,11 @@ public class BlockFluidPipe extends BlockUtilitiesContainer {
             }
         }
         return false;
+    }
+
+    @Override
+    public TileEntity createNewTileEntity(World world, int var2) {
+        return new TileEntityMultiNetworkBridge();
     }
 
 }

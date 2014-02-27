@@ -18,14 +18,14 @@ public class Strings {
     // }}
 
     // {{ Pipe related
-    public static final String ENERGYPIPE_BRAIN_BLOCKNAME = "energyPipeBrain";
-    public static final String ITEMPIPE_BRAIN_BLOCKNAME = "itemPipeBrain";
-    public static final String FLUIDPIPE_BRAIN_BLOCKNAME = "fluidPipeBrain";
-    public static final String MULTIPIPE_BRAIN_BLOCKNAME = "multiPipeBrain";
-    public static final String ENERGYPIPE_BLOCKNAME = "energyPipe";
-    public static final String ITEMPIPE_BLOCKNAME = "itemPipe";
-    public static final String FLUIDPIPE_BLOCKNAME = "fluidPipe";
-    public static final String MULTIPIPE_BLOCKNAME = "multiPipe";
+    public static final String ENERGYNETWORK_BRIDGE_BLOCKNAME = "energyNetworkBridge";
+    public static final String ITEMNETWORK_BRIDGE_BLOCKNAME = "itemNetworkBridge";
+    public static final String FLUIDNETWORK_BRIDGE_BLOCKNAME = "fluidNetworkBridge";
+    public static final String MULTINETWORK_BRIDGE_BLOCKNAME = "multiNetworkBridge";
+    public static final String ENERGYNETWORK_MANAGER_BLOCKNAME = "energyNetworkManager";
+    public static final String ITEMNETWORK_MANAGER_BLOCKNAME = "itemNetworkManager";
+    public static final String FLUIDNETWORK_MANAGER_BLOCKNAME = "fluidNetworkManager";
+    public static final String MULTINETWORK_MANAGER_BLOCKNAME = "multiNetworkManager";
     public static final String PIPELINKER_UNLOCALIZEDNAME = "pipeLinker";
     // }}
 
@@ -50,14 +50,14 @@ public class Strings {
     // }}
 
     // {{ Pipe related
-    public static final String ENERGYPIPE_BRAIN_INGAMENAME = "Energy Pipe Brain";
-    public static final String ITEMPIPE_BRAIN_INGAMENAME = "Item Pipe Brain";
-    public static final String FLUIDPIPE_BRAIN_INGAMENAME = "Fluid Pipe Brain";
-    public static final String MULTIPIPE_BRAIN_INGAMENAME = "Multi Pipe Brain";
-    public static final String ENERGYPIPE_INGAMENAME = "Energy Pipe";
-    public static final String ITEMPIPE_INGAMENAME = "Item Pipe";
-    public static final String FLUIDPIPE_INGAMENAME = "Fluid Pipe";
-    public static final String MULTIPIPE_INGAMENAME = "Multi Pipe";
+    public static final String ENERGYNETWORK_BRIDGE_INGAMENAME = "Energy Network Bridge";
+    public static final String ITEMNETWORK_BRIDGE_INGAMENAME = "Item Network Bridge";
+    public static final String FLUIDNETWORK_BRIDGE_INGAMENAME = "Fluid Network Bridge";
+    public static final String MULTINETWORK_BRIDGE_INGAMENAME = "Multi Network Bridge";
+    public static final String ENERGYNETWORK_MANAGER_INGAMENAME = "Energy Network Manager";
+    public static final String ITEMNETWORK_MANAGER_INGAMENAME = "Item Network Manager";
+    public static final String FLUIDNETWORK_MANAGER_INGAMENAME = "Fluid Network Manager";
+    public static final String MULTINETWORK_MANAGER_INGAMENAME = "Multi Network Manager";
     public static final String PIPELINKER_INGAMENAME = "Pipe Linker";
     // }}
 

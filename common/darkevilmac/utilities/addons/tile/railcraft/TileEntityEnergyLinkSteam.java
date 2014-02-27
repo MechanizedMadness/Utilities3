@@ -1,5 +1,6 @@
 package darkevilmac.utilities.addons.tile.railcraft;
 
+import net.minecraft.block.Block;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
@@ -31,7 +32,8 @@ public class TileEntityEnergyLinkSteam extends TileEntityEnergyLinkBase implemen
     }
 
     @Override
-    public void onNeighborBlockChange() {
+    public void onNeighborBlockChange(Block blockType) {
+        super.onNeighborBlockChange(blockType);
 
     }
 

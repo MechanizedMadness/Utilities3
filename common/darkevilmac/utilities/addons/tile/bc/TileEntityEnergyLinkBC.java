@@ -1,5 +1,6 @@
 package darkevilmac.utilities.addons.tile.bc;
 
+import net.minecraft.block.Block;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
@@ -241,8 +242,8 @@ public class TileEntityEnergyLinkBC extends TileEntityEnergyLinkBase implements 
     // }}
 
     @Override
-    public void onNeighborBlockChange() {
-        super.onNeighborBlockChange();
+    public void onNeighborBlockChange(Block blockType) {
+        super.onNeighborBlockChange(blockType);
         checkReceptor();
     }
 

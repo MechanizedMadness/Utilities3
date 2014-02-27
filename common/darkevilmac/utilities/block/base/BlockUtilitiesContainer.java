@@ -2,6 +2,7 @@ package darkevilmac.utilities.block.base;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
+import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -10,7 +11,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import darkevilmac.utilities.tile.base.TileEntityUtilities;
 
-public class BlockUtilitiesContainer extends BlockContainer {
+public class BlockUtilitiesContainer extends BlockContainer implements ITileEntityProvider{
 
     protected BlockUtilitiesContainer(Material material) {
         super(material);
@@ -29,7 +30,7 @@ public class BlockUtilitiesContainer extends BlockContainer {
     public void onNeighborBlockChange(World world, int x, int y, int z, Block block) {
         super.onNeighborBlockChange(world, x, y, z, block);
         if (getTile(world, x, y, z) != null)
-            getTile(world, x, y, z).onNeighborBlockChange();
+            getTile(world, x, y, z).onNeighborBlockChange(block);
     }
 
     @Override

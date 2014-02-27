@@ -1,5 +1,6 @@
 package darkevilmac.utilities.tile.base;
 
+import net.minecraft.block.Block;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
@@ -154,8 +155,8 @@ public class TileEntityEnergyLinkBase extends TileEntityUtilities implements IFl
     }
 
     @Override
-    public void onNeighborBlockChange() {
-        super.onNeighborBlockChange();
+    public void onNeighborBlockChange(Block blockType) {
+        super.onNeighborBlockChange(blockType);
 
     }
 

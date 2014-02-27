@@ -1,5 +1,6 @@
 package darkevilmac.utilities.tile.base;
 
+import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -60,7 +61,7 @@ public class TileEntityUtilities extends TileEntity {
     /**
      * Notifies the tile of a change of a nearby block.
      */
-    public void onNeighborBlockChange() {
+    public void onNeighborBlockChange(Block changedBlock) {
 
     }
 
