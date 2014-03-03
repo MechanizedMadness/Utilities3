@@ -11,7 +11,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import darkevilmac.utilities.tile.base.TileEntityUtilities;
 
-public class BlockUtilitiesContainer extends BlockContainer implements ITileEntityProvider{
+public class BlockUtilitiesContainer extends BlockContainer implements ITileEntityProvider {
 
     protected BlockUtilitiesContainer(Material material) {
         super(material);

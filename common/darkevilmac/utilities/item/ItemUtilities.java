@@ -6,6 +6,7 @@ public class ItemUtilities extends Item {
 
     public ItemUtilities() {
         super();
+        setTextureName("utilities:stub");
     }
 
 }

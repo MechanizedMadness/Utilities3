@@ -136,7 +136,6 @@ public class TileEntityEnergyLinkBase extends TileEntityUtilities implements IFl
         if (energyTank.getFluidAmount() >= 1) {
             if (maxEnergyPoints >= energyPoints + energyTank.getFluidAmount() * 32) {
                 energyPoints = energyPoints + energyTank.getFluidAmount() * 32;
-                System.out.println("Made " + energyPoints + " Points");
                 energyTank.setFluid(new FluidStack(ModFluids.fluidEnergy, energyTank.getFluidAmount() - energyTank.getFluidAmount()));
             }
         }
@@ -148,7 +147,6 @@ public class TileEntityEnergyLinkBase extends TileEntityUtilities implements IFl
                 while (energyPoints >= 32 && energyTankSize >= energyTank.getFluidAmount() + 1) {
                     energyPoints = energyPoints - 32;
                     energyTank.setFluid(new FluidStack(ModFluids.fluidEnergy, energyTank.getFluidAmount() + 1));
-                    System.out.println("Made " + energyTank.getFluidAmount() + " mb");
                 }
             }
         }
