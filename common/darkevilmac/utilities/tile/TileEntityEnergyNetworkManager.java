@@ -14,6 +14,10 @@ public class TileEntityEnergyNetworkManager extends TileEntityUtilities {
     public FluidStack internalEnergy = new FluidStack(ModFluids.fluidEnergy, 0);
     public int loops = 0;
     public ArrayList<TileEntityEnergyNetworkBridge> energyBridges = new ArrayList<TileEntityEnergyNetworkBridge>();
+    public int[] energyBridgesXCoords;
+    public int[] energyBridgesYCoords;
+    public int[] energyBridgesZCoords;
+    public boolean justReadNBT;
 
     public TileEntityEnergyNetworkManager() {
     }
@@ -21,6 +25,18 @@ public class TileEntityEnergyNetworkManager extends TileEntityUtilities {
     @Override
     public void validate() {
         super.validate();
+
+        if (energyBridges == null)
+            energyBridges = new ArrayList<TileEntityEnergyNetworkBridge>();
+
+        if (!justReadNBT) {
+            energyBridgesXCoords = new int[1];
+            energyBridgesYCoords = new int[1];
+            energyBridgesZCoords = new int[1];
+            // 260 is an impossible coordinate just used so it can be compared
+            // with me being sure the block wasn't set by normal means
+            energyBridgesYCoords[0] = 260;
+        }
 
         loops = 0;
     }
@@ -30,22 +46,62 @@ public class TileEntityEnergyNetworkManager extends TileEntityUtilities {
         super.updateEntity();
 
         if (!world.isRemote) {
-            if (loops == 5) {
-                loops = -1;
-
-                int i = 0;
-                // Removes bridges that don't exist anymore.
-                if (!energyBridges.isEmpty()) {
-                    while (i <= energyBridges.size() - 1) {
-                        if (world.getTileEntity(energyBridges.get(i).xCoord, energyBridges.get(i).yCoord, energyBridges.get(i).zCoord) == null) {
-                            energyBridges.remove(i);
-                        }
+            int zCoordsLength = energyBridgesZCoords.length;
+            if (energyBridges.isEmpty() && zCoordsLength > 0) {
+                if (energyBridgesYCoords[0] == 260) {
+                } else {
+                    int i = 0;
+                    while (i <= zCoordsLength - 1) {
+                        energyBridges.add((TileEntityEnergyNetworkBridge) worldObj.getTileEntity(energyBridgesXCoords[i], energyBridgesYCoords[i], energyBridgesZCoords[i]));
                         i++;
                     }
                 }
-                i = 0;
             }
-            loops++;
+
+            int i = 0;
+            // Removes bridges that don't exist anymore.
+            if (!energyBridges.isEmpty()) {
+                while (i <= energyBridges.size() - 1) {
+                    if (world.getTileEntity(energyBridges.get(i).xCoord, energyBridges.get(i).yCoord, energyBridges.get(i).zCoord) == null) {
+                        energyBridges.remove(i);
+                    }
+                    i++;
+                }
+            }
+            i = 0;
+
+            if (!energyBridges.isEmpty()) {
+                i = 0;
+                while (i <= energyBridges.size() - 1) {
+                    if (energyBridges.get(i).manager != null && energyBridges.get(i).manager != getTile()) {
+                        energyBridges.get(i).setManager((TileEntityEnergyNetworkManager) getTile());
+                    }
+                    i++;
+                }
+            }
+
+            if (!energyBridges.isEmpty()) {
+                i = 0;
+                while (i <= energyBridges.size() - 1) {
+                    TileEntityEnergyNetworkBridge bridge = energyBridges.get(i);
+
+                    if (bridge.getMeta() == 0) {
+                        if (internalEnergy.amount >= bridge.bufferTank.getCapacity()) {
+                            if (bridge.bufferTank.getFluidAmount() < bridge.bufferTank.getCapacity()) {
+                                useEnergy(40 - bridge.bufferTank.getFluidAmount());
+                                bridge.bufferTank.fill(new FluidStack(ModFluids.fluidEnergy, bridge.bufferTank.getCapacity() - bridge.bufferTank.getFluidAmount()), true);
+                            }
+                        }
+                    }
+
+                    if (bridge.getMeta() == 1) {
+                        addEnergy(bridge.bufferTank.getFluidAmount());
+                        bridge.bufferTank.drain(bridge.bufferTank.getFluidAmount(), true);
+                    }
+
+                    i++;
+                }
+            }
         }
     }
 
@@ -54,10 +110,21 @@ public class TileEntityEnergyNetworkManager extends TileEntityUtilities {
         super.writeToNBT(nbt);
 
         if (!energyBridges.isEmpty()) {
+            int[] energyBridgesXCoords = new int[energyBridges.size()];
+            int[] energyBridgesYCoords = new int[energyBridges.size()];
+            int[] energyBridgesZCoords = new int[energyBridges.size()];
+
             int i = 0;
             while (i <= energyBridges.size() - 1) {
+                energyBridgesXCoords[i] = energyBridges.get(i).xCoord;
+                energyBridgesYCoords[i] = energyBridges.get(i).yCoord;
+                energyBridgesZCoords[i] = energyBridges.get(i).zCoord;
                 i++;
             }
+            nbt.setIntArray("energyBridgesXCoords", energyBridgesXCoords);
+            nbt.setIntArray("energyBridgesYCoords", energyBridgesYCoords);
+            nbt.setIntArray("energyBridgesZCoords", energyBridgesZCoords);
+            nbt.setBoolean("hasBridgesInNBT", true);
         }
 
         nbt.setInteger("internalEnergyAmount", internalEnergy.amount);
@@ -66,13 +133,18 @@ public class TileEntityEnergyNetworkManager extends TileEntityUtilities {
     @Override
     public void readFromNBT(NBTTagCompound nbt) {
         super.readFromNBT(nbt);
-
-        if (energyBridges.isEmpty()) {
-            int i = 0;
-            while (i <= energyBridges.size() - 1) {
-                i++;
-            }
+        if (nbt.getBoolean("hasBridgesInNBT")) {
+            energyBridgesXCoords = nbt.getIntArray("energyBridgesXCoords");
+            energyBridgesYCoords = nbt.getIntArray("energyBridgesYCoords");
+            energyBridgesZCoords = nbt.getIntArray("energyBridgesZCoords");
+        } else {
+            energyBridgesXCoords = new int[1];
+            energyBridgesYCoords = new int[1];
+            energyBridgesZCoords = new int[1];
+            energyBridgesYCoords[0] = 260;
         }
+
+        justReadNBT = true;
 
         internalEnergy = new FluidStack(ModFluids.fluidEnergy, nbt.getInteger("internalEnergyAmount"));
     }
@@ -90,7 +162,7 @@ public class TileEntityEnergyNetworkManager extends TileEntityUtilities {
         int i = 0;
         if (!energyBridges.isEmpty()) {
             while (i <= energyBridges.size() - 1) {
-                energyBridges.get(i).manager = null;
+                energyBridges.get(i).clearManager();
             }
         }
     }

@@ -2,25 +2,29 @@ package darkevilmac.utilities.tile;
 
 import net.minecraft.block.Block;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 import darkevilmac.utilities.fluid.ModFluids;
+import darkevilmac.utilities.shadows.FluidUtils;
+import darkevilmac.utilities.shadows.TileBuffer;
 import darkevilmac.utilities.tile.base.TileEntityUtilities;
 
 public class TileEntityEnergyNetworkBridge extends TileEntityUtilities implements IFluidHandler {
 
     public TileEntityEnergyNetworkManager manager;
     public FluidTank bufferTank;
+    protected TileBuffer[] tileBuffer = null;
     public int managerXCoord;
     public int managerYCoord;
     public int managerZCoord;
     public boolean hasManager;
-    public boolean needToSetManager;
 
     public int loops = 0;
 
@@ -30,32 +34,11 @@ public class TileEntityEnergyNetworkBridge extends TileEntityUtilities implement
     @Override
     public void writeToNBT(NBTTagCompound nbt) {
         super.writeToNBT(nbt);
-
-        if (hasManager) {
-            System.out.println("Setting hasManager to true");
-            nbt.setBoolean("hasManager", true);
-            nbt.setInteger("managerXCoord", managerXCoord);
-            nbt.setInteger("managerYCoord", managerYCoord);
-            nbt.setInteger("managerZCoord", managerZCoord);
-        } else {
-            nbt.setBoolean("hasManager", false);
-        }
-
-        bufferTank.writeToNBT(nbt);
     }
 
     @Override
     public void readFromNBT(NBTTagCompound nbt) {
         super.readFromNBT(nbt);
-
-        if (nbt.getBoolean("hasManager")) {
-            hasManager = nbt.getBoolean("hasManager");
-            managerXCoord = nbt.getInteger("managerXCoord");
-            managerYCoord = nbt.getInteger("managerYCoord");
-            managerZCoord = nbt.getInteger("managerZCoord");
-        }
-
-        bufferTank.readFromNBT(nbt);
     }
 
     @Override
@@ -63,50 +46,18 @@ public class TileEntityEnergyNetworkBridge extends TileEntityUtilities implement
         super.validate();
 
         if (bufferTank == null)
-            bufferTank = new FluidTank(ModFluids.fluidEnergy, 0, 60);
+            bufferTank = new FluidTank(ModFluids.fluidEnergy, 0, FluidContainerRegistry.BUCKET_VOLUME / 3);
     }
 
     @Override
     public void updateEntity() {
         super.updateEntity();
 
-        if (manager == null) {
-            if (world.getTileEntity(managerXCoord, managerYCoord, managerZCoord) != null
-                    && world.getTileEntity(managerXCoord, managerYCoord, managerZCoord) instanceof TileEntityEnergyNetworkManager) {
-                manager = (TileEntityEnergyNetworkManager) world.getTileEntity(managerXCoord, managerYCoord, managerZCoord);
-            }
-        }
-
         if (bufferTank == null)
-            bufferTank = new FluidTank(ModFluids.fluidEnergy, 0, 60);
+            bufferTank = new FluidTank(ModFluids.fluidEnergy, 0, FluidContainerRegistry.BUCKET_VOLUME / 3);
 
         if (manager != null) {
-
             checkManager();
-
-            if (manager != null) {
-                if (world.getTileEntity(manager.xCoord, manager.yCoord, manager.zCoord) == null) {
-                    manager = null;
-                    hasManager = false;
-                }
-
-                // Send Fluid to the manager for safekeeping.
-                if (getMeta() == 1) {
-                    manager.addEnergy(bufferTank.getFluidAmount());
-                    bufferTank.drain(bufferTank.getFluidAmount(), true);
-                }
-
-                // Keep the bridge with a little fluid for pushing to others as
-                // needed.
-                if (getMeta() == 0) {
-                    if (manager.internalEnergy.amount >= 40) {
-                        if (bufferTank.getFluidAmount() < 40) {
-                            manager.useEnergy(40 - bufferTank.getFluidAmount());
-                            bufferTank.fill(new FluidStack(ModFluids.fluidEnergy, 40 - bufferTank.getFluidAmount()), true);
-                        }
-                    }
-                }
-            }
         }
     }
 
@@ -122,12 +73,24 @@ public class TileEntityEnergyNetworkBridge extends TileEntityUtilities implement
 
     }
 
-    public void setManager(int managerXCoordToSet, int managerYCoordToSet, int managerZCoordToSet) {
-        managerXCoord = managerXCoordToSet;
-        managerYCoord = managerYCoordToSet;
-        managerZCoord = managerZCoordToSet;
+    protected void pushToConsumers(FluidTank tank) {
+        if (tileBuffer == null)
+            tileBuffer = TileBuffer.makeBuffer(world, xCoord, yCoord, zCoord, false);
+        if (tank.getFluidAmount() > 0)
+            FluidUtils.pushFluidToConsumers(tank, 400, tileBuffer);
+    }
 
-        manager = (TileEntityEnergyNetworkManager) world.getTileEntity(managerXCoord, managerYCoord, managerZCoord);
+    protected TileEntity getTile(ForgeDirection side) {
+        if (tileBuffer == null)
+            tileBuffer = TileBuffer.makeBuffer(world, xCoord, yCoord, zCoord, false);
+        return tileBuffer[side.ordinal()].getTile();
+    }
+
+    public void setManager(TileEntityEnergyNetworkManager managerToSet) {
+        manager = managerToSet;
+        managerXCoord = managerToSet.xCoord;
+        managerYCoord = managerToSet.yCoord;
+        managerZCoord = managerToSet.zCoord;
         hasManager = true;
     }
 
@@ -137,7 +100,8 @@ public class TileEntityEnergyNetworkBridge extends TileEntityUtilities implement
     }
 
     public void checkManager() {
-        if (world.getTileEntity(managerXCoord, managerYCoord, managerZCoord) == null) {
+        if (world.getTileEntity(managerXCoord, managerYCoord, managerZCoord) == null
+                && world.getTileEntity(managerXCoord, managerYCoord, managerZCoord) instanceof TileEntityEnergyNetworkManager) {
             clearManager();
         }
     }
@@ -149,7 +113,7 @@ public class TileEntityEnergyNetworkBridge extends TileEntityUtilities implement
      */
     @Override
     public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
-        if (getMeta() == 1) {
+        if (getMeta() == 1 && resource.getFluid() == ModFluids.fluidEnergy) {
             return bufferTank.fill(resource, doFill);
         }
         return 0;
@@ -157,65 +121,23 @@ public class TileEntityEnergyNetworkBridge extends TileEntityUtilities implement
 
     @Override
     public FluidStack drain(ForgeDirection from, FluidStack resource, boolean doDrain) {
-        if (manager != null) {
-            if (getMeta() == 0) {
-                if (manager.internalEnergy.amount >= resource.amount) {
-                    if (bufferTank.getFluidAmount() >= resource.amount) {
-                        return bufferTank.drain(resource.amount, doDrain);
-                    }
-                    if (bufferTank.getFluidAmount() > 0) {
-                        manager.useEnergy(resource.amount - bufferTank.getFluidAmount());
-                        bufferTank.drain(bufferTank.getFluidAmount(), true);
-                        return new FluidStack(ModFluids.fluidEnergy, resource.amount);
-                    }
-                }
-                if (manager.internalEnergy.amount > 0) {
-                    if (bufferTank.getFluidAmount() >= resource.amount) {
-                        return bufferTank.drain(resource.amount, doDrain);
-                    }
-                    if (bufferTank.getFluidAmount() > 0) {
-                        int amount = bufferTank.getFluidAmount();
-                        bufferTank.drain(amount, true);
-                        return new FluidStack(ModFluids.fluidEnergy, amount);
-                    }
-                }
-            }
+        if (getMeta() == 0 && resource.getFluid() == ModFluids.fluidEnergy) {
+            bufferTank.drain(resource.amount, doDrain);
         }
         return null;
     }
 
     @Override
     public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain) {
-        if (manager != null) {
-            if (getMeta() == 0) {
-                if (manager.internalEnergy.amount >= maxDrain) {
-                    if (bufferTank.getFluidAmount() >= maxDrain) {
-                        return bufferTank.drain(maxDrain, doDrain);
-                    }
-                    if (bufferTank.getFluidAmount() > 0) {
-                        manager.useEnergy(maxDrain - bufferTank.getFluidAmount());
-                        bufferTank.drain(bufferTank.getFluidAmount(), true);
-                        return new FluidStack(ModFluids.fluidEnergy, maxDrain);
-                    }
-                }
-                if (manager.internalEnergy.amount > 0) {
-                    if (bufferTank.getFluidAmount() >= maxDrain) {
-                        return bufferTank.drain(maxDrain, doDrain);
-                    }
-                    if (bufferTank.getFluidAmount() > 0) {
-                        int amount = bufferTank.getFluidAmount();
-                        bufferTank.drain(amount, true);
-                        return new FluidStack(ModFluids.fluidEnergy, amount);
-                    }
-                }
-            }
+        if (getMeta() == 0) {
+            return bufferTank.drain(maxDrain, doDrain);
         }
         return null;
     }
 
     @Override
     public boolean canFill(ForgeDirection from, Fluid fluid) {
-        return getMeta() == 1 && fluid == ModFluids.fluidEnergy && manager != null;
+        return getMeta() == 1 && fluid == ModFluids.fluidEnergy;
     }
 
     @Override

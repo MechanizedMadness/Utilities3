@@ -32,7 +32,11 @@ public class BlockEnergyNetworkBridge extends BlockUtilitiesContainer {
                     if (world.getTileEntity(managerXCoord, managerYCoord, managerZCoord) != null
                             && world.getTileEntity(managerXCoord, managerYCoord, managerZCoord) instanceof TileEntityEnergyNetworkManager) {
                         if (getTile(world, x, y, z) != null && getTile(world, x, y, z) instanceof TileEntityEnergyNetworkBridge) {
-                            ((TileEntityEnergyNetworkBridge) getTile(world, x, y, z)).setManager(managerXCoord, managerYCoord, managerZCoord);
+                            if (!((TileEntityEnergyNetworkManager) world.getTileEntity(managerXCoord, managerYCoord, managerZCoord)).energyBridges
+                                    .contains(((TileEntityEnergyNetworkBridge) world.getTileEntity(x, y, z)))) {
+                                ((TileEntityEnergyNetworkManager) world.getTileEntity(managerXCoord, managerYCoord, managerZCoord)).energyBridges
+                                        .add(((TileEntityEnergyNetworkBridge) world.getTileEntity(x, y, z)));
+                            }
                         }
                     } else {
                         player.getCurrentEquippedItem().setItemDamage(0);

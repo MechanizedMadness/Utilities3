@@ -6,15 +6,17 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
+import darkevilmac.utilities.block.base.BlockUtilities;
+import darkevilmac.utilities.block.base.BlockUtilitiesContainer;
 
 public class TileEntityUtilities extends TileEntity {
 
-    public static String owner;
-    public static World world;
-    public static int worldid;
-    public static int xCoordinate;
-    public static int yCoordinate;
-    public static int zCoordinate;
+    public String owner;
+    public World world;
+    public int worldid;
+    public int xCoordinate;
+    public int yCoordinate;
+    public int zCoordinate;
 
     @Override
     public void validate() {
@@ -44,8 +46,27 @@ public class TileEntityUtilities extends TileEntity {
             nbt.setString("owner", "unknownPlayer");
     }
 
+    /**
+     * @see BlockUtilities
+     * @return BlockUtilities associated with the instance of this tile
+     */
+    public BlockUtilities getBlock() {
+        return (BlockUtilities) world.getBlock(xCoord, yCoord, zCoord);
+    }
+
+    /**
+     * @see BlockUtilitiesContainer
+     * @return BlockUtilitiesContainer associated with the instance of this tile
+     */
+    public BlockUtilitiesContainer getBlockContainer() {
+        return (BlockUtilitiesContainer) world.getBlock(xCoord, yCoord, zCoord);
+    }
+
+    /**
+     * @return TileEntityUtilities associated with the instance of this tile
+     */
     public TileEntityUtilities getTile() {
-        return (TileEntityUtilities) TileEntityUtilities.world.getTileEntity(xCoord, yCoord, zCoord);
+        return (TileEntityUtilities) world.getTileEntity(xCoord, yCoord, zCoord);
     }
 
     /**
