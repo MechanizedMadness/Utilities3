@@ -219,7 +219,8 @@ public class TileEntityFluidNetworkManager extends TileEntityUtilities {
                 return use;
             }
         } else {
-            internalFluids.get(hasFluid(fluid))
+            internalFluids.get(hasFluid(fluid));
         }
+        return 0;
     }
 }
