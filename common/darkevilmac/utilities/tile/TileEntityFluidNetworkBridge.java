@@ -96,14 +96,17 @@ public class TileEntityFluidNetworkBridge extends TileEntityUtilities implements
      */
     @Override
     public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
+        return resource.amount;
     }
 
     @Override
     public FluidStack drain(ForgeDirection from, FluidStack resource, boolean doDrain) {
+        return resource;
     }
 
     @Override
     public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain) {
+        return null;
     }
 
     @Override

@@ -54,7 +54,7 @@ public class TileEntityFluidNetworkManager extends TileEntityUtilities {
                 } else {
                     int i = 0;
                     while (i <= zCoordsLength - 1) {
-                        fluidBridges.add((TileEntityEnergyNetworkBridge) worldObj.getTileEntity(fluidBridgesXCoords[i], fluidBridgesYCoords[i], fluidBridgesZCoords[i]));
+                        //fluidBridges.add((TileEntityEnergyNetworkBridge) worldObj.getTileEntity(fluidBridgesXCoords[i], fluidBridgesYCoords[i], fluidBridgesZCoords[i]));
                         i++;
                     }
                 }
@@ -85,19 +85,17 @@ public class TileEntityFluidNetworkManager extends TileEntityUtilities {
             if (!fluidBridges.isEmpty()) {
                 i = 0;
                 while (i <= fluidBridges.size() - 1) {
-                    TileEntityEnergyNetworkBridge bridge = fluidBridges.get(i);
+                    TileEntityEnergyNetworkBridge bridge = null /*fluidBridges.get(i)*/;
 
                     if (bridge.getMeta() == 0) {
-                        if (internalFluids.amount >= bridge.bufferTank.getCapacity()) {
+                        if (0 >= bridge.bufferTank.getCapacity()) {
                             if (bridge.bufferTank.getFluidAmount() < bridge.bufferTank.getCapacity()) {
-                                useEnergy(40 - bridge.bufferTank.getFluidAmount());
                                 bridge.bufferTank.fill(new FluidStack(ModFluids.fluidEnergy, bridge.bufferTank.getCapacity() - bridge.bufferTank.getFluidAmount()), true);
                             }
                         }
                     }
 
                     if (bridge.getMeta() == 1) {
-                        addEnergy(bridge.bufferTank.getFluidAmount());
                         bridge.bufferTank.drain(bridge.bufferTank.getFluidAmount(), true);
                     }
 
@@ -129,7 +127,6 @@ public class TileEntityFluidNetworkManager extends TileEntityUtilities {
             nbt.setBoolean("hasBridgesInNBT", true);
         }
 
-        nbt.setInteger("internalEnergyAmount", internalFluids.amount);
     }
 
     @Override
@@ -148,7 +145,6 @@ public class TileEntityFluidNetworkManager extends TileEntityUtilities {
 
         justReadNBT = true;
 
-        internalEnergy = new FluidStack(ModFluids.fluidEnergy, nbt.getInteger("internalEnergyAmount"));
     }
 
     @Override
@@ -210,7 +206,7 @@ public class TileEntityFluidNetworkManager extends TileEntityUtilities {
     /**
      * @param use
      * @param fluid
-     * @return amound added
+     * @return amount added
      */
     public int useFluid(int use, Fluid fluid) {
         if (hasFluid(fluid) != -1) {
