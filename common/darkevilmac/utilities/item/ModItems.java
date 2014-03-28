@@ -1,6 +1,7 @@
 package darkevilmac.utilities.item;
 
 import cpw.mods.fml.common.registry.GameRegistry;
+import darkevilmac.utilities.item.base.ItemUtilities;
 import darkevilmac.utilities.lib.Strings;
 
 public class ModItems {

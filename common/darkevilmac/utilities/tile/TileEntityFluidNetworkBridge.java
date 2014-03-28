@@ -1,11 +1,14 @@
 package darkevilmac.utilities.tile;
 
+import java.util.ArrayList;
+
 import net.minecraft.block.Block;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidContainerRegistry;
+import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.FluidTankInfo;
@@ -14,6 +17,8 @@ import darkevilmac.utilities.fluid.ModFluids;
 import darkevilmac.utilities.tile.base.TileEntityUtilities;
 
 public class TileEntityFluidNetworkBridge extends TileEntityUtilities implements IFluidHandler {
+
+    public ArrayList<Fluid> fluidFilters = new ArrayList<Fluid>();
 
     public TileEntityFluidNetworkManager manager;
     public FluidTank bufferTank;
@@ -42,15 +47,23 @@ public class TileEntityFluidNetworkBridge extends TileEntityUtilities implements
         super.validate();
 
         if (bufferTank == null)
-            bufferTank = new FluidTank(ModFluids.fluidEnergy, 0, FluidContainerRegistry.BUCKET_VOLUME / 3);
+            bufferTank = new FluidTank(new FluidStack(FluidRegistry.LAVA, 100), FluidContainerRegistry.BUCKET_VOLUME / 3);
     }
 
     @Override
     public void updateEntity() {
         super.updateEntity();
 
+        if (fluidFilters.isEmpty()) {
+            int i = 0;
+            while (i <= 13) {
+                fluidFilters.add(ModFluids.fluidEmptyFilter);
+                i++;
+            }
+        }
+
         if (bufferTank == null)
-            bufferTank = new FluidTank(ModFluids.fluidEnergy, 0, FluidContainerRegistry.BUCKET_VOLUME / 3);
+            bufferTank = new FluidTank(FluidContainerRegistry.BUCKET_VOLUME / 3);
 
         if (manager != null) {
             checkManager();
@@ -96,17 +109,29 @@ public class TileEntityFluidNetworkBridge extends TileEntityUtilities implements
      */
     @Override
     public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
-        return resource.amount;
+        if (manager != null) {
+            if (doFill)
+                manager.addFluid(resource.amount, resource.getFluid());
+
+            return resource.amount;
+        }
+        return 0;
     }
 
     @Override
     public FluidStack drain(ForgeDirection from, FluidStack resource, boolean doDrain) {
-        return resource;
+        if (manager != null) {
+            if (doDrain)
+                manager.useFluid(resource.amount, resource.getFluid());
+
+            return resource;
+        }
+        return new FluidStack(resource.getFluid(), 0);
     }
 
     @Override
     public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain) {
-        return null;
+        return new FluidStack(FluidRegistry.WATER, 0);
     }
 
     @Override
@@ -123,6 +148,7 @@ public class TileEntityFluidNetworkBridge extends TileEntityUtilities implements
     public FluidTankInfo[] getTankInfo(ForgeDirection from) {
         return new FluidTankInfo[] { bufferTank.getInfo() };
     }
+
     /*
      * End IFluidHandler implementation.
      * 

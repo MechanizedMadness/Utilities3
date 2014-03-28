@@ -12,9 +12,9 @@ import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 import darkevilmac.utilities.fluid.ModFluids;
-import darkevilmac.utilities.shadows.FluidUtils;
 import darkevilmac.utilities.shadows.TileBuffer;
 import darkevilmac.utilities.tile.base.TileEntityUtilities;
+import darkevilmac.utilities.utils.FluidUtils;
 
 public class TileEntityEnergyNetworkBridge extends TileEntityUtilities implements IFluidHandler {
 

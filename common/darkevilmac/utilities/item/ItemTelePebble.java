@@ -1,7 +1,6 @@
 package darkevilmac.utilities.item;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -11,13 +10,13 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.DimensionManager;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import darkevilmac.utilities.item.base.ItemUtilities;
 import darkevilmac.utilities.lib.Strings;
 
 public class ItemTelePebble extends ItemUtilities {
 
     public ItemTelePebble() {
         super();
-        setCreativeTab(CreativeTabs.tabAllSearch);
         setUnlocalizedName(Strings.TELEPEBBLE_UNLOCALIZEDNAME);
         setHasSubtypes(true);
         setMaxDamage(0);

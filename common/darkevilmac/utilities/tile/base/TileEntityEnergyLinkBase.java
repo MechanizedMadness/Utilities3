@@ -15,8 +15,8 @@ import darkevilmac.utilities.addons.tile.bc.TileEntityEnergyLinkBC;
 import darkevilmac.utilities.addons.tile.ic2.TileEntityEnergyLinkIC2;
 import darkevilmac.utilities.addons.tile.railcraft.TileEntityEnergyLinkSteam;
 import darkevilmac.utilities.fluid.ModFluids;
-import darkevilmac.utilities.shadows.FluidUtils;
 import darkevilmac.utilities.shadows.TileBuffer;
+import darkevilmac.utilities.utils.FluidUtils;
 
 public class TileEntityEnergyLinkBase extends TileEntityUtilities implements IFluidHandler {
 

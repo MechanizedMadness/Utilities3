@@ -6,6 +6,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
+import darkevilmac.utilities.Utilities;
 import darkevilmac.utilities.tile.base.TileEntityUtilities;
 
 public class BlockUtilities extends Block {
@@ -13,6 +14,7 @@ public class BlockUtilities extends Block {
     public BlockUtilities(Material material) {
         super(Material.iron);
         setBlockTextureName("utilities:stub");
+        setCreativeTab(Utilities.modTab);
     }
 
     public TileEntityUtilities getTile(World world, int x, int y, int z) {

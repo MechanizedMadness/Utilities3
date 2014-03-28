@@ -1,12 +1,15 @@
 package darkevilmac.utilities.block;
 
+import cpw.mods.fml.common.network.internal.FMLNetworkHandler;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.world.World;
+import darkevilmac.utilities.Utilities;
 import darkevilmac.utilities.block.base.BlockUtilitiesContainer;
 import darkevilmac.utilities.item.ItemPipeLinker;
+import darkevilmac.utilities.lib.GuiIDS;
 import darkevilmac.utilities.lib.Strings;
 import darkevilmac.utilities.tile.TileEntityFluidNetworkBridge;
 import darkevilmac.utilities.tile.TileEntityFluidNetworkManager;
@@ -46,18 +49,22 @@ public class BlockFluidNetworkBridge extends BlockUtilitiesContainer {
                         player.getCurrentEquippedItem().getTagCompound().removeTag("managerZCoord");
                         player.getCurrentEquippedItem().getTagCompound().removeTag("managerType");
                     }
-                }
-            } else {
-                if (world.getBlockMetadata(x, y, z) == 0) {
-                    world.setBlockMetadataWithNotify(x, y, z, 1, 2);
-                    player.addChatComponentMessage(new ChatComponentText("Inputting to network"));
-                    return true;
-                } else if (world.getBlockMetadata(x, y, z) == 1) {
-                    world.setBlockMetadataWithNotify(x, y, z, 0, 2);
-                    player.addChatComponentMessage(new ChatComponentText("Outputting from network"));
-                    return true;
                 } else {
-                    return false;
+                    if (player.isSneaking()) {
+                        if (world.getBlockMetadata(x, y, z) == 0) {
+                            world.setBlockMetadataWithNotify(x, y, z, 1, 2);
+                            player.addChatComponentMessage(new ChatComponentText("Inputting to network"));
+                            return true;
+                        } else if (world.getBlockMetadata(x, y, z) == 1) {
+                            world.setBlockMetadataWithNotify(x, y, z, 0, 2);
+                            player.addChatComponentMessage(new ChatComponentText("Outputting from network"));
+                            return true;
+                        } else {
+                            return false;
+                        }
+                    }else{
+                        FMLNetworkHandler.openGui(player, Utilities.instance, GuiIDS.FLUID_NETWORK_BRIDGE_GUIID, world, x, y, z);
+                    }
                 }
             }
         }

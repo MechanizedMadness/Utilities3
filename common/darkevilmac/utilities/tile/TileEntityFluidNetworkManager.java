@@ -13,12 +13,17 @@ import darkevilmac.utilities.tile.base.TileEntityUtilities;
 
 public class TileEntityFluidNetworkManager extends TileEntityUtilities {
 
-    public ArrayList<FluidStack> internalFluids;
-    public int loops = 0;
+    public ArrayList<FluidStack> internalFluids = new ArrayList<FluidStack>();
     public ArrayList<TileEntityFluidNetworkBridge> fluidBridges = new ArrayList<TileEntityFluidNetworkBridge>();
+
+    public int loops = 0;
+    public String[] internalFluidsNames;
+    public int[] internalFluidsAmounts;
     public int[] fluidBridgesXCoords;
     public int[] fluidBridgesYCoords;
     public int[] fluidBridgesZCoords;
+
+    public boolean shouldReadFluidsFromNBT;
     public boolean justReadNBT;
 
     public TileEntityFluidNetworkManager() {
@@ -30,6 +35,9 @@ public class TileEntityFluidNetworkManager extends TileEntityUtilities {
 
         if (fluidBridges == null)
             fluidBridges = new ArrayList<TileEntityFluidNetworkBridge>();
+
+        if (internalFluids == null)
+            internalFluids = new ArrayList<FluidStack>();
 
         if (!justReadNBT) {
             fluidBridgesXCoords = new int[1];
@@ -48,13 +56,21 @@ public class TileEntityFluidNetworkManager extends TileEntityUtilities {
         super.updateEntity();
 
         if (!world.isRemote) {
+            if (shouldReadFluidsFromNBT) {
+                int i = 0;
+                while (i <= internalFluidsAmounts.length - 1) {
+                    internalFluids.add(new FluidStack(FluidRegistry.getFluid(internalFluidsNames[i]), internalFluidsAmounts[i]));
+                }
+                shouldReadFluidsFromNBT = false;
+            }
+
             int zCoordsLength = fluidBridgesZCoords.length;
             if (fluidBridges.isEmpty() && zCoordsLength > 0) {
                 if (fluidBridgesYCoords[0] == 260) {
                 } else {
                     int i = 0;
                     while (i <= zCoordsLength - 1) {
-                        //fluidBridges.add((TileEntityEnergyNetworkBridge) worldObj.getTileEntity(fluidBridgesXCoords[i], fluidBridgesYCoords[i], fluidBridgesZCoords[i]));
+                        fluidBridges.add((TileEntityFluidNetworkBridge) worldObj.getTileEntity(fluidBridgesXCoords[i], fluidBridgesYCoords[i], fluidBridgesZCoords[i]));
                         i++;
                     }
                 }
@@ -85,7 +101,7 @@ public class TileEntityFluidNetworkManager extends TileEntityUtilities {
             if (!fluidBridges.isEmpty()) {
                 i = 0;
                 while (i <= fluidBridges.size() - 1) {
-                    TileEntityEnergyNetworkBridge bridge = null /*fluidBridges.get(i)*/;
+                    TileEntityFluidNetworkBridge bridge = fluidBridges.get(i);
 
                     if (bridge.getMeta() == 0) {
                         if (0 >= bridge.bufferTank.getCapacity()) {
@@ -127,6 +143,26 @@ public class TileEntityFluidNetworkManager extends TileEntityUtilities {
             nbt.setBoolean("hasBridgesInNBT", true);
         }
 
+        if (!internalFluids.isEmpty()) {
+            String[] internalFluidsNames = new String[internalFluids.size()];
+            int[] internalFluidsAmounts = new int[internalFluids.size()];
+
+            int i = 0;
+            while (i <= internalFluids.size() - 1) {
+                internalFluidsNames[i] = internalFluids.get(i).getFluid().getName();
+                internalFluidsAmounts[i] = internalFluids.get(i).amount;
+                i++;
+            }
+
+            nbt.setIntArray("internalFluidsAmounts", internalFluidsAmounts);
+
+            i = 0;
+            while (i <= internalFluidsNames.length) {
+                nbt.setString("internalFluidsNames" + i, internalFluidsNames[i]);
+                i++;
+            }
+            nbt.setBoolean("hasFluidsInNBT", true);
+        }
     }
 
     @Override
@@ -141,6 +177,19 @@ public class TileEntityFluidNetworkManager extends TileEntityUtilities {
             fluidBridgesYCoords = new int[1];
             fluidBridgesZCoords = new int[1];
             fluidBridgesYCoords[0] = 260;
+        }
+        if (nbt.getBoolean("hasFluidsInNBT")) {
+            shouldReadFluidsFromNBT = true;
+            internalFluidsAmounts = nbt.getIntArray("internalFluidsAmounts");
+            internalFluidsNames = new String[internalFluidsAmounts.length];
+
+            int i = 0;
+            while (i <= internalFluidsAmounts.length - 1) {
+                internalFluidsNames[i] = nbt.getString("internalFluidsNames" + i);
+                i++;
+            }
+        } else {
+            shouldReadFluidsFromNBT = false;
         }
 
         justReadNBT = true;
@@ -191,11 +240,11 @@ public class TileEntityFluidNetworkManager extends TileEntityUtilities {
      * @param fluid
      * @return amount added
      */
-    public int addFluid(int add, int internalFluidIndex, Fluid fluid) {
+    public int addFluid(int add, Fluid fluid) {
         if (hasFluid(fluid) != -1) {
-            int newAmount = internalFluids.get(internalFluidIndex).amount + add;
+            int newAmount = internalFluids.get(hasFluid(fluid)).amount + add;
             Fluid fluidToAdd = FluidRegistry.getFluid(fluid.getName());
-            internalFluids.set(internalFluidIndex, new FluidStack(fluidToAdd, newAmount));
+            internalFluids.set(hasFluid(fluid), new FluidStack(fluidToAdd, newAmount));
             return add;
         } else {
             internalFluids.add(new FluidStack(FluidRegistry.getFluid(fluid.getName()), add));
@@ -210,8 +259,8 @@ public class TileEntityFluidNetworkManager extends TileEntityUtilities {
      */
     public int useFluid(int use, Fluid fluid) {
         if (hasFluid(fluid) != -1) {
-            if(internalFluids.get(hasFluid(fluid)).amount >= use){
-                internalFluids.set(hasFluid(fluid), new FluidStack(fluid,internalFluids.get(hasFluid(fluid)).amount - use));
+            if (internalFluids.get(hasFluid(fluid)).amount >= use) {
+                internalFluids.set(hasFluid(fluid), new FluidStack(fluid, internalFluids.get(hasFluid(fluid)).amount - use));
                 return use;
             }
         } else {

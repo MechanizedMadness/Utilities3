@@ -30,6 +30,8 @@ public class Strings {
     // }}
 
     // {{ Misc
+    public static final String FLUID_EMPTY_FILTER_BLOCKNAME = "fluidEmptyFilter";
+    public static final String FLUID_ANY_FILTER_BLOCKNAME = "fluidAnyFilter";
     public static final String DISC_BURNER_BLOCKNAME = "discBurner";
     public static final String DISC_PLAYER_BLOCKNAME = "discPlayer";
     // }}
@@ -62,6 +64,8 @@ public class Strings {
     // }}
 
     // {{ Misc
+    public static final String FLUID_EMPTY_FILTER_INGAMENAME = "Empty";
+    public static final String FLUID_ANY_FILTER_INGAMENAME = "Any";
     public static final String DISC_BURNER_INGAMENAME = "Disc Burner";
     public static final String DISC_PLAYER_INGAMENAME = "Disc Player";
     // }}
