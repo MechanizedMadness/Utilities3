@@ -11,7 +11,7 @@ public class ContainerFluidNetworkBridge extends Container {
     public TileEntityFluidNetworkBridge tile;
 
     public ContainerFluidNetworkBridge(InventoryPlayer invPlayer, TileEntityFluidNetworkBridge bridge) {
-        this.tile = bridge;
+        tile = bridge;
 
         for (int y = 0; y < 3; y++) {
             for (int x = 0; x < 9; x++) {

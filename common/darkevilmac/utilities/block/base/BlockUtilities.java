@@ -13,7 +13,7 @@ public class BlockUtilities extends Block {
 
     public BlockUtilities(Material material) {
         super(Material.iron);
-        setBlockTextureName("utilities:stub");
+        setBlockTextureName("utilities3:stub");
         setCreativeTab(Utilities.modTab);
     }
 

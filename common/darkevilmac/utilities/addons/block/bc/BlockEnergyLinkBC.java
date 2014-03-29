@@ -11,7 +11,7 @@ public class BlockEnergyLinkBC extends BlockEnergyLinkBase {
     protected BlockEnergyLinkBC() {
         super();
         setBlockName(Strings.BC_LINK_BLOCKNAME);
-        setBlockTextureName("utilities:" + Strings.BC_LINK_BLOCKNAME);
+        setBlockTextureName("utilities3:" + Strings.BC_LINK_BLOCKNAME);
     }
 
     @Override

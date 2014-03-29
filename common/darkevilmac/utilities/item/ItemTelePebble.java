@@ -31,8 +31,8 @@ public class ItemTelePebble extends ItemUtilities {
     @SideOnly(Side.CLIENT)
     @Override
     public void registerIcons(IIconRegister iconRegister) {
-        usedIcon = iconRegister.registerIcon("utilities:" + "telePebble");
-        unusedIcon = iconRegister.registerIcon("utilities:" + "telePebbleEmpty");
+        usedIcon = iconRegister.registerIcon("utilities3:" + "telePebble");
+        unusedIcon = iconRegister.registerIcon("utilities3:" + "telePebbleEmpty");
     }
 
     @SideOnly(Side.CLIENT)

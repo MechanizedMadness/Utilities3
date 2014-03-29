@@ -7,7 +7,7 @@ public class ItemUtilities extends Item {
 
     public ItemUtilities() {
         super();
-        setTextureName("utilities:stub");
+        setTextureName("utilities3:stub");
         setCreativeTab(Utilities.modTab);
     }
 

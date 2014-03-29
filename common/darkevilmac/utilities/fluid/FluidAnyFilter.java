@@ -8,6 +8,7 @@ public class FluidAnyFilter extends Fluid {
 
     public FluidAnyFilter() {
         super(Strings.FLUID_ANY_FILTER_INGAMENAME);
+        setIcons(FluidAnyFilterBlock.stillIcon);
         setLuminosity(1);
         setDensity(1);
         setViscosity(25);

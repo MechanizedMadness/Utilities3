@@ -25,8 +25,8 @@ public class ItemPipeLinker extends ItemUtilities {
     @SideOnly(Side.CLIENT)
     @Override
     public void registerIcons(IIconRegister iconRegister) {
-        linkedIcon = iconRegister.registerIcon("utilities:" + Strings.PIPELINKER_UNLOCALIZEDNAME + "Linked");
-        unlinkedIcon = iconRegister.registerIcon("utilities:" + Strings.PIPELINKER_UNLOCALIZEDNAME + "Unlinked");
+        linkedIcon = iconRegister.registerIcon("utilities3:" + Strings.PIPELINKER_UNLOCALIZEDNAME + "Linked");
+        unlinkedIcon = iconRegister.registerIcon("utilities3:" + Strings.PIPELINKER_UNLOCALIZEDNAME + "Unlinked");
     }
 
     @SideOnly(Side.CLIENT)

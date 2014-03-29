@@ -11,7 +11,7 @@ public class BlockEnergyLinkIC2 extends BlockEnergyLinkBase {
     protected BlockEnergyLinkIC2() {
         super();
         setBlockName(Strings.IC2_LINK_BLOCKNAME);
-        setBlockTextureName("utilities:" + Strings.IC2_LINK_BLOCKNAME);
+        setBlockTextureName("utilities3:" + Strings.IC2_LINK_BLOCKNAME);
     }
 
     @Override

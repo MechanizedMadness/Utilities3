@@ -19,6 +19,7 @@ import darkevilmac.utilities.tile.base.TileEntityUtilities;
 public class TileEntityFluidNetworkBridge extends TileEntityUtilities implements IFluidHandler {
 
     public ArrayList<Fluid> fluidFilters = new ArrayList<Fluid>();
+    public String[] filterNames = new String[14];
 
     public TileEntityFluidNetworkManager manager;
     public FluidTank bufferTank;
@@ -35,24 +36,44 @@ public class TileEntityFluidNetworkBridge extends TileEntityUtilities implements
     @Override
     public void writeToNBT(NBTTagCompound nbt) {
         super.writeToNBT(nbt);
+        int i = 0;
+        while (i <= 13) {
+            if (fluidFilters.get(i) == null) {
+                fluidFilters.set(i, ModFluids.fluidEmptyFilter);
+            }
+            filterNames[i] = fluidFilters.get(i).getName();
+            i++;
+        }
+
+        i = 0;
+        while (i <= 13) {
+            nbt.setString("filterNames" + i, filterNames[i]);
+            i++;
+        }
     }
 
     @Override
     public void readFromNBT(NBTTagCompound nbt) {
         super.readFromNBT(nbt);
+
+        if (nbt.hasKey("filterNames0")) {
+            int i = 0;
+            while (i <= 13) {
+                filterNames[i] = nbt.getString("filterNames" + i);
+                i++;
+            }
+        } else {
+            int i = 0;
+            while (i <= 13) {
+                filterNames[i] = ModFluids.fluidEmptyFilter.getName();
+                i++;
+            }
+        }
     }
 
     @Override
     public void validate() {
         super.validate();
-
-        if (bufferTank == null)
-            bufferTank = new FluidTank(new FluidStack(FluidRegistry.LAVA, 100), FluidContainerRegistry.BUCKET_VOLUME / 3);
-    }
-
-    @Override
-    public void updateEntity() {
-        super.updateEntity();
 
         if (fluidFilters.isEmpty()) {
             int i = 0;
@@ -61,6 +82,29 @@ public class TileEntityFluidNetworkBridge extends TileEntityUtilities implements
                 i++;
             }
         }
+        if (fluidFilters.get(0) == ModFluids.fluidEmptyFilter) {
+            if (filterNames[0] == null) {
+                int i = 0;
+                while (i <= 13) {
+                    fluidFilters.set(i, ModFluids.fluidEmptyFilter);
+                    i++;
+                }
+            } else {
+                int i = 0;
+                while (i <= 13) {
+                    fluidFilters.set(i, FluidRegistry.getFluid(filterNames[i]));
+                    i++;
+                }
+            }
+        }
+
+        if (bufferTank == null)
+            bufferTank = new FluidTank(new FluidStack(FluidRegistry.LAVA, 100), FluidContainerRegistry.BUCKET_VOLUME / 3);
+    }
+
+    @Override
+    public void updateEntity() {
+        super.updateEntity();
 
         if (bufferTank == null)
             bufferTank = new FluidTank(FluidContainerRegistry.BUCKET_VOLUME / 3);
@@ -80,6 +124,14 @@ public class TileEntityFluidNetworkBridge extends TileEntityUtilities implements
     public void onNeighborBlockChange(Block blockType) {
         super.onNeighborBlockChange(blockType);
 
+    }
+
+    public void fixEmptyFilters() {
+        int i = 0;
+        while (i <= 13) {
+            fluidFilters.add(ModFluids.fluidEmptyFilter);
+            i++;
+        }
     }
 
     public void setManager(TileEntityFluidNetworkManager managerToSet) {

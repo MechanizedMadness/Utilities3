@@ -2,18 +2,30 @@ package darkevilmac.utilities.fluid;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.fluids.BlockFluidClassic;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import darkevilmac.utilities.lib.Reference;
 import darkevilmac.utilities.lib.Strings;
 
 public class FluidEnergyBlock extends BlockFluidClassic {
 
+    public static IIcon fluidIcon;
+
     public FluidEnergyBlock() {
         super(ModFluids.fluidEnergy, Material.water);
         setBlockName(Strings.FLUID_ENERGY_BLOCKNAME);
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void registerBlockIcons(IIconRegister iiconRegister) {
+        super.registerBlockIcons(iiconRegister);
+
+        fluidIcon = iiconRegister.registerIcon(Reference.MOD_ID + ":" + Strings.FLUID_ENERGY_BLOCKNAME);
     }
 
     @Override

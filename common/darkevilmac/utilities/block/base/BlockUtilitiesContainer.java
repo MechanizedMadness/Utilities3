@@ -15,7 +15,7 @@ public class BlockUtilitiesContainer extends BlockContainer implements ITileEnti
 
     protected BlockUtilitiesContainer(Material material) {
         super(material);
-        setBlockTextureName("utilities:stub");
+        setBlockTextureName("utilities3:stub");
     }
 
     public TileEntityUtilities getTile(World world, int x, int y, int z) {
