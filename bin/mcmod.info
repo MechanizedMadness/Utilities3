@@ -1,0 +1,16 @@
+[
+{
+  "modid": "utilities3",
+  "name": "Utilities³",
+  "description": "A mod that adds stuff.",
+  "version": "${version}",
+  "mcversion": "${mcversion}",
+  "url": "",
+  "updateUrl": "",
+  "authors": ["Darkevilmac"],
+  "credits": "Darkevilmac and the awesome people behind forge for such an amazing api.",
+  "logoFile": "assets/utilities3/textures/logo/logo.png",
+  "screenshots": [],
+  "dependencies": []
+}
+]

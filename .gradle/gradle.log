@@ -1,0 +1,25 @@
+****************************
+ Powered By MCP:            
+ http://mcp.ocean-labs.de/  
+ Searge, ProfMobius, Fesh0r,
+ R4wk, ZeuX, IngisKahn      
+ MCP Data version : unknown
+****************************
+:afterEclipseImport
+<?xml version="1.0" encoding="UTF-8"?><classpath>
+  <classpathentry kind="src" path="api"/>
+  <classpathentry kind="src" path="common"/>
+  <classpathentry kind="src" path="utilities_resources"/>
+  <classpathentry exported="true" kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+  <classpathentry exported="true" kind="con" path="org.springsource.ide.eclipse.gradle.classpathcontainer">
+    <attributes>
+      <attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="E:/Minecraft_Modding/Source/1.7.X/2/Utilities3/build/natives"/>
+    </attributes>
+  </classpathentry>
+  <classpathentry kind="output" path="bin"/>
+</classpath>
+
+
+BUILD SUCCESSFUL
+
+Total time: 0.867 secs
