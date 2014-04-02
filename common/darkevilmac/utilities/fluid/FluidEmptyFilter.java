@@ -8,6 +8,7 @@ public class FluidEmptyFilter extends Fluid {
 
     public FluidEmptyFilter() {
         super(Strings.FLUID_EMPTY_FILTER_INGAMENAME);
+        setIcons(FluidEmptyFilterBlock.stillIcon);
         setLuminosity(1);
         setDensity(1);
         setViscosity(25);

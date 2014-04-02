@@ -1,34 +1,42 @@
 package darkevilmac.utilities.fluid;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.util.IIcon;
+import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.fluids.BlockFluidClassic;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import darkevilmac.utilities.lib.Reference;
 import darkevilmac.utilities.lib.Strings;
 
-public class FluidEnergyBlock extends BlockFluidUtilities {
+public class FluidEnergyBlock extends BlockFluidClassic {
+
+    public static IIcon fluidIcon;
 
     public FluidEnergyBlock() {
         super(ModFluids.fluidEnergy, Material.water);
         setBlockName(Strings.FLUID_ENERGY_BLOCKNAME);
     }
-    
-    @SideOnly(Side.CLIENT)
-    protected IIcon stillIcon;
-    @SideOnly(Side.CLIENT)
-    protected IIcon flowingIcon;
 
     @Override
-    public IIcon getIcon(int side, int meta) {
-        return (side == 0 || side == 1) ? stillIcon : flowingIcon;
+    @SideOnly(Side.CLIENT)
+    public void registerBlockIcons(IIconRegister iiconRegister) {
+        super.registerBlockIcons(iiconRegister);
+
+        fluidIcon = iiconRegister.registerIcon(Reference.MOD_ID + ":" + Strings.FLUID_ENERGY_BLOCKNAME);
     }
 
-    @SideOnly(Side.CLIENT)
     @Override
-    public void registerBlockIcons(IIconRegister register) {
-        stillIcon = register.registerIcon("utilities3:" + Strings.FLUID_ENERGY_BLOCKNAME + "_still");
-        flowingIcon = register.registerIcon("utilities3:" + Strings.FLUID_ENERGY_BLOCKNAME + "_flow");
+    @SideOnly(Side.CLIENT)
+    public IIcon getIcon(int side, int meta) {
+        return ((Block) Block.blockRegistry.getObject("flowing_water")).getIcon(side, meta);
+
+    }
+
+    @Override
+    public int colorMultiplier(IBlockAccess iblockaccess, int x, int y, int z) {
+        return 0xFF0000;
     }
 }

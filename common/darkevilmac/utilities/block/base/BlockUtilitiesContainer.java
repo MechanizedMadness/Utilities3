@@ -9,7 +9,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
-import darkevilmac.utilities.Utilities;
 import darkevilmac.utilities.tile.base.TileEntityUtilities;
 
 public class BlockUtilitiesContainer extends BlockContainer implements ITileEntityProvider {
@@ -17,7 +16,6 @@ public class BlockUtilitiesContainer extends BlockContainer implements ITileEnti
     protected BlockUtilitiesContainer(Material material) {
         super(material);
         setBlockTextureName("utilities3:stub");
-        setCreativeTab(Utilities.modTab);
     }
 
     public TileEntityUtilities getTile(World world, int x, int y, int z) {
