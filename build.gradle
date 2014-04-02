@@ -17,12 +17,12 @@ buildscript {
 
 apply plugin: 'forge'
 
-version = "1.7.2-A3"
+version = "1.7.2-A3.1"
 group= "darkevilmac.utilities"
 archivesBaseName = "utilities3"
 
 minecraft {
-    version = "1.7.2-10.12.0.1033"
+    version = "1.7.2-10.12.0.1047"
     assetDir = "../../../../Workspace/1.7.X/2_dark/assets"
 }
 
