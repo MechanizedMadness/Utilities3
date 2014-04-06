@@ -13,14 +13,18 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
+import darkevilmac.utilities.Utilities;
 import darkevilmac.utilities.fluid.ModFluids;
+import darkevilmac.utilities.network.packet.FluidFilterReadNBTPacket;
 import darkevilmac.utilities.tile.base.TileEntityUtilities;
 
 public class TileEntityFluidNetworkBridge extends TileEntityUtilities implements IFluidHandler {
 
-    public ArrayList<Fluid> fluidFilters = new ArrayList<Fluid>();
-    public String[] filterNames = new String[14];
+    public ArrayList<Fluid> fluidFilters;
+    public int[] filterIds;
 
+    public boolean readNBT;
+    public boolean sendNBTPacket;
     public TileEntityFluidNetworkManager manager;
     public FluidTank bufferTank;
     public int managerXCoord;
@@ -36,66 +40,53 @@ public class TileEntityFluidNetworkBridge extends TileEntityUtilities implements
     @Override
     public void writeToNBT(NBTTagCompound nbt) {
         super.writeToNBT(nbt);
+
         int i = 0;
         while (i <= 13) {
-            if (fluidFilters.get(i) == null) {
-                fluidFilters.set(i, ModFluids.fluidEmptyFilter);
-            }
-            filterNames[i] = fluidFilters.get(i).getName();
+            filterIds[i] = fluidFilters.get(i).getID();
             i++;
         }
 
-        i = 0;
-        while (i <= 13) {
-            nbt.setString("filterNames" + i, filterNames[i]);
-            i++;
-        }
+        nbt.setIntArray("filterIds", filterIds);
+        nbt.setBoolean("readNBTFilters", true);
     }
 
     @Override
     public void readFromNBT(NBTTagCompound nbt) {
         super.readFromNBT(nbt);
 
-        if (nbt.hasKey("filterNames0")) {
-            int i = 0;
-            while (i <= 13) {
-                filterNames[i] = nbt.getString("filterNames" + i);
-                i++;
-            }
-        } else {
-            int i = 0;
-            while (i <= 13) {
-                filterNames[i] = ModFluids.fluidEmptyFilter.getName();
-                i++;
-            }
+        if (nbt.getBoolean("readNBTFilters")) {
+
+            filterIds = nbt.getIntArray("filterIds");
+
+            nbt.setBoolean("readNBTFilters", false);
         }
+        readNBT = true;
     }
 
     @Override
     public void validate() {
         super.validate();
 
-        if (fluidFilters.isEmpty()) {
-            int i = 0;
-            while (i <= 13) {
-                fluidFilters.add(ModFluids.fluidEmptyFilter);
-                i++;
-            }
-        }
-        if (fluidFilters.get(0) == ModFluids.fluidEmptyFilter) {
-            if (filterNames[0] == null) {
+        filterIds = new int[14];
+        fluidFilters = new ArrayList<Fluid>();
+        if (!world.isRemote) {
+            if (readNBT == true) {
                 int i = 0;
                 while (i <= 13) {
-                    fluidFilters.set(i, ModFluids.fluidEmptyFilter);
+                    fluidFilters.add(FluidRegistry.getFluid(filterIds[i]));
                     i++;
                 }
+                readNBT = false;
             } else {
                 int i = 0;
                 while (i <= 13) {
-                    fluidFilters.set(i, FluidRegistry.getFluid(filterNames[i]));
+                    filterIds[i] = FluidRegistry.getFluidID(ModFluids.fluidEmptyFilter.getName());
+                    fluidFilters.add(FluidRegistry.getFluid(filterIds[i]));
                     i++;
                 }
             }
+            sendNBTPacket = true;
         }
 
         if (bufferTank == null)
@@ -106,18 +97,21 @@ public class TileEntityFluidNetworkBridge extends TileEntityUtilities implements
     public void updateEntity() {
         super.updateEntity();
 
+        if (!world.isRemote && sendNBTPacket) {
+            System.out.println("Sending NBT Packet");
+            Utilities.packetPipeline.sendToAll(new FluidFilterReadNBTPacket(world.provider.dimensionId, xCoord, yCoord, zCoord, fluidFilters.get(0).getID(), fluidFilters.get(1)
+                    .getID(), fluidFilters.get(2).getID(), fluidFilters.get(3).getID(), fluidFilters.get(4).getID(), fluidFilters.get(5).getID(), fluidFilters.get(6).getID(),
+                    fluidFilters.get(7).getID(), fluidFilters.get(8).getID(), fluidFilters.get(9).getID(), fluidFilters.get(10).getID(), fluidFilters.get(11).getID(), fluidFilters
+                            .get(12).getID(), fluidFilters.get(13).getID()));
+            sendNBTPacket = false;
+        }
+
         if (bufferTank == null)
             bufferTank = new FluidTank(FluidContainerRegistry.BUCKET_VOLUME / 3);
 
         if (manager != null) {
             checkManager();
         }
-    }
-
-    @Override
-    public void onBlockDestroyedByPlayer(World world, int x, int y, int z, int par5) {
-        super.onBlockDestroyedByPlayer(world, x, y, z, par5);
-
     }
 
     @Override

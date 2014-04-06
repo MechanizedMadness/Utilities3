@@ -19,6 +19,7 @@ import darkevilmac.utilities.fluid.ModFluids;
 import darkevilmac.utilities.gui.GUIHandler;
 import darkevilmac.utilities.item.ModItems;
 import darkevilmac.utilities.lib.Reference;
+import darkevilmac.utilities.network.PacketPipeline;
 import darkevilmac.utilities.proxy.CommonProxy;
 import darkevilmac.utilities.tabs.CreativeTabsUtilities3;
 
@@ -33,6 +34,8 @@ public class Utilities {
     @SidedProxy(clientSide = "darkevilmac.utilities.proxy.ClientProxy", serverSide = "darkevilmac.utilities.proxy.CommonProxy")
     public static CommonProxy proxy;
 
+    public static final PacketPipeline packetPipeline = new PacketPipeline();
+    
     public static Configuration config;
 
     @EventHandler
@@ -52,10 +55,14 @@ public class Utilities {
     public static void init(FMLInitializationEvent event) {
         ModCrafting.init();
         ModAddons.initCrafting();
+        proxy.registerFluidIcons();
+        packetPipeline.initialise();
+
     }
 
     @EventHandler
     public static void postInit(FMLPostInitializationEvent event) {
+        packetPipeline.postInitialise();
     }
 
 }

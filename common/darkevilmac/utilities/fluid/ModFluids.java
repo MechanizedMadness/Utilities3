@@ -45,19 +45,4 @@ public class ModFluids {
             GameRegistry.registerBlock(ModFluids.blockFluidSteam, Strings.FLUID_STEAM_BLOCKNAME);
         }
     }
-
-    @SubscribeEvent
-    @SideOnly(Side.CLIENT)
-    public void textureHook(TextureStitchEvent.Post event) {
-        if (event.map.getTextureType() == 0) {
-
-            fluidEnergy.setIcons(blockFluidEnergy.getBlockTextureFromSide(1), blockFluidEnergy.getBlockTextureFromSide(2));
-            fluidEmptyFilter.setIcons(blockFluidEmptyFilter.getBlockTextureFromSide(1), blockFluidEmptyFilter.getBlockTextureFromSide(2));
-            fluidAnyFilter.setIcons(blockFluidAnyFilter.getBlockTextureFromSide(1), blockFluidAnyFilter.getBlockTextureFromSide(2));
-
-            if (!Loader.isModLoaded("Railcraft")) {
-                fluidSteam.setIcons(blockFluidSteam.getBlockTextureFromSide(1), blockFluidSteam.getBlockTextureFromSide(2));
-            }
-        }
-    }
 }
