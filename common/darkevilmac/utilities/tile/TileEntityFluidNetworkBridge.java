@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 import net.minecraft.block.Block;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidContainerRegistry;
@@ -98,11 +97,12 @@ public class TileEntityFluidNetworkBridge extends TileEntityUtilities implements
         super.updateEntity();
 
         if (!world.isRemote && sendNBTPacket) {
-            System.out.println("Sending NBT Packet");
-            Utilities.packetPipeline.sendToAll(new FluidFilterReadNBTPacket(world.provider.dimensionId, xCoord, yCoord, zCoord, fluidFilters.get(0).getID(), fluidFilters.get(1)
-                    .getID(), fluidFilters.get(2).getID(), fluidFilters.get(3).getID(), fluidFilters.get(4).getID(), fluidFilters.get(5).getID(), fluidFilters.get(6).getID(),
-                    fluidFilters.get(7).getID(), fluidFilters.get(8).getID(), fluidFilters.get(9).getID(), fluidFilters.get(10).getID(), fluidFilters.get(11).getID(), fluidFilters
-                            .get(12).getID(), fluidFilters.get(13).getID()));
+            int i = 0;
+            while (i <= 13) {
+                Utilities.packetPipeline.sendToAll(new FluidFilterReadNBTPacket(world.provider.dimensionId, xCoord, yCoord, zCoord, fluidFilters.get(i).getID(), i));
+                i++;
+            }
+
             sendNBTPacket = false;
         }
 
@@ -146,6 +146,13 @@ public class TileEntityFluidNetworkBridge extends TileEntityUtilities implements
                 && world.getTileEntity(managerXCoord, managerYCoord, managerZCoord) instanceof TileEntityEnergyNetworkManager) {
             clearManager();
         }
+    }
+
+    public void changeFilter(int fluidID, int fluidIDIndex) {
+        if (world.isRemote)
+            System.out.println("changeFilter called on client");
+
+        fluidFilters.set(fluidIDIndex, FluidRegistry.getFluid(fluidID));
     }
 
     /*

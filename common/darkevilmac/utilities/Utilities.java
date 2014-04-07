@@ -35,7 +35,7 @@ public class Utilities {
     public static CommonProxy proxy;
 
     public static final PacketPipeline packetPipeline = new PacketPipeline();
-    
+
     public static Configuration config;
 
     @EventHandler
@@ -56,7 +56,7 @@ public class Utilities {
         ModCrafting.init();
         ModAddons.initCrafting();
         proxy.registerFluidIcons();
-        packetPipeline.initialise();
+        packetPipeline.initalise();
 
     }
 
