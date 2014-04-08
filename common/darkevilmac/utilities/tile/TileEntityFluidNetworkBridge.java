@@ -1,9 +1,11 @@
 package darkevilmac.utilities.tile;
 
-import java.util.ArrayList;
-
 import net.minecraft.block.Block;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.NetworkManager;
+import net.minecraft.network.Packet;
+import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidContainerRegistry;
@@ -12,20 +14,19 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
-import darkevilmac.utilities.Utilities;
 import darkevilmac.utilities.fluid.ModFluids;
-import darkevilmac.utilities.network.packet.FluidFilterReadNBTPacket;
+import darkevilmac.utilities.shadows.TileBuffer;
 import darkevilmac.utilities.tile.base.TileEntityUtilities;
+import darkevilmac.utilities.utils.FluidUtils;
 
 public class TileEntityFluidNetworkBridge extends TileEntityUtilities implements IFluidHandler {
 
-    public ArrayList<Fluid> fluidFilters;
-    public int[] filterIds;
+    public int[] fluidFilters = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 
-    public boolean readNBT;
-    public boolean sendNBTPacket;
     public TileEntityFluidNetworkManager manager;
     public FluidTank bufferTank;
+    protected TileBuffer[] tileBuffer = null;
+
     public int managerXCoord;
     public int managerYCoord;
     public int managerZCoord;
@@ -40,52 +41,29 @@ public class TileEntityFluidNetworkBridge extends TileEntityUtilities implements
     public void writeToNBT(NBTTagCompound nbt) {
         super.writeToNBT(nbt);
 
-        int i = 0;
-        while (i <= 13) {
-            filterIds[i] = fluidFilters.get(i).getID();
-            i++;
-        }
+        nbt.setIntArray("fluidFilters", fluidFilters);
 
-        nbt.setIntArray("filterIds", filterIds);
-        nbt.setBoolean("readNBTFilters", true);
     }
 
     @Override
     public void readFromNBT(NBTTagCompound nbt) {
         super.readFromNBT(nbt);
 
-        if (nbt.getBoolean("readNBTFilters")) {
+        fluidFilters = nbt.getIntArray("fluidFilters");
 
-            filterIds = nbt.getIntArray("filterIds");
-
-            nbt.setBoolean("readNBTFilters", false);
-        }
-        readNBT = true;
     }
 
     @Override
     public void validate() {
         super.validate();
 
-        filterIds = new int[14];
-        fluidFilters = new ArrayList<Fluid>();
-        if (!world.isRemote) {
-            if (readNBT == true) {
-                int i = 0;
-                while (i <= 13) {
-                    fluidFilters.add(FluidRegistry.getFluid(filterIds[i]));
-                    i++;
-                }
-                readNBT = false;
-            } else {
-                int i = 0;
-                while (i <= 13) {
-                    filterIds[i] = FluidRegistry.getFluidID(ModFluids.fluidEmptyFilter.getName());
-                    fluidFilters.add(FluidRegistry.getFluid(filterIds[i]));
-                    i++;
-                }
+        if (fluidFilters[0] == 0) {
+            int emptyFilterID = ModFluids.fluidEmptyFilter.getID();
+            int i = 0;
+            while (i <= 13) {
+                fluidFilters[i] = emptyFilterID;
+                i++;
             }
-            sendNBTPacket = true;
         }
 
         if (bufferTank == null)
@@ -96,22 +74,33 @@ public class TileEntityFluidNetworkBridge extends TileEntityUtilities implements
     public void updateEntity() {
         super.updateEntity();
 
-        if (!world.isRemote && sendNBTPacket) {
-            int i = 0;
-            while (i <= 13) {
-                Utilities.packetPipeline.sendToAll(new FluidFilterReadNBTPacket(world.provider.dimensionId, xCoord, yCoord, zCoord, fluidFilters.get(i).getID(), i));
-                i++;
-            }
-
-            sendNBTPacket = false;
-        }
-
         if (bufferTank == null)
             bufferTank = new FluidTank(FluidContainerRegistry.BUCKET_VOLUME / 3);
 
+        if (tileBuffer == null)
+            tileBuffer = TileBuffer.makeBuffer(world, xCoord, yCoord, zCoord, false);
+
         if (manager != null) {
             checkManager();
+
+            if (getMeta() == 0) {
+                FluidUtils.pushFluidToConsumers(manager, tileBuffer, fluidFilters, useFilters());
+            } else {
+
+            }
         }
+    }
+
+    @Override
+    public Packet getDescriptionPacket() {
+        NBTTagCompound tag = new NBTTagCompound();
+        this.writeToNBT(tag);
+        return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 1, tag);
+    }
+
+    @Override
+    public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity packet) {
+        readFromNBT(packet.func_148857_g());
     }
 
     @Override
@@ -120,12 +109,25 @@ public class TileEntityFluidNetworkBridge extends TileEntityUtilities implements
 
     }
 
-    public void fixEmptyFilters() {
+    public boolean useFilters() {
         int i = 0;
         while (i <= 13) {
-            fluidFilters.add(ModFluids.fluidEmptyFilter);
+            if (fluidFilters[i] == ModFluids.fluidAnyFilter.getID()) {
+                return true;
+            }
             i++;
         }
+        return false;
+    }
+
+    protected TileEntity getTile(ForgeDirection side) {
+        if (tileBuffer == null)
+            tileBuffer = TileBuffer.makeBuffer(world, xCoord, yCoord, zCoord, false);
+        return tileBuffer[side.ordinal()].getTile();
+    }
+
+    public void changeFilter(int fluidID, int fluidIDIndex) {
+        fluidFilters[fluidIDIndex] = fluidID;
     }
 
     public void setManager(TileEntityFluidNetworkManager managerToSet) {
@@ -146,13 +148,6 @@ public class TileEntityFluidNetworkBridge extends TileEntityUtilities implements
                 && world.getTileEntity(managerXCoord, managerYCoord, managerZCoord) instanceof TileEntityEnergyNetworkManager) {
             clearManager();
         }
-    }
-
-    public void changeFilter(int fluidID, int fluidIDIndex) {
-        if (world.isRemote)
-            System.out.println("changeFilter called on client");
-
-        fluidFilters.set(fluidIDIndex, FluidRegistry.getFluid(fluidID));
     }
 
     /*

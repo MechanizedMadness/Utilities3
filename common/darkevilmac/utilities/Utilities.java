@@ -19,7 +19,7 @@ import darkevilmac.utilities.fluid.ModFluids;
 import darkevilmac.utilities.gui.GUIHandler;
 import darkevilmac.utilities.item.ModItems;
 import darkevilmac.utilities.lib.Reference;
-import darkevilmac.utilities.network.PacketPipeline;
+import darkevilmac.utilities.network.packet.PacketPipeline;
 import darkevilmac.utilities.proxy.CommonProxy;
 import darkevilmac.utilities.tabs.CreativeTabsUtilities3;
 

@@ -34,10 +34,11 @@ public class BlockEnergyNetworkManager extends BlockUtilitiesContainer {
                     playerItem.getTagCompound().setInteger("managerZCoord", z);
                     playerItem.getTagCompound().setBoolean("hasManager", true);
                     playerItem.getTagCompound().setString("managerType", "energy");
+                    return true;
                 }
             }
         }
-        return true;
+        return false;
     }
 
     @Override

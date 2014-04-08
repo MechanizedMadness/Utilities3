@@ -56,9 +56,26 @@ public class TileEntityEnergyNetworkBridge extends TileEntityUtilities implement
         if (bufferTank == null)
             bufferTank = new FluidTank(ModFluids.fluidEnergy, 0, FluidContainerRegistry.BUCKET_VOLUME / 3);
 
+        if (tileBuffer == null)
+            tileBuffer = TileBuffer.makeBuffer(world, xCoord, yCoord, zCoord, false);
+
         if (manager != null) {
             checkManager();
+
+            if (!world.isRemote) {
+
+                System.out.println("Manager is @" + manager.xCoord + " " + manager.yCoord + " " + manager.zCoord);
+
+                System.out.println("I have " + bufferTank.getFluidAmount());
+
+                if (getMeta() == 0) {
+                    FluidUtils.pushFluidToConsumers(manager, tileBuffer);
+                } else {
+                    FluidUtils.pullFluidFromConsumers(manager, tileBuffer);
+                }
+            }
         }
+
     }
 
     @Override
@@ -71,13 +88,6 @@ public class TileEntityEnergyNetworkBridge extends TileEntityUtilities implement
     public void onNeighborBlockChange(Block blockType) {
         super.onNeighborBlockChange(blockType);
 
-    }
-
-    protected void pushToConsumers(FluidTank tank) {
-        if (tileBuffer == null)
-            tileBuffer = TileBuffer.makeBuffer(world, xCoord, yCoord, zCoord, false);
-        if (tank.getFluidAmount() > 0)
-            FluidUtils.pushFluidToConsumers(tank, 400, tileBuffer);
     }
 
     protected TileEntity getTile(ForgeDirection side) {

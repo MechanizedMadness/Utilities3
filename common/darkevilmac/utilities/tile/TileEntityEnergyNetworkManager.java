@@ -85,18 +85,25 @@ public class TileEntityEnergyNetworkManager extends TileEntityUtilities {
                 while (i <= energyBridges.size() - 1) {
                     TileEntityEnergyNetworkBridge bridge = energyBridges.get(i);
 
-                    if (bridge.getMeta() == 0) {
-                        if (internalEnergy.amount >= bridge.bufferTank.getCapacity()) {
-                            if (bridge.bufferTank.getFluidAmount() < bridge.bufferTank.getCapacity()) {
-                                useEnergy(40 - bridge.bufferTank.getFluidAmount());
-                                bridge.bufferTank.fill(new FluidStack(ModFluids.fluidEnergy, bridge.bufferTank.getCapacity() - bridge.bufferTank.getFluidAmount()), true);
+                    if (bridge.manager.xCoord == xCoord && bridge.manager.yCoord == yCoord && bridge.manager.zCoord == zCoord
+                            && bridge.world.provider.dimensionId == world.provider.dimensionId) {
+
+                        if (bridge.getMeta() == 0) {
+                            if (internalEnergy.amount >= bridge.bufferTank.getCapacity()) {
+                                if (bridge.bufferTank.getFluidAmount() < bridge.bufferTank.getCapacity()) {
+                                    useEnergy(40 - bridge.bufferTank.getFluidAmount());
+                                    bridge.bufferTank.fill(new FluidStack(ModFluids.fluidEnergy, bridge.bufferTank.getCapacity() - bridge.bufferTank.getFluidAmount()), true);
+                                }
                             }
                         }
-                    }
 
-                    if (bridge.getMeta() == 1) {
-                        addEnergy(bridge.bufferTank.getFluidAmount());
-                        bridge.bufferTank.drain(bridge.bufferTank.getFluidAmount(), true);
+                        if (bridge.getMeta() == 1) {
+                            addEnergy(bridge.bufferTank.getFluidAmount());
+                            bridge.bufferTank.drain(bridge.bufferTank.getFluidAmount(), true);
+                        }
+                    } else {
+                        energyBridges.remove(i);
+                        i--;
                     }
 
                     i++;
