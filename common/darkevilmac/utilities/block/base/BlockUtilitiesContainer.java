@@ -2,7 +2,6 @@ package darkevilmac.utilities.block.base;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
-import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -12,7 +11,7 @@ import net.minecraft.world.World;
 import darkevilmac.utilities.Utilities;
 import darkevilmac.utilities.tile.base.TileEntityUtilities;
 
-public class BlockUtilitiesContainer extends BlockContainer implements ITileEntityProvider {
+public class BlockUtilitiesContainer extends BlockContainer {
 
     protected BlockUtilitiesContainer(Material material) {
         super(material);
@@ -21,8 +20,12 @@ public class BlockUtilitiesContainer extends BlockContainer implements ITileEnti
     }
 
     public TileEntityUtilities getTile(World world, int x, int y, int z) {
-        if (world.getTileEntity(x, y, z) instanceof TileEntityUtilities) {
-            return (TileEntityUtilities) world.getTileEntity(x, y, z);
+        if (world.getTileEntity(x, y, z) != null) {
+            if (world.getTileEntity(x, y, z) instanceof TileEntityUtilities) {
+                return (TileEntityUtilities) world.getTileEntity(x, y, z);
+            } else {
+                return null;
+            }
         } else {
             return null;
         }
@@ -36,11 +39,10 @@ public class BlockUtilitiesContainer extends BlockContainer implements ITileEnti
     }
 
     @Override
-    public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entity, ItemStack itemstack) {
+    public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entity, ItemStack par6ItemStack) {
+        super.onBlockPlacedBy(world, x, y, z, entity, par6ItemStack);
         if (!world.isRemote) {
-            if (world.getTileEntity(x, y, z) instanceof TileEntityUtilities) {
-                TileEntityUtilities tile = getTile(world, x, y, z);
-                tile.onBlockPlacedBy(world, x, y, z, entity, itemstack);
+            if (getTile(world, x, y, z) != null && getTile(world, x, y, z) instanceof TileEntityUtilities) {
                 if (entity instanceof EntityPlayer) {
                     EntityPlayer entityPlayer = (EntityPlayer) entity;
                     getTile(world, x, y, z).setOwner(entityPlayer.getDisplayName());
@@ -50,7 +52,17 @@ public class BlockUtilitiesContainer extends BlockContainer implements ITileEnti
     }
 
     @Override
-    public TileEntity createNewTileEntity(World world, int var2) {
+    public void onBlockDestroyedByPlayer(World world, int x, int y, int z, int par5) {
+        super.onBlockDestroyedByPlayer(world, x, y, z, par5);
+        if (!world.isRemote) {
+            if (getTile(world, x, y, z) != null && getTile(world, x, y, z) instanceof TileEntityUtilities) {
+                getTile(world, x, y, z).onBlockDestroyedByPlayer(world, x, y, z, par5);
+            }
+        }
+    }
+
+    @Override
+    public TileEntity createNewTileEntity(World var1, int var2) {
         return null;
     }
 

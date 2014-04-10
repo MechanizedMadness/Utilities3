@@ -15,7 +15,6 @@ public class TileEntityFluidNetworkManager extends TileEntityUtilities {
     public ArrayList<FluidStack> internalFluids = new ArrayList<FluidStack>();
     public ArrayList<TileEntityFluidNetworkBridge> fluidBridges = new ArrayList<TileEntityFluidNetworkBridge>();
 
-    public int loops = 0;
     public int[] internalFluidsIDS;
     public int[] internalFluidsAmounts;
     public int[] fluidBridgesXCoords;
@@ -113,8 +112,6 @@ public class TileEntityFluidNetworkManager extends TileEntityUtilities {
             // with me being sure the block wasn't set by normal means
             fluidBridgesYCoords[0] = 260;
         }
-
-        loops = 0;
     }
 
     @Override

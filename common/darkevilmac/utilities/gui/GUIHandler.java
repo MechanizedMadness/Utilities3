@@ -6,6 +6,7 @@ import net.minecraft.world.World;
 import cpw.mods.fml.common.network.IGuiHandler;
 import darkevilmac.utilities.lib.GuiIDS;
 import darkevilmac.utilities.tile.TileEntityFluidNetworkBridge;
+import darkevilmac.utilities.tile.TileEntityItemNetworkBridge;
 
 public class GUIHandler implements IGuiHandler {
 
@@ -17,6 +18,13 @@ public class GUIHandler implements IGuiHandler {
             case GuiIDS.FLUID_NETWORK_BRIDGE_GUIID:
                 if (tile != null && tile instanceof TileEntityFluidNetworkBridge) {
                     return new ContainerFluidNetworkBridge(player.inventory, (TileEntityFluidNetworkBridge) tile);
+                } else {
+                    return null;
+                }
+
+            case GuiIDS.ITEM_NETWORK_BRIDGE_GUIID:
+                if (tile != null && tile instanceof TileEntityItemNetworkBridge) {
+                    return new ContainerItemNetworkBridge(player.inventory, (TileEntityItemNetworkBridge) tile);
                 } else {
                     return null;
                 }
@@ -34,6 +42,13 @@ public class GUIHandler implements IGuiHandler {
             case GuiIDS.FLUID_NETWORK_BRIDGE_GUIID:
                 if (tile != null && tile instanceof TileEntityFluidNetworkBridge) {
                     return new GuiFluidNetworkBridge(player.inventory, (TileEntityFluidNetworkBridge) tile);
+                } else {
+                    return null;
+                }
+
+            case GuiIDS.ITEM_NETWORK_BRIDGE_GUIID:
+                if (tile != null && tile instanceof TileEntityItemNetworkBridge) {
+                    return new GuiItemNetworkBridge(player.inventory, (TileEntityItemNetworkBridge) tile);
                 } else {
                     return null;
                 }

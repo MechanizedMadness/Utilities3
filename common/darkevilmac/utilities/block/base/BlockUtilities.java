@@ -31,12 +31,14 @@ public class BlockUtilities extends Block {
 
     @Override
     public void onNeighborBlockChange(World world, int x, int y, int z, Block block) {
+        super.onNeighborBlockChange(world, x, y, z, block);
         if (getTile(world, x, y, z) != null)
             getTile(world, x, y, z).onNeighborBlockChange(block);
     }
 
     @Override
     public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entity, ItemStack par6ItemStack) {
+        super.onBlockPlacedBy(world, x, y, z, entity, par6ItemStack);
         if (!world.isRemote) {
             if (getTile(world, x, y, z) != null && getTile(world, x, y, z) instanceof TileEntityUtilities) {
                 if (entity instanceof EntityPlayer) {
@@ -49,6 +51,7 @@ public class BlockUtilities extends Block {
 
     @Override
     public void onBlockDestroyedByPlayer(World world, int x, int y, int z, int par5) {
+        super.onBlockDestroyedByPlayer(world, x, y, z, par5);
         if (!world.isRemote) {
             if (getTile(world, x, y, z) != null && getTile(world, x, y, z) instanceof TileEntityUtilities) {
                 getTile(world, x, y, z).onBlockDestroyedByPlayer(world, x, y, z, par5);

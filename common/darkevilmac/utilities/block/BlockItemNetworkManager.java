@@ -24,17 +24,21 @@ public class BlockItemNetworkManager extends BlockUtilitiesContainer {
             if (player.getCurrentEquippedItem() != null) {
                 ItemStack playerItem = player.getCurrentEquippedItem();
                 if (playerItem.getItem() instanceof ItemPipeLinker) {
-                    if (playerItem.hasTagCompound())
+                    if (!playerItem.hasTagCompound())
                         playerItem.setTagCompound(new NBTTagCompound());
+
+                    playerItem.setItemDamage(10);
 
                     playerItem.getTagCompound().setInteger("managerXCoord", x);
                     playerItem.getTagCompound().setInteger("managerYCoord", y);
                     playerItem.getTagCompound().setInteger("managerZCoord", z);
+                    playerItem.getTagCompound().setBoolean("hasManager", true);
                     playerItem.getTagCompound().setString("managerType", "item");
+                    return true;
                 }
             }
         }
-        return true;
+        return false;
     }
 
     @Override

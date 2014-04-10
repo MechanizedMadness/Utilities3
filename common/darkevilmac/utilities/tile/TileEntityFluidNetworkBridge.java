@@ -32,8 +32,6 @@ public class TileEntityFluidNetworkBridge extends TileEntityUtilities implements
     public boolean readNBT;
     public boolean hasManager;
 
-    public int loops = 0;
-
     public TileEntityFluidNetworkBridge() {
     }
 
@@ -97,9 +95,9 @@ public class TileEntityFluidNetworkBridge extends TileEntityUtilities implements
         super.updateEntity();
 
         if (!world.isRemote) {
-            
-            if(manager==null){
-                if(readNBT){
+
+            if (manager == null) {
+                if (readNBT) {
                     manager = (TileEntityFluidNetworkManager) world.getTileEntity(managerXCoord, managerYCoord, managerZCoord);
                     readNBT = false;
                 }
@@ -176,8 +174,8 @@ public class TileEntityFluidNetworkBridge extends TileEntityUtilities implements
     }
 
     public void checkManager() {
-        if (world.getTileEntity(managerXCoord, managerYCoord, managerZCoord) == null
-                && world.getTileEntity(managerXCoord, managerYCoord, managerZCoord) instanceof TileEntityEnergyNetworkManager) {
+        if (world.getTileEntity(manager.xCoord, manager.yCoord, manager.zCoord) == null
+                || (world.getTileEntity(managerXCoord, managerYCoord, managerZCoord) != null && world.getTileEntity(manager.xCoord, manager.yCoord, manager.zCoord) instanceof TileEntityFluidNetworkManager == false)) {
             clearManager();
         }
     }

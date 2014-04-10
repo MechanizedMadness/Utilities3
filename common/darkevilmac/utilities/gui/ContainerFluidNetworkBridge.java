@@ -18,6 +18,9 @@ public class ContainerFluidNetworkBridge extends Container {
                 addSlotToContainer(new Slot(invPlayer, 9 + x + y * 9, 8 + x * 18, 84 + y * 18));
             }
         }
+        for (int x = 0; x < 9; x++) {
+            this.addSlotToContainer(new Slot(invPlayer, x, 8 + x * 18, 142));
+        }
 
     }
 

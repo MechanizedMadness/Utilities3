@@ -12,11 +12,11 @@ import darkevilmac.utilities.tile.base.TileEntityUtilities;
 public class TileEntityEnergyNetworkManager extends TileEntityUtilities {
 
     public FluidStack internalEnergy = new FluidStack(ModFluids.fluidEnergy, 0);
-    public int loops = 0;
     public ArrayList<TileEntityEnergyNetworkBridge> energyBridges = new ArrayList<TileEntityEnergyNetworkBridge>();
     public int[] energyBridgesXCoords;
     public int[] energyBridgesYCoords;
     public int[] energyBridgesZCoords;
+
     public boolean justReadNBT;
 
     public TileEntityEnergyNetworkManager() {
@@ -37,8 +37,6 @@ public class TileEntityEnergyNetworkManager extends TileEntityUtilities {
             // with me being sure the block wasn't set by normal means
             energyBridgesYCoords[0] = 260;
         }
-
-        loops = 0;
     }
 
     @Override

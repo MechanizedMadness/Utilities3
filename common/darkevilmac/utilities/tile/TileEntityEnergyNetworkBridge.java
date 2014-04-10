@@ -27,8 +27,6 @@ public class TileEntityEnergyNetworkBridge extends TileEntityUtilities implement
     public boolean readNBT;
     public boolean hasManager;
 
-    public int loops = 0;
-
     public TileEntityEnergyNetworkBridge() {
     }
 
@@ -142,8 +140,8 @@ public class TileEntityEnergyNetworkBridge extends TileEntityUtilities implement
     }
 
     public void checkManager() {
-        if (world.getTileEntity(managerXCoord, managerYCoord, managerZCoord) == null
-                && world.getTileEntity(managerXCoord, managerYCoord, managerZCoord) instanceof TileEntityEnergyNetworkManager) {
+        if (world.getTileEntity(manager.xCoord, manager.yCoord, manager.zCoord) == null
+                || (world.getTileEntity(managerXCoord, managerYCoord, managerZCoord) != null && world.getTileEntity(manager.xCoord, manager.yCoord, manager.zCoord) instanceof TileEntityEnergyNetworkManager == false)) {
             clearManager();
         }
     }
