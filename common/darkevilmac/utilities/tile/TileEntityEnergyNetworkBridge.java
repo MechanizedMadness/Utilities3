@@ -90,12 +90,10 @@ public class TileEntityEnergyNetworkBridge extends TileEntityUtilities implement
                 checkManager();
                 if (manager != null) {
                     if (getMeta() == 0) {
-                        if (bufferTank.getFluidAmount() < bufferTank.getCapacity()) {
-                            if (manager.internalEnergy.amount > 0) {
-                                int accepted = bufferTank.fill(new FluidStack(ModFluids.fluidEnergy, manager.internalEnergy.amount), true);
+                        if (manager.internalEnergy.amount > 0) {
+                            int accepted = bufferTank.fill(new FluidStack(ModFluids.fluidEnergy, manager.internalEnergy.amount), true);
 
-                                manager.useEnergy(accepted);
-                            }
+                            manager.useEnergy(accepted);
                         }
                     } else {
                         manager.addEnergy(bufferTank.getFluidAmount());

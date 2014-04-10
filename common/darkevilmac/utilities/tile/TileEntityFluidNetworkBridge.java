@@ -97,6 +97,13 @@ public class TileEntityFluidNetworkBridge extends TileEntityUtilities implements
         super.updateEntity();
 
         if (!world.isRemote) {
+            
+            if(manager==null){
+                if(readNBT){
+                    manager = (TileEntityFluidNetworkManager) world.getTileEntity(managerXCoord, managerYCoord, managerZCoord);
+                    readNBT = false;
+                }
+            }
 
             if (bufferTank == null)
                 bufferTank = new FluidTank(FluidContainerRegistry.BUCKET_VOLUME / 3);

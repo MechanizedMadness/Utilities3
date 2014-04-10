@@ -169,7 +169,7 @@ public class TileEntityFluidNetworkManager extends TileEntityUtilities {
             }
         }
     }
-
+    
     @Override
     public void onNeighborBlockChange(Block blockType) {
         super.onNeighborBlockChange(blockType);
