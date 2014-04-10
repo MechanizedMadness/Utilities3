@@ -87,7 +87,7 @@ public class TileEntityFluidNetworkBridge extends TileEntityUtilities implements
                 i++;
             }
         }
-        
+
         if (bufferTank == null)
             bufferTank = new FluidTank(new FluidStack(FluidRegistry.LAVA, 100), FluidContainerRegistry.BUCKET_VOLUME / 3);
     }
@@ -219,7 +219,7 @@ public class TileEntityFluidNetworkBridge extends TileEntityUtilities implements
 
     @Override
     public FluidTankInfo[] getTankInfo(ForgeDirection from) {
-        return new FluidTankInfo[] { bufferTank.getInfo() };
+        return new FluidTankInfo[] {};
     }
 
     /*

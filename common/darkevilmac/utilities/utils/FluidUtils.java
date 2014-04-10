@@ -6,6 +6,7 @@ import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidHandler;
 import net.minecraftforge.fluids.IFluidTank;
+import darkevilmac.utilities.fluid.ModFluids;
 import darkevilmac.utilities.shadows.TileBuffer;
 import darkevilmac.utilities.tile.TileEntityFluidNetworkManager;
 import darkevilmac.utilities.tile.base.TileEntityEnergyLinkBase;
@@ -29,8 +30,10 @@ public class FluidUtils {
                         if (manager.internalFluids.get(i).amount < 50) {
                             amountToPush = manager.internalFluids.get(i).amount;
                         }
-                        int amountPushed = fluidTile.fill(side.getOpposite(), new FluidStack(manager.internalFluids.get(i).getFluid(), amountToPush), true);
-                        manager.useFluid(amountPushed, manager.internalFluids.get(i).getFluid());
+                        if (manager.internalFluids.get(i).getFluid().getID() != ModFluids.fluidEmptyFilter.getID()) {
+                            int amountPushed = fluidTile.fill(side.getOpposite(), new FluidStack(manager.internalFluids.get(i).getFluid(), amountToPush), true);
+                            manager.useFluid(amountPushed, manager.internalFluids.get(i).getFluid());
+                        }
                         i++;
                     }
                 } else {
