@@ -26,10 +26,10 @@ public class TileEntityFluidNetworkBridge extends TileEntityUtilities implements
     public TileEntityFluidNetworkManager manager;
     public FluidTank bufferTank;
     protected TileBuffer[] tileBuffer = null;
-
     public int managerXCoord;
     public int managerYCoord;
     public int managerZCoord;
+    public boolean readNBT;
     public boolean hasManager;
 
     public int loops = 0;
@@ -43,6 +43,18 @@ public class TileEntityFluidNetworkBridge extends TileEntityUtilities implements
 
         nbt.setIntArray("fluidFilters", fluidFilters);
 
+        if (manager != null) {
+            managerXCoord = manager.xCoord;
+            managerYCoord = manager.yCoord;
+            managerZCoord = manager.zCoord;
+
+            nbt.setInteger("managerXCoord", managerXCoord);
+            nbt.setInteger("managerYCoord", managerYCoord);
+            nbt.setInteger("managerZCoord", managerZCoord);
+            nbt.setBoolean("readNBT", true);
+        } else {
+            nbt.setBoolean("readNBT", false);
+        }
     }
 
     @Override
@@ -51,6 +63,16 @@ public class TileEntityFluidNetworkBridge extends TileEntityUtilities implements
 
         fluidFilters = nbt.getIntArray("fluidFilters");
 
+        if (nbt.getBoolean("readNBT")) {
+            managerXCoord = nbt.getInteger("managerXCoord");
+            managerYCoord = nbt.getInteger("managerYCoord");
+            managerZCoord = nbt.getInteger("managerZCoord");
+        } else {
+            managerXCoord = 0;
+            managerYCoord = 0;
+            managerYCoord = 0;
+        }
+        readNBT = nbt.getBoolean("readNBT");
     }
 
     @Override
@@ -65,7 +87,7 @@ public class TileEntityFluidNetworkBridge extends TileEntityUtilities implements
                 i++;
             }
         }
-
+        
         if (bufferTank == null)
             bufferTank = new FluidTank(new FluidStack(FluidRegistry.LAVA, 100), FluidContainerRegistry.BUCKET_VOLUME / 3);
     }
@@ -74,19 +96,22 @@ public class TileEntityFluidNetworkBridge extends TileEntityUtilities implements
     public void updateEntity() {
         super.updateEntity();
 
-        if (bufferTank == null)
-            bufferTank = new FluidTank(FluidContainerRegistry.BUCKET_VOLUME / 3);
+        if (!world.isRemote) {
 
-        if (tileBuffer == null)
-            tileBuffer = TileBuffer.makeBuffer(world, xCoord, yCoord, zCoord, false);
+            if (bufferTank == null)
+                bufferTank = new FluidTank(FluidContainerRegistry.BUCKET_VOLUME / 3);
 
-        if (manager != null) {
-            checkManager();
+            if (tileBuffer == null)
+                tileBuffer = TileBuffer.makeBuffer(world, xCoord, yCoord, zCoord, false);
 
-            if (getMeta() == 0) {
-                FluidUtils.pushFluidToConsumers(manager, tileBuffer, fluidFilters, useFilters());
-            } else {
+            if (manager != null) {
+                checkManager();
 
+                if (getMeta() == 0) {
+                    FluidUtils.pushFluidToHandlers(manager, tileBuffer, fluidFilters, useFilters());
+                } else {
+                    FluidUtils.pullFluidFromHandlers(manager, tileBuffer, fluidFilters, useFilters());
+                }
             }
         }
     }
@@ -113,11 +138,11 @@ public class TileEntityFluidNetworkBridge extends TileEntityUtilities implements
         int i = 0;
         while (i <= 13) {
             if (fluidFilters[i] == ModFluids.fluidAnyFilter.getID()) {
-                return true;
+                return false;
             }
             i++;
         }
-        return false;
+        return true;
     }
 
     protected TileEntity getTile(ForgeDirection side) {

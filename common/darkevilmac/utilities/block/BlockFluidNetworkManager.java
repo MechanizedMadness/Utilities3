@@ -15,7 +15,7 @@ public class BlockFluidNetworkManager extends BlockUtilitiesContainer {
 
     public BlockFluidNetworkManager() {
         super(Material.iron);
-        setBlockName(Strings.ENERGYNETWORK_MANAGER_BLOCKNAME);
+        setBlockName(Strings.FLUIDNETWORK_MANAGER_BLOCKNAME);
     }
 
     @Override

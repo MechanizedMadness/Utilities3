@@ -17,7 +17,7 @@ public class TileEntityFluidNetworkManager extends TileEntityUtilities {
     public ArrayList<TileEntityFluidNetworkBridge> fluidBridges = new ArrayList<TileEntityFluidNetworkBridge>();
 
     public int loops = 0;
-    public String[] internalFluidsNames;
+    public int[] internalFluidsIDS;
     public int[] internalFluidsAmounts;
     public int[] fluidBridgesXCoords;
     public int[] fluidBridgesYCoords;
@@ -59,9 +59,15 @@ public class TileEntityFluidNetworkManager extends TileEntityUtilities {
             if (shouldReadFluidsFromNBT) {
                 int i = 0;
                 while (i <= internalFluidsAmounts.length - 1) {
-                    internalFluids.add(new FluidStack(FluidRegistry.getFluid(internalFluidsNames[i]), internalFluidsAmounts[i]));
+                    internalFluids.add(new FluidStack(FluidRegistry.getFluid(internalFluidsIDS[i]), internalFluidsAmounts[i]));
                 }
                 shouldReadFluidsFromNBT = false;
+            } else {
+                int i = 1;
+                while (i < FluidRegistry.getMaxID()) {
+                    internalFluids.add(new FluidStack(FluidRegistry.getFluid(i), 0));
+                    i++;
+                }
             }
 
             int zCoordsLength = fluidBridgesZCoords.length;
@@ -82,17 +88,6 @@ public class TileEntityFluidNetworkManager extends TileEntityUtilities {
                 while (i <= fluidBridges.size() - 1) {
                     if (world.getTileEntity(fluidBridges.get(i).xCoord, fluidBridges.get(i).yCoord, fluidBridges.get(i).zCoord) == null) {
                         fluidBridges.remove(i);
-                    }
-                    i++;
-                }
-            }
-            i = 0;
-
-            if (!fluidBridges.isEmpty()) {
-                i = 0;
-                while (i <= fluidBridges.size() - 1) {
-                    if (fluidBridges.get(i).manager != null && fluidBridges.get(i).manager != getTile()) {
-                        fluidBridges.get(i).setManager((TileEntityFluidNetworkManager) getTile());
                     }
                     i++;
                 }
@@ -144,23 +139,19 @@ public class TileEntityFluidNetworkManager extends TileEntityUtilities {
         }
 
         if (!internalFluids.isEmpty()) {
-            String[] internalFluidsNames = new String[internalFluids.size()];
+            int[] internalFluidsIDS = new int[internalFluids.size()];
             int[] internalFluidsAmounts = new int[internalFluids.size()];
 
             int i = 0;
             while (i <= internalFluids.size() - 1) {
-                internalFluidsNames[i] = internalFluids.get(i).getFluid().getName();
+                internalFluidsIDS[i] = internalFluids.get(i).getFluid().getID();
                 internalFluidsAmounts[i] = internalFluids.get(i).amount;
                 i++;
             }
 
             nbt.setIntArray("internalFluidsAmounts", internalFluidsAmounts);
+            nbt.setIntArray("internalFluidsIDS", internalFluidsIDS);
 
-            i = 0;
-            while (i <= internalFluidsNames.length) {
-                nbt.setString("internalFluidsNames" + i, internalFluidsNames[i]);
-                i++;
-            }
             nbt.setBoolean("hasFluidsInNBT", true);
         }
     }
@@ -181,13 +172,7 @@ public class TileEntityFluidNetworkManager extends TileEntityUtilities {
         if (nbt.getBoolean("hasFluidsInNBT")) {
             shouldReadFluidsFromNBT = true;
             internalFluidsAmounts = nbt.getIntArray("internalFluidsAmounts");
-            internalFluidsNames = new String[internalFluidsAmounts.length];
-
-            int i = 0;
-            while (i <= internalFluidsAmounts.length - 1) {
-                internalFluidsNames[i] = nbt.getString("internalFluidsNames" + i);
-                i++;
-            }
+            internalFluidsIDS = nbt.getIntArray("internalFluidsIDS");
         } else {
             shouldReadFluidsFromNBT = false;
         }

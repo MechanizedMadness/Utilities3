@@ -1,6 +1,5 @@
 package darkevilmac.utilities.block;
 
-import cpw.mods.fml.common.network.internal.FMLNetworkHandler;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
@@ -35,10 +34,14 @@ public class BlockFluidNetworkBridge extends BlockUtilitiesContainer {
                     if (world.getTileEntity(managerXCoord, managerYCoord, managerZCoord) != null
                             && world.getTileEntity(managerXCoord, managerYCoord, managerZCoord) instanceof TileEntityFluidNetworkManager) {
                         if (getTile(world, x, y, z) != null && getTile(world, x, y, z) instanceof TileEntityFluidNetworkBridge) {
-                            ((TileEntityFluidNetworkBridge) getTile(world, x, y, z)).manager = (TileEntityFluidNetworkManager) world.getTileEntity(managerXCoord, managerYCoord,
-                                    managerZCoord);
-                            ((TileEntityFluidNetworkManager) world.getTileEntity(managerXCoord, managerYCoord, managerZCoord)).fluidBridges
-                                    .add(((TileEntityFluidNetworkBridge) getTile(world, x, y, z)));
+                            if (!((TileEntityFluidNetworkManager) world.getTileEntity(managerXCoord, managerYCoord, managerZCoord)).fluidBridges
+                                    .contains(((TileEntityFluidNetworkBridge) world.getTileEntity(x, y, z)))) {
+                                ((TileEntityFluidNetworkManager) world.getTileEntity(managerXCoord, managerYCoord, managerZCoord)).fluidBridges
+                                        .add(((TileEntityFluidNetworkBridge) world.getTileEntity(x, y, z)));
+                                ((TileEntityFluidNetworkBridge) world.getTileEntity(x, y, z)).setManager(((TileEntityFluidNetworkManager) world.getTileEntity(managerXCoord,
+                                        managerYCoord, managerZCoord)));
+                                return true;
+                            }
                         }
                     } else {
                         player.getCurrentEquippedItem().setItemDamage(0);
@@ -50,7 +53,10 @@ public class BlockFluidNetworkBridge extends BlockUtilitiesContainer {
                         player.getCurrentEquippedItem().getTagCompound().removeTag("managerType");
                     }
                 } else {
-                    if (player.isSneaking()) {
+                    if (!player.isSneaking()) {
+                        player.openGui(Utilities.instance, GuiIDS.FLUID_NETWORK_BRIDGE_GUIID, world, x, y, z);
+                        return true;
+                    } else {
                         if (world.getBlockMetadata(x, y, z) == 0) {
                             world.setBlockMetadataWithNotify(x, y, z, 1, 2);
                             player.addChatComponentMessage(new ChatComponentText("Inputting to network"));
@@ -62,8 +68,6 @@ public class BlockFluidNetworkBridge extends BlockUtilitiesContainer {
                         } else {
                             return false;
                         }
-                    }else{
-                        FMLNetworkHandler.openGui(player, Utilities.instance, GuiIDS.FLUID_NETWORK_BRIDGE_GUIID, world, x, y, z);
                     }
                 }
             }

@@ -1,17 +1,12 @@
 package darkevilmac.utilities.utils;
 
-import java.util.ArrayList;
-
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidHandler;
 import net.minecraftforge.fluids.IFluidTank;
-import darkevilmac.utilities.fluid.ModFluids;
 import darkevilmac.utilities.shadows.TileBuffer;
-import darkevilmac.utilities.tile.TileEntityEnergyNetworkManager;
 import darkevilmac.utilities.tile.TileEntityFluidNetworkManager;
 import darkevilmac.utilities.tile.base.TileEntityEnergyLinkBase;
 
@@ -22,77 +17,36 @@ import darkevilmac.utilities.tile.base.TileEntityEnergyLinkBase;
  */
 public class FluidUtils {
 
-    // Begin Network Bridge FluidUtils
-
-    public static void pushFluidToConsumers(TileEntityEnergyNetworkManager manager, TileBuffer[] tileBuffer) {
-        for (ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
-            if (manager.internalEnergy != null && manager.internalEnergy.amount >= 50) {
-                TileEntity tile = tileBuffer[side.ordinal()].getTile();
-                if (tile instanceof IFluidHandler) {
-                    if (((IFluidHandler) tile).canFill(side.getOpposite(), ModFluids.fluidEnergy)) {
-                        FluidStack fill = new FluidStack(ModFluids.fluidEnergy, 50);
-                        int used = ((IFluidHandler) tile).fill(side.getOpposite(), fill, true);
-                        if (used > 0) {
-                            int amountToUse = 50 - used;
-                            manager.useEnergy(amountToUse);
-                            if (amountToUse <= 0)
-                                return;
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    public static void pullFluidFromConsumers(TileEntityEnergyNetworkManager manager, TileBuffer[] tileBuffer) {
+    public static void pushFluidToHandlers(TileEntityFluidNetworkManager manager, TileBuffer[] tileBuffer, int[] fluidFilters, boolean useFilters) {
         for (ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
             TileEntity tile = tileBuffer[side.ordinal()].getTile();
-            if (tile instanceof IFluidHandler) {
-                if (((IFluidHandler) tile).canDrain(side.getOpposite(), ModFluids.fluidEnergy)) {
-                    FluidStack drain = new FluidStack(ModFluids.fluidEnergy, 100);
-                    int pulled = ((IFluidHandler) tile).drain(side.getOpposite(), drain, true).amount;
-                    if (pulled > 0) {
-                        manager.addEnergy(pulled);
-                    } else {
-                        return;
-                    }
-                }
-            }
-        }
-    }
-
-    public static void pushFluidToConsumers(TileEntityFluidNetworkManager manager, TileBuffer[] tileBuffer, int[] fluidFilters, boolean useFilters) {
-        for (ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
-            TileEntity tile = tileBuffer[side.ordinal()].getTile();
-            if (tile instanceof IFluidHandler) {
+            if (tile != null && tile instanceof IFluidHandler) {
+                IFluidHandler fluidTile = (IFluidHandler) tile;
                 if (!useFilters) {
                     int i = 0;
-                    while (i <= ((IFluidHandler) tile).getTankInfo(side.getOpposite()).length - 1) {
-                        int drained;
-                        Fluid fluidToDrain = null;
-                        if (((IFluidHandler) tile).canDrain(side.getOpposite(), ((IFluidHandler) tile).getTankInfo(side.getOpposite())[i].fluid.getFluid())) {
-                            fluidToDrain = ((IFluidHandler) tile).getTankInfo(side.getOpposite())[i].fluid.getFluid();
-                            drained = ((IFluidHandler) tile).drain(side.getOpposite(), new FluidStack(((IFluidHandler) tile).getTankInfo(side.getOpposite())[i].fluid.getFluid(),
-                                    50), true).amount;
-                            if (drained > 0)
-                                manager.addFluid(drained, fluidToDrain);
+                    while (i <= manager.internalFluids.size() - 1) {
+                        int amountToPush = 50;
+                        if (manager.internalFluids.get(i).amount < 50) {
+                            amountToPush = manager.internalFluids.get(i).amount;
                         }
+                        int amountPushed = fluidTile.fill(side.getOpposite(), new FluidStack(manager.internalFluids.get(i).getFluid(), amountToPush), true);
+                        manager.useFluid(amountPushed, manager.internalFluids.get(i).getFluid());
                         i++;
                     }
                 } else {
                     int i = 0;
-                    while (i <= ((IFluidHandler) tile).getTankInfo(side.getOpposite()).length - 1) {
-                        int j = 0;
-                        while (j <= 13) {
-                            if (((IFluidHandler) tile).getTankInfo(side.getOpposite())[i].fluid.getFluid().getID() == fluidFilters[j]) {
-                                if (((IFluidHandler) tile).canDrain(side.getOpposite(), FluidRegistry.getFluid(fluidFilters[j]))) {
-                                    Fluid fluidToDrain = ((IFluidHandler) tile).getTankInfo(side.getOpposite())[i].fluid.getFluid();
-                                    int drained = ((IFluidHandler) tile).drain(side.getOpposite(), new FluidStack(FluidRegistry.getFluid(fluidFilters[j]), 50), true).amount;
-                                    if (drained > 0)
-                                        manager.addFluid(drained, fluidToDrain);
+                    while (i <= 13) {
+                        if (fluidTile.canFill(side.getOpposite(), FluidRegistry.getFluid(fluidFilters[i]))) {
+                            int index = manager.hasFluid(FluidRegistry.getFluid(fluidFilters[i]));
+                            int amountToPush = 50;
+                            if (index != -1) {
+                                if (manager.internalFluids.get(index).amount <= 50) {
+                                    amountToPush = manager.internalFluids.get(index).amount;
                                 }
+
+                                int amountPushed = fluidTile.fill(side.getOpposite(), new FluidStack(manager.internalFluids.get(index), amountToPush), true);
+                                manager.useFluid(amountPushed, manager.internalFluids.get(index).getFluid());
                             }
-                            j++;
                         }
                         i++;
                     }
@@ -101,24 +55,26 @@ public class FluidUtils {
         }
     }
 
-    public static void pullFluidFromConsumers(TileEntityFluidNetworkManager manager, TileBuffer[] tileBuffer, ArrayList<Fluid> fluidFilters, boolean useFilters) {
+    public static void pullFluidFromHandlers(TileEntityFluidNetworkManager manager, TileBuffer[] tileBuffer, int[] fluidFilters, boolean useFilters) {
         for (ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
             TileEntity tile = tileBuffer[side.ordinal()].getTile();
-            if (tile instanceof IFluidHandler) {
-                int i = 0;
-                while (i <= ((IFluidHandler) tile).getTankInfo(side.getOpposite()).length - 1) {
-                    int drained;
-                    Fluid fluidToDrain = null;
-                    if (((IFluidHandler) tile).canDrain(side.getOpposite(), ((IFluidHandler) tile).getTankInfo(side.getOpposite())[i].fluid.getFluid())) {
-                        fluidToDrain = ((IFluidHandler) tile).getTankInfo(side.getOpposite())[i].fluid.getFluid();
-                        drained = ((IFluidHandler) tile).drain(side.getOpposite(), new FluidStack(((IFluidHandler) tile).getTankInfo(side.getOpposite())[i].fluid.getFluid(), 50),
-                                true).amount;
-                        if (drained > 0)
-                            manager.addFluid(drained, fluidToDrain);
+            if (tile != null && tile instanceof IFluidHandler) {
+                IFluidHandler fluidTile = (IFluidHandler) tile;
+                if (!useFilters) {
+                    FluidStack amountPulled = fluidTile.drain(side.getOpposite(), 50, true);
+                    if (amountPulled != null) {
+                        manager.addFluid(amountPulled.amount, amountPulled.getFluid());
                     }
-                    i++;
+                } else {
+                    int i = 0;
+                    while (i <= 13) {
+                        FluidStack amountPulled = fluidTile.drain(side.getOpposite(), new FluidStack(FluidRegistry.getFluid(fluidFilters[i]), 50), true);
+                        if (amountPulled != null) {
+                            manager.addFluid(amountPulled.amount, amountPulled.getFluid());
+                        }
+                        i++;
+                    }
                 }
-
             }
         }
     }
@@ -140,6 +96,16 @@ public class FluidUtils {
                             return;
                     }
                 }
+            }
+        }
+    }
+
+    public static void pullFluidFromProducers(IFluidTank tank, FluidStack fluidToPull, TileBuffer[] tileBuffer) {
+        int amountToPull = fluidToPull.amount;
+        for (ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
+            TileEntity tile = tileBuffer[side.ordinal()].getTile();
+            if (tile != null && tile instanceof IFluidHandler) {
+                tank.fill(((IFluidHandler) tile).drain(side.getOpposite(), fluidToPull, true), true);
             }
         }
     }

@@ -6,9 +6,9 @@ tile.fluidNetworkBridge.name=Fluid Network Bridge
 tile.itemNetworkBridge.name=Item Network Bridge
 tile.multiNetworkBridge.name=Multi Network Bridge
 tile.energyNetworkManager.name=Energy Network Manager
-tile.fluidNetworkManager.name=Fluid Network Bridge
-tile.itemNetworkManager.name=Item Network Bridge
-tile.multiNetworkManager.name=Multi Network Bridge
+tile.fluidNetworkManager.name=Fluid Network Manager
+tile.itemNetworkManager.name=Item Network Manager
+tile.multiNetworkManager.name=Multi Network Manager
 
 tile.ic2Link.name=IC2 Link
 tile.steamLink.name=Steam Link

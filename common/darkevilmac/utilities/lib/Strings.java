@@ -29,9 +29,14 @@ public class Strings {
     public static final String PIPELINKER_UNLOCALIZEDNAME = "pipeLinker";
     // }}
 
-    // {{ Misc
+    // {{ Fluid related
     public static final String FLUID_EMPTY_FILTER_BLOCKNAME = "fluidEmptyFilter";
     public static final String FLUID_ANY_FILTER_BLOCKNAME = "fluidAnyFilter";
+    public static final String BUCKET_FLUID_ENERGY_UNLOCALIZEDNAME = "bucketFluidEnergy";
+    public static final String BUCKET_STEAM_UNLOCALIZEDNAME = "bucketSteam";
+    // }}
+
+    // {{ Misc
     public static final String DISC_BURNER_BLOCKNAME = "discBurner";
     public static final String DISC_PLAYER_BLOCKNAME = "discPlayer";
     // }}
@@ -63,9 +68,14 @@ public class Strings {
     public static final String PIPELINKER_INGAMENAME = "Pipe Linker";
     // }}
 
-    // {{ Misc
+    // {{ Fluid related
     public static final String FLUID_EMPTY_FILTER_INGAMENAME = "Empty";
     public static final String FLUID_ANY_FILTER_INGAMENAME = "Any";
+    public static final String BUCKET_FLUID_ENERGY_INGAMENAME = "Bucket of Fluid Energy";
+    public static final String BUCKET_STEAM_INGAMENAME = "Bucket of Steam";
+    // }}
+
+    // {{ Misc
     public static final String DISC_BURNER_INGAMENAME = "Disc Burner";
     public static final String DISC_PLAYER_INGAMENAME = "Disc Player";
     // }}
