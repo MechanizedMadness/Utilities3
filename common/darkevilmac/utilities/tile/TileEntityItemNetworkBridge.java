@@ -4,14 +4,19 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
+import darkevilmac.utilities.lib.Strings;
 import darkevilmac.utilities.shadows.TileBuffer;
 import darkevilmac.utilities.tile.base.TileEntityUtilities;
+import darkevilmac.utilities.utils.StackUtils;
 
-public class TileEntityItemNetworkBridge extends TileEntityUtilities implements IInventory{
+public class TileEntityItemNetworkBridge extends TileEntityUtilities implements IInventory {
 
     public TileEntityItemNetworkManager manager;
+
+    private ItemStack[] inventory;
 
     protected TileBuffer[] tileBuffer = null;
     public int managerXCoord;
@@ -21,7 +26,7 @@ public class TileEntityItemNetworkBridge extends TileEntityUtilities implements 
     public boolean hasManager;
 
     public TileEntityItemNetworkBridge() {
-
+        inventory = new ItemStack[14];
     }
 
     @Override
@@ -40,6 +45,22 @@ public class TileEntityItemNetworkBridge extends TileEntityUtilities implements 
         } else {
             nbt.setBoolean("readNBT", false);
         }
+
+        NBTTagList list = new NBTTagList();
+
+        for (int i = 0; i < getSizeInventory(); i++) {
+            ItemStack itemstack = getStackInSlot(i);
+
+            if (itemstack != null) {
+                NBTTagCompound item = new NBTTagCompound();
+
+                item.setByte("slotItemNetworkBridge", (byte) i);
+                itemstack.writeToNBT(item);
+                list.appendTag(item);
+            }
+        }
+
+        nbt.setTag("itemsItemNetworkBridge", list);
     }
 
     @Override
@@ -56,12 +77,27 @@ public class TileEntityItemNetworkBridge extends TileEntityUtilities implements 
             managerYCoord = 0;
         }
         readNBT = nbt.getBoolean("readNBT");
+
+        NBTTagList list = nbt.getTagList("itemsItemNetworkBridge", 11);
+
+        for (int i = 0; i < list.tagCount(); i++) {
+            NBTTagCompound item = (NBTTagCompound) list.getCompoundTagAt(i);
+            int slot = item.getByte("slotItemNetworkBridge");
+
+            if (slot >= 0 && slot < getSizeInventory()) {
+                setInventorySlotContents(slot, ItemStack.loadItemStackFromNBT(item));
+            }
+        }
+
     }
 
     @Override
     public void validate() {
         super.validate();
 
+        if (inventory.length < 14) {
+            inventory = new ItemStack[14];
+        }
     }
 
     @Override
@@ -69,6 +105,9 @@ public class TileEntityItemNetworkBridge extends TileEntityUtilities implements 
         super.updateEntity();
 
         if (!world.isRemote) {
+
+            if (tileBuffer == null)
+                tileBuffer = TileBuffer.makeBuffer(world, xCoord, yCoord, zCoord, false);
 
             if (manager == null) {
                 if (readNBT) {
@@ -79,6 +118,12 @@ public class TileEntityItemNetworkBridge extends TileEntityUtilities implements 
 
             if (manager != null) {
                 checkManager();
+
+                if (getMeta() == 0) {
+                    StackUtils.pushItemsToInventories(manager, tileBuffer, inventory, useFilters());
+                } else {
+                    StackUtils.pullItemsFromInventories(manager, tileBuffer, inventory, useFilters());
+                }
             }
 
         }
@@ -109,7 +154,18 @@ public class TileEntityItemNetworkBridge extends TileEntityUtilities implements 
             clearManager();
         }
     }
-    
+
+    public boolean useFilters() {
+        int i = 0;
+        while (i <= getSizeInventory() - 1) {
+            if (getStackInSlot(i) != null) {
+                return true;
+            }
+            i++;
+        }
+        return false;
+    }
+
     /**
      * Begin IInventory implementation
      * 
@@ -118,76 +174,77 @@ public class TileEntityItemNetworkBridge extends TileEntityUtilities implements 
 
     @Override
     public int getSizeInventory() {
-        // TODO Auto-generated method stub
-        return 0;
+        return inventory.length;
     }
 
     @Override
-    public ItemStack getStackInSlot(int var1) {
-        // TODO Auto-generated method stub
-        return null;
+    public ItemStack getStackInSlot(int slot) {
+        return inventory[slot];
     }
 
     @Override
-    public ItemStack decrStackSize(int var1, int var2) {
-        // TODO Auto-generated method stub
-        return null;
+    public ItemStack decrStackSize(int slot, int amount) {
+        ItemStack stack = getStackInSlot(slot);
+
+        if (stack != null) {
+            if (stack.stackSize <= amount) {
+                setInventorySlotContents(slot, null);
+            } else {
+                stack = stack.splitStack(amount);
+            }
+        }
+        return stack;
     }
 
     @Override
-    public ItemStack getStackInSlotOnClosing(int var1) {
-        // TODO Auto-generated method stub
-        return null;
+    public ItemStack getStackInSlotOnClosing(int slot) {
+        ItemStack stack = getStackInSlot(slot);
+        setInventorySlotContents(slot, null);
+        return stack;
     }
 
     @Override
-    public void setInventorySlotContents(int var1, ItemStack var2) {
-        // TODO Auto-generated method stub
-        
+    public void setInventorySlotContents(int slot, ItemStack stack) {
+        inventory[slot] = stack;
+
+        if (stack != null && stack.stackSize > getInventoryStackLimit()) {
+            stack.stackSize = getInventoryStackLimit();
+        }
     }
 
     @Override
     public String getInventoryName() {
-        // TODO Auto-generated method stub
-        return null;
+        return Strings.ITEMNETWORK_BRIDGE_INGAMENAME;
     }
 
     @Override
     public boolean hasCustomInventoryName() {
-        // TODO Auto-generated method stub
-        return false;
+        return true;
     }
 
     @Override
     public int getInventoryStackLimit() {
-        // TODO Auto-generated method stub
-        return 0;
+        return 1;
     }
 
     @Override
-    public boolean isUseableByPlayer(EntityPlayer var1) {
-        // TODO Auto-generated method stub
-        return false;
+    public boolean isUseableByPlayer(EntityPlayer player) {
+        return player.getDistanceSq(xCoord + 0.5D, yCoord + 0.5D, zCoord + 0.5D) <= 64;
     }
 
     @Override
     public void openInventory() {
-        // TODO Auto-generated method stub
-        
     }
 
     @Override
     public void closeInventory() {
-        // TODO Auto-generated method stub
-        
     }
 
     @Override
     public boolean isItemValidForSlot(int var1, ItemStack var2) {
-        // TODO Auto-generated method stub
-        return false;
+        return true;
     }
-    
+
     /**
      * End IInventory implementation
      * 

@@ -35,7 +35,7 @@ public class GuiFluidNetworkBridge extends GuiContainer {
     @Override
     protected void drawGuiContainerForegroundLayer(int x, int y) {
         // Row 1
-        if (y >= textureCornerTopLeftY + 18 && y <= textureCornerTopLeftY + 36) {
+        if (y >= textureCornerTopLeftY + 17 && y <= textureCornerTopLeftY + 33) {
             if (x >= textureCornerTopLeftX + 27 && x <= textureCornerTopLeftX + 42) {
                 List fluidName = new ArrayList();
                 fluidName.add(FluidRegistry.getFluid(tile.fluidFilters[0]).getLocalizedName());
@@ -74,7 +74,7 @@ public class GuiFluidNetworkBridge extends GuiContainer {
         }
 
         // Row 2
-        if (y >= textureCornerTopLeftY + 36 && y <= textureCornerTopLeftY + 51) {
+        if (y >= textureCornerTopLeftY + 35 && y <= textureCornerTopLeftY + 50) {
             if (x >= textureCornerTopLeftX + 27 && x <= textureCornerTopLeftX + 42) {
                 List fluidName = new ArrayList();
                 fluidName.add(FluidRegistry.getFluid(tile.fluidFilters[7]).getLocalizedName());
@@ -126,23 +126,20 @@ public class GuiFluidNetworkBridge extends GuiContainer {
 
         mc.renderEngine.bindTexture(TextureMap.locationBlocksTexture);
 
-        // Row 1
-        drawTexturedModelRectFromIcon(textureCornerTopLeftX + 26, textureCornerTopLeftY + 17, FluidRegistry.getFluid(tile.fluidFilters[0]).getStillIcon(), 16, 16);
-        drawTexturedModelRectFromIcon(textureCornerTopLeftX + 44, textureCornerTopLeftY + 17, FluidRegistry.getFluid(tile.fluidFilters[1]).getStillIcon(), 16, 16);
-        drawTexturedModelRectFromIcon(textureCornerTopLeftX + 62, textureCornerTopLeftY + 17, FluidRegistry.getFluid(tile.fluidFilters[2]).getStillIcon(), 16, 16);
-        drawTexturedModelRectFromIcon(textureCornerTopLeftX + 80, textureCornerTopLeftY + 17, FluidRegistry.getFluid(tile.fluidFilters[3]).getStillIcon(), 16, 16);
-        drawTexturedModelRectFromIcon(textureCornerTopLeftX + 98, textureCornerTopLeftY + 17, FluidRegistry.getFluid(tile.fluidFilters[4]).getStillIcon(), 16, 16);
-        drawTexturedModelRectFromIcon(textureCornerTopLeftX + 116, textureCornerTopLeftY + 17, FluidRegistry.getFluid(tile.fluidFilters[5]).getStillIcon(), 16, 16);
-        drawTexturedModelRectFromIcon(textureCornerTopLeftX + 134, textureCornerTopLeftY + 17, FluidRegistry.getFluid(tile.fluidFilters[6]).getStillIcon(), 16, 16);
-
-        // Row 2
-        drawTexturedModelRectFromIcon(textureCornerTopLeftX + 26, textureCornerTopLeftY + 35, FluidRegistry.getFluid(tile.fluidFilters[7]).getStillIcon(), 16, 16);
-        drawTexturedModelRectFromIcon(textureCornerTopLeftX + 44, textureCornerTopLeftY + 35, FluidRegistry.getFluid(tile.fluidFilters[8]).getStillIcon(), 16, 16);
-        drawTexturedModelRectFromIcon(textureCornerTopLeftX + 62, textureCornerTopLeftY + 35, FluidRegistry.getFluid(tile.fluidFilters[9]).getStillIcon(), 16, 16);
-        drawTexturedModelRectFromIcon(textureCornerTopLeftX + 80, textureCornerTopLeftY + 35, FluidRegistry.getFluid(tile.fluidFilters[10]).getStillIcon(), 16, 16);
-        drawTexturedModelRectFromIcon(textureCornerTopLeftX + 98, textureCornerTopLeftY + 35, FluidRegistry.getFluid(tile.fluidFilters[11]).getStillIcon(), 16, 16);
-        drawTexturedModelRectFromIcon(textureCornerTopLeftX + 116, textureCornerTopLeftY + 35, FluidRegistry.getFluid(tile.fluidFilters[12]).getStillIcon(), 16, 16);
-        drawTexturedModelRectFromIcon(textureCornerTopLeftX + 134, textureCornerTopLeftY + 35, FluidRegistry.getFluid(tile.fluidFilters[13]).getStillIcon(), 16, 16);
+        int i = 0;
+        int drawX = 26;
+        while (i < 14) {
+            if (i > 6) {
+                if (drawX == 152) {
+                    drawX = 26;
+                }
+                drawTexturedModelRectFromIcon(textureCornerTopLeftX + drawX, textureCornerTopLeftY + 35, FluidRegistry.getFluid(tile.fluidFilters[i]).getStillIcon(), 16, 16);
+            } else {
+                drawTexturedModelRectFromIcon(textureCornerTopLeftX + drawX, textureCornerTopLeftY + 17, FluidRegistry.getFluid(tile.fluidFilters[i]).getStillIcon(), 16, 16);
+            }
+            drawX = drawX + 18;
+            i++;
+        }
     }
 
     @Override
@@ -150,7 +147,7 @@ public class GuiFluidNetworkBridge extends GuiContainer {
         super.mouseClicked(x, y, clickType);
 
         // Row 1
-        if (y >= textureCornerTopLeftY + 18 && y <= textureCornerTopLeftY + 36) {
+        if (y >= textureCornerTopLeftY + 17 && y <= textureCornerTopLeftY + 33) {
             if (x >= textureCornerTopLeftX + 27 && x <= textureCornerTopLeftX + 42) {
                 if (clickType == 0) {
                     if (tile.fluidFilters[0] == FluidRegistry.getMaxID()) {
@@ -273,7 +270,7 @@ public class GuiFluidNetworkBridge extends GuiContainer {
         }
 
         // Row 2
-        if (y >= textureCornerTopLeftY + 36 && y <= textureCornerTopLeftY + 51) {
+        if (y >= textureCornerTopLeftY + 35 && y <= textureCornerTopLeftY + 50) {
             if (x >= textureCornerTopLeftX + 27 && x <= textureCornerTopLeftX + 42) {
                 if (clickType == 0) {
                     if (tile.fluidFilters[7] == FluidRegistry.getMaxID()) {

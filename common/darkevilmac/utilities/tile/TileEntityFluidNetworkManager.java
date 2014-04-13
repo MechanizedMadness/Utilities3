@@ -140,17 +140,20 @@ public class TileEntityFluidNetworkManager extends TileEntityUtilities {
                 }
             }
 
-            int xCoordsLength = fluidBridgesXCoords.length;
-            if (fluidBridges.isEmpty() && shouldReadBridgesFromNBT) {
-                shouldReadBridgesFromNBT = false;
-                if (fluidBridgesYCoords[0] == 260) {
-                } else {
-                    int i = 0;
-                    while (i <= xCoordsLength - 1) {
-                        fluidBridges.add((TileEntityFluidNetworkBridge) worldObj.getTileEntity(fluidBridgesXCoords[i], fluidBridgesYCoords[i], fluidBridgesZCoords[i]));
-                        i++;
+            if (justReadNBT) {
+                if (fluidBridges.isEmpty() && shouldReadBridgesFromNBT) {
+                    int xCoordsLength = fluidBridgesXCoords.length;
+                    shouldReadBridgesFromNBT = false;
+                    if (fluidBridgesYCoords[0] == 260) {
+                    } else {
+                        int i = 0;
+                        while (i <= xCoordsLength - 1) {
+                            fluidBridges.add((TileEntityFluidNetworkBridge) worldObj.getTileEntity(fluidBridgesXCoords[i], fluidBridgesYCoords[i], fluidBridgesZCoords[i]));
+                            i++;
+                        }
                     }
                 }
+                justReadNBT = false;
             }
 
             int i = 0;
@@ -166,7 +169,7 @@ public class TileEntityFluidNetworkManager extends TileEntityUtilities {
             }
         }
     }
-    
+
     @Override
     public void onNeighborBlockChange(Block blockType) {
         super.onNeighborBlockChange(blockType);

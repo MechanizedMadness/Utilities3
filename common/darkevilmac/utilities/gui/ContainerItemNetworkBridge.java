@@ -4,6 +4,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
+import net.minecraft.item.ItemStack;
 import darkevilmac.utilities.tile.TileEntityItemNetworkBridge;
 
 public class ContainerItemNetworkBridge extends Container {
@@ -30,21 +31,24 @@ public class ContainerItemNetworkBridge extends Container {
                 if (slotX == 152) {
                     slotX = 26;
                 }
-                addSlotToContainer(new Slot(invPlayer, i - 1, slotX, 35));
+                addSlotToContainer(new Slot(tile, i - 1, slotX, 35));
             } else {
-                addSlotToContainer(new Slot(invPlayer, i - 1, slotX, 17));
+                addSlotToContainer(new Slot(tile, i - 1, slotX, 17));
             }
             slotX = slotX + 18;
             i++;
         }
 
-        addSlotToContainer(new Slot(invPlayer, 1, 26, 17));
-
     }
 
     @Override
-    public boolean canInteractWith(EntityPlayer var1) {
-        return true;
+    public boolean canInteractWith(EntityPlayer player) {
+        return tile.isUseableByPlayer(player);
+    }
+
+    @Override
+    public ItemStack transferStackInSlot(EntityPlayer player, int slotIndex) {
+        return null;
     }
 
 }

@@ -1,11 +1,10 @@
 package darkevilmac.utilities.fluid;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.util.IIcon;
-import net.minecraftforge.fluids.BlockFluidClassic;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import darkevilmac.utilities.lib.Strings;
 
 public class FluidEnergyBlock extends BlockFluidUtilities {
@@ -14,7 +13,7 @@ public class FluidEnergyBlock extends BlockFluidUtilities {
         super(ModFluids.fluidEnergy, Material.water);
         setBlockName(Strings.FLUID_ENERGY_BLOCKNAME);
     }
-    
+
     @SideOnly(Side.CLIENT)
     protected IIcon stillIcon;
     @SideOnly(Side.CLIENT)

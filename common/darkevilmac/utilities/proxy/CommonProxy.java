@@ -8,6 +8,6 @@ public class CommonProxy {
     }
 
     public void registerFluidIcons() {
-     // Nothing here as the server doesn't render graphics or entities!  
+        // Nothing here as the server doesn't render graphics or entities!
     }
 }

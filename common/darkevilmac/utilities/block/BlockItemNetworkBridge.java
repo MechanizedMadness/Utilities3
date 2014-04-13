@@ -10,9 +10,8 @@ import darkevilmac.utilities.block.base.BlockUtilitiesContainer;
 import darkevilmac.utilities.item.ItemPipeLinker;
 import darkevilmac.utilities.lib.GuiIDS;
 import darkevilmac.utilities.lib.Strings;
-import darkevilmac.utilities.tile.TileEntityFluidNetworkBridge;
-import darkevilmac.utilities.tile.TileEntityFluidNetworkManager;
 import darkevilmac.utilities.tile.TileEntityItemNetworkBridge;
+import darkevilmac.utilities.tile.TileEntityItemNetworkManager;
 
 public class BlockItemNetworkBridge extends BlockUtilitiesContainer {
 
@@ -33,13 +32,13 @@ public class BlockItemNetworkBridge extends BlockUtilitiesContainer {
                     int managerYCoord = player.getCurrentEquippedItem().stackTagCompound.getInteger("managerYCoord");
                     int managerZCoord = player.getCurrentEquippedItem().stackTagCompound.getInteger("managerZCoord");
                     if (world.getTileEntity(managerXCoord, managerYCoord, managerZCoord) != null
-                            && world.getTileEntity(managerXCoord, managerYCoord, managerZCoord) instanceof TileEntityFluidNetworkManager) {
-                        if (getTile(world, x, y, z) != null && getTile(world, x, y, z) instanceof TileEntityFluidNetworkBridge) {
-                            if (!((TileEntityFluidNetworkManager) world.getTileEntity(managerXCoord, managerYCoord, managerZCoord)).fluidBridges
-                                    .contains(((TileEntityFluidNetworkBridge) world.getTileEntity(x, y, z)))) {
-                                ((TileEntityFluidNetworkManager) world.getTileEntity(managerXCoord, managerYCoord, managerZCoord)).fluidBridges
-                                        .add(((TileEntityFluidNetworkBridge) world.getTileEntity(x, y, z)));
-                                ((TileEntityFluidNetworkBridge) world.getTileEntity(x, y, z)).setManager(((TileEntityFluidNetworkManager) world.getTileEntity(managerXCoord,
+                            && world.getTileEntity(managerXCoord, managerYCoord, managerZCoord) instanceof TileEntityItemNetworkManager) {
+                        if (getTile(world, x, y, z) != null && getTile(world, x, y, z) instanceof TileEntityItemNetworkBridge) {
+                            if (!((TileEntityItemNetworkManager) world.getTileEntity(managerXCoord, managerYCoord, managerZCoord)).itemBridges
+                                    .contains(((TileEntityItemNetworkBridge) world.getTileEntity(x, y, z)))) {
+                                ((TileEntityItemNetworkManager) world.getTileEntity(managerXCoord, managerYCoord, managerZCoord)).itemBridges
+                                        .add(((TileEntityItemNetworkBridge) world.getTileEntity(x, y, z)));
+                                ((TileEntityItemNetworkBridge) world.getTileEntity(x, y, z)).setManager(((TileEntityItemNetworkManager) world.getTileEntity(managerXCoord,
                                         managerYCoord, managerZCoord)));
                                 return true;
                             }

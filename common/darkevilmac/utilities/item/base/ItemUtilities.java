@@ -1,7 +1,7 @@
 package darkevilmac.utilities.item.base;
 
-import darkevilmac.utilities.Utilities;
 import net.minecraft.item.Item;
+import darkevilmac.utilities.Utilities;
 
 public class ItemUtilities extends Item {
 

@@ -1,10 +1,11 @@
 package darkevilmac.utilities.gui;
 
-import org.lwjgl.opengl.GL11;
-
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;
+
+import org.lwjgl.opengl.GL11;
+
 import darkevilmac.utilities.tile.TileEntityItemNetworkBridge;
 
 public class GuiItemNetworkBridge extends GuiContainer {
@@ -21,6 +22,10 @@ public class GuiItemNetworkBridge extends GuiContainer {
 
         xSize = 176;
         ySize = 166;
+    }
+
+    @Override
+    protected void drawGuiContainerForegroundLayer(int x, int y) {
     }
 
     @Override

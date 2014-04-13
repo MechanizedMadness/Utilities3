@@ -34,11 +34,10 @@ public class BlockItemNetworkManager extends BlockUtilitiesContainer {
                     playerItem.getTagCompound().setInteger("managerZCoord", z);
                     playerItem.getTagCompound().setBoolean("hasManager", true);
                     playerItem.getTagCompound().setString("managerType", "item");
-                    return true;
                 }
             }
         }
-        return false;
+        return true;
     }
 
     @Override
