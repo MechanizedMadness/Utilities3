@@ -5,7 +5,7 @@ import darkevilmac.utilities.Utilities;
 
 public class ItemUtilities extends Item {
 
-    public ItemUtilities() {
+    protected ItemUtilities() {
         super();
         setTextureName("utilities3:stub");
         setCreativeTab(Utilities.modTab);

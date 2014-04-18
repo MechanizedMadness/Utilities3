@@ -7,6 +7,7 @@ import net.minecraft.util.ChatComponentText;
 import net.minecraft.world.World;
 import darkevilmac.utilities.block.base.BlockUtilitiesContainer;
 import darkevilmac.utilities.item.ItemPipeLinker;
+import darkevilmac.utilities.lib.Reference;
 import darkevilmac.utilities.lib.Strings;
 import darkevilmac.utilities.tile.TileEntityEnergyNetworkBridge;
 import darkevilmac.utilities.tile.TileEntityEnergyNetworkManager;
@@ -16,6 +17,7 @@ public class BlockEnergyNetworkBridge extends BlockUtilitiesContainer {
     public BlockEnergyNetworkBridge() {
         super(Material.iron);
         setBlockName(Strings.ENERGYNETWORK_BRIDGE_BLOCKNAME);
+        setBlockTextureName(Reference.MOD_ID + ":" + Strings.ENERGYNETWORK_BRIDGE_BLOCKNAME);
     }
 
     @Override
@@ -24,6 +26,7 @@ public class BlockEnergyNetworkBridge extends BlockUtilitiesContainer {
             if (player != null) {
                 if (player.getCurrentEquippedItem() != null && player.getCurrentEquippedItem().getItem() != null
                         && player.getCurrentEquippedItem().getItem() instanceof ItemPipeLinker && player.getCurrentEquippedItem().hasTagCompound()
+                        && player.getCurrentEquippedItem().getTagCompound().getInteger("dimID") == world.provider.dimensionId
                         && player.getCurrentEquippedItem().getTagCompound().getBoolean("hasManager")
                         && player.getCurrentEquippedItem().getTagCompound().getString("managerType").equals("energy")) {
                     int managerXCoord = player.getCurrentEquippedItem().stackTagCompound.getInteger("managerXCoord");

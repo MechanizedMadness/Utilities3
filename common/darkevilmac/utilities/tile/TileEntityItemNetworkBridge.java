@@ -10,7 +10,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import darkevilmac.utilities.lib.Strings;
 import darkevilmac.utilities.shadows.TileBuffer;
 import darkevilmac.utilities.tile.base.TileEntityUtilities;
-import darkevilmac.utilities.utils.StackUtils;
+import darkevilmac.utilities.utils.MiscUtils;
 
 public class TileEntityItemNetworkBridge extends TileEntityUtilities implements IInventory {
 
@@ -33,6 +33,8 @@ public class TileEntityItemNetworkBridge extends TileEntityUtilities implements 
     public void writeToNBT(NBTTagCompound nbt) {
         super.writeToNBT(nbt);
 
+        NBTTagList nbttaglist = new NBTTagList();
+
         if (manager != null) {
             managerXCoord = manager.xCoord;
             managerYCoord = manager.yCoord;
@@ -46,26 +48,24 @@ public class TileEntityItemNetworkBridge extends TileEntityUtilities implements 
             nbt.setBoolean("readNBT", false);
         }
 
-        NBTTagList list = new NBTTagList();
-
-        for (int i = 0; i < getSizeInventory(); i++) {
-            ItemStack itemstack = getStackInSlot(i);
-
-            if (itemstack != null) {
-                NBTTagCompound item = new NBTTagCompound();
-
-                item.setByte("slotItemNetworkBridge", (byte) i);
-                itemstack.writeToNBT(item);
-                list.appendTag(item);
+        for (int i = 0; i < this.inventory.length; ++i) {
+            if (this.inventory[i] != null) {
+                NBTTagCompound nbttagcompound1 = new NBTTagCompound();
+                nbttagcompound1.setByte("Slot", (byte) i);
+                this.inventory[i].writeToNBT(nbttagcompound1);
+                nbttaglist.appendTag(nbttagcompound1);
             }
         }
 
-        nbt.setTag("itemsItemNetworkBridge", list);
+        nbt.setTag("inventory", nbttaglist);
     }
 
     @Override
     public void readFromNBT(NBTTagCompound nbt) {
         super.readFromNBT(nbt);
+
+        NBTTagList nbttaglist = nbt.getTagList("inventory", 10);
+        this.inventory = new ItemStack[14];
 
         if (nbt.getBoolean("readNBT")) {
             managerXCoord = nbt.getInteger("managerXCoord");
@@ -78,14 +78,12 @@ public class TileEntityItemNetworkBridge extends TileEntityUtilities implements 
         }
         readNBT = nbt.getBoolean("readNBT");
 
-        NBTTagList list = nbt.getTagList("itemsItemNetworkBridge", 11);
+        for (int i = 0; i < nbttaglist.tagCount(); ++i) {
+            NBTTagCompound nbttagcompound1 = nbttaglist.getCompoundTagAt(i);
+            int j = nbttagcompound1.getByte("Slot") & 255;
 
-        for (int i = 0; i < list.tagCount(); i++) {
-            NBTTagCompound item = (NBTTagCompound) list.getCompoundTagAt(i);
-            int slot = item.getByte("slotItemNetworkBridge");
-
-            if (slot >= 0 && slot < getSizeInventory()) {
-                setInventorySlotContents(slot, ItemStack.loadItemStackFromNBT(item));
+            if (j >= 0 && j < this.inventory.length) {
+                this.inventory[j] = ItemStack.loadItemStackFromNBT(nbttagcompound1);
             }
         }
 
@@ -120,9 +118,9 @@ public class TileEntityItemNetworkBridge extends TileEntityUtilities implements 
                 checkManager();
 
                 if (getMeta() == 0) {
-                    StackUtils.pushItemsToInventories(manager, tileBuffer, inventory, useFilters());
+                    MiscUtils.pushItemToConsumers(manager, tileBuffer, inventory, useFilters());
                 } else {
-                    StackUtils.pullItemsFromInventories(manager, tileBuffer, inventory, useFilters());
+                    MiscUtils.pullItemFromProducers(manager, tileBuffer, inventory, useFilters());
                 }
             }
 

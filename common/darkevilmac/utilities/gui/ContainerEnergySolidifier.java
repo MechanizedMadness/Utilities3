@@ -4,14 +4,14 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
-import darkevilmac.utilities.tile.TileEntityFluidNetworkBridge;
+import darkevilmac.utilities.tile.TileEntityEnergySolidifier;
 
-public class ContainerFluidNetworkBridge extends Container {
+public class ContainerEnergySolidifier extends Container {
 
-    public TileEntityFluidNetworkBridge tile;
+    public TileEntityEnergySolidifier tile;
 
-    public ContainerFluidNetworkBridge(InventoryPlayer invPlayer, TileEntityFluidNetworkBridge bridge) {
-        tile = bridge;
+    public ContainerEnergySolidifier(InventoryPlayer invPlayer, TileEntityEnergySolidifier tile) {
+        this.tile = tile;
 
         for (int y = 0; y < 3; y++) {
             for (int x = 0; x < 9; x++) {
@@ -19,8 +19,10 @@ public class ContainerFluidNetworkBridge extends Container {
             }
         }
         for (int x = 0; x < 9; x++) {
-            this.addSlotToContainer(new Slot(invPlayer, x, 8 + x * 18, 142));
+            addSlotToContainer(new Slot(invPlayer, x, 8 + x * 18, 142));
         }
+
+        addSlotToContainer(new Slot(tile, 0, 0, 0));
 
     }
 

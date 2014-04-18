@@ -6,6 +6,7 @@ import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 import net.minecraft.world.World;
 import darkevilmac.utilities.tile.base.TileEntityUtilities;
 
@@ -35,6 +36,8 @@ public class TileEntityItemNetworkManager extends TileEntityUtilities {
     @Override
     public void writeToNBT(NBTTagCompound nbt) {
         super.writeToNBT(nbt);
+
+        NBTTagList itemRegistryList = new NBTTagList();
 
         if (!itemBridges.isEmpty()) {
             int[] itemBridgesXCoords = new int[itemBridges.size()];
@@ -68,11 +71,17 @@ public class TileEntityItemNetworkManager extends TileEntityUtilities {
             }
 
             nbt.setIntArray("itemAmountsIntNBT", itemAmountsIntNBT);
-            i = 0;
-            while (i <= itemAmounts.size() - 1) {
-                nbt.setString("itemRegistryNamesNBT" + i, itemRegistryNamesNBT[i]);
-                i++;
+
+            for (i = 0; i < this.itemRegistryNamesNBT.length; i++) {
+                if (this.itemRegistryNamesNBT[i] != null) {
+                    NBTTagCompound nbttagcompound1 = new NBTTagCompound();
+                    nbttagcompound1.setByte("registryNameIndex", (byte) i);
+                    nbttagcompound1.setString("itemRegistryNames" + i, itemRegistryNamesNBT[i]);
+                    itemRegistryList.appendTag(nbttagcompound1);
+                }
             }
+
+            nbt.setTag("registryNames", itemRegistryList);
 
             nbt.setBoolean("hasItemsInNBT", true);
         } else {
@@ -83,6 +92,7 @@ public class TileEntityItemNetworkManager extends TileEntityUtilities {
     @Override
     public void readFromNBT(NBTTagCompound nbt) {
         super.readFromNBT(nbt);
+
         if (nbt.getBoolean("hasBridgesInNBT")) {
             itemBridgesXCoords = nbt.getIntArray("itemBridgesXCoords");
             itemBridgesYCoords = nbt.getIntArray("itemBridgesYCoords");
@@ -95,12 +105,15 @@ public class TileEntityItemNetworkManager extends TileEntityUtilities {
 
         if (nbt.getBoolean("hasItemsInNBT")) {
             itemAmountsInt = nbt.getIntArray("itemAmountsIntNBT");
-            itemRegistryNames = new String[itemAmountsInt.length];
+            NBTTagList nbttaglist = nbt.getTagList("registryNames", itemAmountsInt.length);
 
-            int i = 0;
-            while (i <= itemAmountsInt.length - 1) {
-                itemRegistryNames[i] = nbt.getString("itemRegistryNamesNBT" + 1);
-                i++;
+            for (int i = 0; i < nbttaglist.tagCount(); ++i) {
+                NBTTagCompound nbttagcompound1 = nbttaglist.getCompoundTagAt(i);
+                int j = nbttagcompound1.getByte("registryNameIndex") & 255;
+
+                if (j >= 0 && j < this.itemRegistryNames.length) {
+                    this.itemRegistryNames[j] = nbttagcompound1.getString("itemRegistryNames" + j);
+                }
             }
 
             shouldReadItemsFromNBT = true;
@@ -201,13 +214,6 @@ public class TileEntityItemNetworkManager extends TileEntityUtilities {
     @Override
     public void onBlockDestroyedByPlayer(World world, int x, int y, int z, int par5) {
         super.onBlockDestroyedByPlayer(world, x, y, z, par5);
-
-        int i = 0;
-        if (!itemBridges.isEmpty()) {
-            while (i <= itemBridges.size() - 1) {
-                itemBridges.get(i).clearManager();
-            }
-        }
     }
 
     public int hasItem(Item item) {

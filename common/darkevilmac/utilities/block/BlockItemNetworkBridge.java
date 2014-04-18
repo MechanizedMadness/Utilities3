@@ -1,5 +1,6 @@
 package darkevilmac.utilities.block;
 
+import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
@@ -9,15 +10,18 @@ import darkevilmac.utilities.Utilities;
 import darkevilmac.utilities.block.base.BlockUtilitiesContainer;
 import darkevilmac.utilities.item.ItemPipeLinker;
 import darkevilmac.utilities.lib.GuiIDS;
+import darkevilmac.utilities.lib.Reference;
 import darkevilmac.utilities.lib.Strings;
 import darkevilmac.utilities.tile.TileEntityItemNetworkBridge;
 import darkevilmac.utilities.tile.TileEntityItemNetworkManager;
+import darkevilmac.utilities.utils.InvUtils;
 
 public class BlockItemNetworkBridge extends BlockUtilitiesContainer {
 
     protected BlockItemNetworkBridge() {
         super(Material.iron);
         setBlockName(Strings.ITEMNETWORK_BRIDGE_BLOCKNAME);
+        setBlockTextureName(Reference.MOD_ID + ":" + Strings.ITEMNETWORK_BRIDGE_BLOCKNAME);
     }
 
     @Override
@@ -26,6 +30,7 @@ public class BlockItemNetworkBridge extends BlockUtilitiesContainer {
             if (player != null) {
                 if (player.getCurrentEquippedItem() != null && player.getCurrentEquippedItem().getItem() != null
                         && player.getCurrentEquippedItem().getItem() instanceof ItemPipeLinker && player.getCurrentEquippedItem().hasTagCompound()
+                        && player.getCurrentEquippedItem().getTagCompound().getInteger("dimID") == world.provider.dimensionId
                         && player.getCurrentEquippedItem().getTagCompound().getBoolean("hasManager")
                         && player.getCurrentEquippedItem().getTagCompound().getString("managerType").equals("item")) {
                     int managerXCoord = player.getCurrentEquippedItem().stackTagCompound.getInteger("managerXCoord");
@@ -78,6 +83,16 @@ public class BlockItemNetworkBridge extends BlockUtilitiesContainer {
     @Override
     public TileEntity createNewTileEntity(World world, int var2) {
         return new TileEntityItemNetworkBridge();
+    }
+
+    @Override
+    public void breakBlock(World world, int x, int y, int z, Block block, int par6) {
+        if (!world.isRemote) {
+            if (world.getTileEntity(x, y, z) != null && world.getTileEntity(x, y, z) instanceof TileEntityItemNetworkBridge) {
+                TileEntityItemNetworkBridge tile = (TileEntityItemNetworkBridge) world.getTileEntity(x, y, z);
+                InvUtils.dropInventoryInWorld(world, tile, x, y, z);
+            }
+        }
     }
 
 }

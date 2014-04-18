@@ -13,7 +13,7 @@ import net.minecraftforge.fluids.FluidRegistry;
 import org.lwjgl.opengl.GL11;
 
 import darkevilmac.utilities.Utilities;
-import darkevilmac.utilities.network.packet.FluidFilterChangePacket;
+import darkevilmac.utilities.network.packet.PacketFluidFilterChange;
 import darkevilmac.utilities.tile.TileEntityFluidNetworkBridge;
 
 public class GuiFluidNetworkBridge extends GuiContainer {
@@ -162,7 +162,7 @@ public class GuiFluidNetworkBridge extends GuiContainer {
                         tile.fluidFilters[0] = tile.fluidFilters[0] - 1;
                     }
                 }
-                Utilities.packetPipeline.sendToServer(new FluidFilterChangePacket(tile.world.provider.dimensionId, tile.xCoord, tile.yCoord, tile.zCoord, tile.fluidFilters[0], 0));
+                Utilities.packetPipeline.sendToServer(new PacketFluidFilterChange(tile.world.provider.dimensionId, tile.xCoord, tile.yCoord, tile.zCoord, tile.fluidFilters[0], 0));
                 mc.getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("gui.button.press"), 1.0F));
             }
             if (x >= textureCornerTopLeftX + 45 && x <= textureCornerTopLeftX + 60) {
@@ -179,7 +179,7 @@ public class GuiFluidNetworkBridge extends GuiContainer {
                         tile.fluidFilters[1] = tile.fluidFilters[1] - 1;
                     }
                 }
-                Utilities.packetPipeline.sendToServer(new FluidFilterChangePacket(tile.world.provider.dimensionId, tile.xCoord, tile.yCoord, tile.zCoord, tile.fluidFilters[1], 1));
+                Utilities.packetPipeline.sendToServer(new PacketFluidFilterChange(tile.world.provider.dimensionId, tile.xCoord, tile.yCoord, tile.zCoord, tile.fluidFilters[1], 1));
                 mc.getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("gui.button.press"), 1.0F));
             }
             if (x >= textureCornerTopLeftX + 63 && x <= textureCornerTopLeftX + 78) {
@@ -196,7 +196,7 @@ public class GuiFluidNetworkBridge extends GuiContainer {
                         tile.fluidFilters[2] = tile.fluidFilters[2] - 1;
                     }
                 }
-                Utilities.packetPipeline.sendToServer(new FluidFilterChangePacket(tile.world.provider.dimensionId, tile.xCoord, tile.yCoord, tile.zCoord, tile.fluidFilters[2], 2));
+                Utilities.packetPipeline.sendToServer(new PacketFluidFilterChange(tile.world.provider.dimensionId, tile.xCoord, tile.yCoord, tile.zCoord, tile.fluidFilters[2], 2));
                 mc.getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("gui.button.press"), 1.0F));
             }
             if (x >= textureCornerTopLeftX + 81 && x <= textureCornerTopLeftX + 96) {
@@ -213,7 +213,7 @@ public class GuiFluidNetworkBridge extends GuiContainer {
                         tile.fluidFilters[3] = tile.fluidFilters[3] - 1;
                     }
                 }
-                Utilities.packetPipeline.sendToServer(new FluidFilterChangePacket(tile.world.provider.dimensionId, tile.xCoord, tile.yCoord, tile.zCoord, tile.fluidFilters[3], 3));
+                Utilities.packetPipeline.sendToServer(new PacketFluidFilterChange(tile.world.provider.dimensionId, tile.xCoord, tile.yCoord, tile.zCoord, tile.fluidFilters[3], 3));
                 mc.getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("gui.button.press"), 1.0F));
             }
             if (x >= textureCornerTopLeftX + 99 && x <= textureCornerTopLeftX + 114) {
@@ -230,7 +230,7 @@ public class GuiFluidNetworkBridge extends GuiContainer {
                         tile.fluidFilters[4] = tile.fluidFilters[4] - 1;
                     }
                 }
-                Utilities.packetPipeline.sendToServer(new FluidFilterChangePacket(tile.world.provider.dimensionId, tile.xCoord, tile.yCoord, tile.zCoord, tile.fluidFilters[4], 4));
+                Utilities.packetPipeline.sendToServer(new PacketFluidFilterChange(tile.world.provider.dimensionId, tile.xCoord, tile.yCoord, tile.zCoord, tile.fluidFilters[4], 4));
                 mc.getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("gui.button.press"), 1.0F));
             }
             if (x >= textureCornerTopLeftX + 117 && x <= textureCornerTopLeftX + 132) {
@@ -247,7 +247,7 @@ public class GuiFluidNetworkBridge extends GuiContainer {
                         tile.fluidFilters[5] = tile.fluidFilters[5] - 1;
                     }
                 }
-                Utilities.packetPipeline.sendToServer(new FluidFilterChangePacket(tile.world.provider.dimensionId, tile.xCoord, tile.yCoord, tile.zCoord, tile.fluidFilters[5], 5));
+                Utilities.packetPipeline.sendToServer(new PacketFluidFilterChange(tile.world.provider.dimensionId, tile.xCoord, tile.yCoord, tile.zCoord, tile.fluidFilters[5], 5));
                 mc.getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("gui.button.press"), 1.0F));
             }
             if (x >= textureCornerTopLeftX + 135 && x <= textureCornerTopLeftX + 150) {
@@ -264,7 +264,7 @@ public class GuiFluidNetworkBridge extends GuiContainer {
                         tile.fluidFilters[6] = tile.fluidFilters[6] - 1;
                     }
                 }
-                Utilities.packetPipeline.sendToServer(new FluidFilterChangePacket(tile.world.provider.dimensionId, tile.xCoord, tile.yCoord, tile.zCoord, tile.fluidFilters[6], 6));
+                Utilities.packetPipeline.sendToServer(new PacketFluidFilterChange(tile.world.provider.dimensionId, tile.xCoord, tile.yCoord, tile.zCoord, tile.fluidFilters[6], 6));
                 mc.getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("gui.button.press"), 1.0F));
             }
         }
@@ -285,7 +285,7 @@ public class GuiFluidNetworkBridge extends GuiContainer {
                         tile.fluidFilters[7] = tile.fluidFilters[7] - 1;
                     }
                 }
-                Utilities.packetPipeline.sendToServer(new FluidFilterChangePacket(tile.world.provider.dimensionId, tile.xCoord, tile.yCoord, tile.zCoord, tile.fluidFilters[7], 7));
+                Utilities.packetPipeline.sendToServer(new PacketFluidFilterChange(tile.world.provider.dimensionId, tile.xCoord, tile.yCoord, tile.zCoord, tile.fluidFilters[7], 7));
                 mc.getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("gui.button.press"), 1.0F));
             }
             if (x >= textureCornerTopLeftX + 45 && x <= textureCornerTopLeftX + 60) {
@@ -302,7 +302,7 @@ public class GuiFluidNetworkBridge extends GuiContainer {
                         tile.fluidFilters[8] = tile.fluidFilters[8] - 1;
                     }
                 }
-                Utilities.packetPipeline.sendToServer(new FluidFilterChangePacket(tile.world.provider.dimensionId, tile.xCoord, tile.yCoord, tile.zCoord, tile.fluidFilters[8], 8));
+                Utilities.packetPipeline.sendToServer(new PacketFluidFilterChange(tile.world.provider.dimensionId, tile.xCoord, tile.yCoord, tile.zCoord, tile.fluidFilters[8], 8));
                 mc.getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("gui.button.press"), 1.0F));
             }
             if (x >= textureCornerTopLeftX + 63 && x <= textureCornerTopLeftX + 78) {
@@ -319,7 +319,7 @@ public class GuiFluidNetworkBridge extends GuiContainer {
                         tile.fluidFilters[9] = tile.fluidFilters[9] - 1;
                     }
                 }
-                Utilities.packetPipeline.sendToServer(new FluidFilterChangePacket(tile.world.provider.dimensionId, tile.xCoord, tile.yCoord, tile.zCoord, tile.fluidFilters[9], 9));
+                Utilities.packetPipeline.sendToServer(new PacketFluidFilterChange(tile.world.provider.dimensionId, tile.xCoord, tile.yCoord, tile.zCoord, tile.fluidFilters[9], 9));
                 mc.getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("gui.button.press"), 1.0F));
             }
             if (x >= textureCornerTopLeftX + 81 && x <= textureCornerTopLeftX + 96) {
@@ -337,7 +337,7 @@ public class GuiFluidNetworkBridge extends GuiContainer {
                     }
                 }
                 Utilities.packetPipeline
-                        .sendToServer(new FluidFilterChangePacket(tile.world.provider.dimensionId, tile.xCoord, tile.yCoord, tile.zCoord, tile.fluidFilters[10], 10));
+                        .sendToServer(new PacketFluidFilterChange(tile.world.provider.dimensionId, tile.xCoord, tile.yCoord, tile.zCoord, tile.fluidFilters[10], 10));
                 mc.getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("gui.button.press"), 1.0F));
             }
             if (x >= textureCornerTopLeftX + 99 && x <= textureCornerTopLeftX + 114) {
@@ -355,7 +355,7 @@ public class GuiFluidNetworkBridge extends GuiContainer {
                     }
                 }
                 Utilities.packetPipeline
-                        .sendToServer(new FluidFilterChangePacket(tile.world.provider.dimensionId, tile.xCoord, tile.yCoord, tile.zCoord, tile.fluidFilters[11], 11));
+                        .sendToServer(new PacketFluidFilterChange(tile.world.provider.dimensionId, tile.xCoord, tile.yCoord, tile.zCoord, tile.fluidFilters[11], 11));
                 mc.getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("gui.button.press"), 1.0F));
             }
             if (x >= textureCornerTopLeftX + 117 && x <= textureCornerTopLeftX + 132) {
@@ -373,7 +373,7 @@ public class GuiFluidNetworkBridge extends GuiContainer {
                     }
                 }
                 Utilities.packetPipeline
-                        .sendToServer(new FluidFilterChangePacket(tile.world.provider.dimensionId, tile.xCoord, tile.yCoord, tile.zCoord, tile.fluidFilters[12], 12));
+                        .sendToServer(new PacketFluidFilterChange(tile.world.provider.dimensionId, tile.xCoord, tile.yCoord, tile.zCoord, tile.fluidFilters[12], 12));
                 mc.getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("gui.button.press"), 1.0F));
             }
             if (x >= textureCornerTopLeftX + 135 && x <= textureCornerTopLeftX + 150) {
@@ -391,7 +391,7 @@ public class GuiFluidNetworkBridge extends GuiContainer {
                     }
                 }
                 Utilities.packetPipeline
-                        .sendToServer(new FluidFilterChangePacket(tile.world.provider.dimensionId, tile.xCoord, tile.yCoord, tile.zCoord, tile.fluidFilters[13], 13));
+                        .sendToServer(new PacketFluidFilterChange(tile.world.provider.dimensionId, tile.xCoord, tile.yCoord, tile.zCoord, tile.fluidFilters[13], 13));
                 mc.getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("gui.button.press"), 1.0F));
             }
         }

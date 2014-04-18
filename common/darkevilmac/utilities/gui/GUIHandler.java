@@ -5,6 +5,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import cpw.mods.fml.common.network.IGuiHandler;
 import darkevilmac.utilities.lib.GuiIDS;
+import darkevilmac.utilities.tile.TileEntityEnergySolidifier;
 import darkevilmac.utilities.tile.TileEntityFluidNetworkBridge;
 import darkevilmac.utilities.tile.TileEntityItemNetworkBridge;
 
@@ -29,6 +30,13 @@ public class GUIHandler implements IGuiHandler {
                     return null;
                 }
 
+            case GuiIDS.ENERGY_SOLIDIFIER_GUIID:
+                if (tile != null && tile instanceof TileEntityEnergySolidifier) {
+                    return new ContainerEnergySolidifier(player.inventory, (TileEntityEnergySolidifier) tile);
+                } else {
+                    return null;
+                }
+
             default:
                 return null;
         }
@@ -49,6 +57,13 @@ public class GUIHandler implements IGuiHandler {
             case GuiIDS.ITEM_NETWORK_BRIDGE_GUIID:
                 if (tile != null && tile instanceof TileEntityItemNetworkBridge) {
                     return new GuiItemNetworkBridge(player.inventory, (TileEntityItemNetworkBridge) tile);
+                } else {
+                    return null;
+                }
+
+            case GuiIDS.ENERGY_SOLIDIFIER_GUIID:
+                if (tile != null && tile instanceof TileEntityEnergySolidifier) {
+                    return new GuiEnergySolidifier(player.inventory, (TileEntityEnergySolidifier) tile);
                 } else {
                     return null;
                 }

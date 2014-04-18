@@ -8,6 +8,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import darkevilmac.utilities.block.base.BlockUtilitiesContainer;
 import darkevilmac.utilities.item.ItemPipeLinker;
+import darkevilmac.utilities.lib.Reference;
 import darkevilmac.utilities.lib.Strings;
 import darkevilmac.utilities.tile.TileEntityEnergyNetworkManager;
 
@@ -16,6 +17,7 @@ public class BlockEnergyNetworkManager extends BlockUtilitiesContainer {
     public BlockEnergyNetworkManager() {
         super(Material.iron);
         setBlockName(Strings.ENERGYNETWORK_MANAGER_BLOCKNAME);
+        setBlockTextureName(Reference.MOD_ID + ":" + Strings.ENERGYNETWORK_MANAGER_BLOCKNAME);
     }
 
     @Override
@@ -29,6 +31,7 @@ public class BlockEnergyNetworkManager extends BlockUtilitiesContainer {
 
                     playerItem.setItemDamage(10);
 
+                    playerItem.getTagCompound().setInteger("dimID", world.provider.dimensionId);
                     playerItem.getTagCompound().setInteger("managerXCoord", x);
                     playerItem.getTagCompound().setInteger("managerYCoord", y);
                     playerItem.getTagCompound().setInteger("managerZCoord", z);

@@ -1,6 +1,7 @@
 package darkevilmac.utilities.tile;
 
 import net.minecraft.block.Block;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
@@ -225,6 +226,10 @@ public class TileEntityFluidNetworkBridge extends TileEntityUtilities implements
     @Override
     public FluidTankInfo[] getTankInfo(ForgeDirection from) {
         return new FluidTankInfo[] {};
+    }
+
+    public boolean isUseableByPlayer(EntityPlayer player) {
+        return player.getDistanceSq(xCoord + 0.5D, yCoord + 0.5D, zCoord + 0.5D) <= 64;
     }
 
     /*

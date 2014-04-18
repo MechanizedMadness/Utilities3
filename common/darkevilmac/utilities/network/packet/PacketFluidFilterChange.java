@@ -7,15 +7,15 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.DimensionManager;
 import darkevilmac.utilities.tile.TileEntityFluidNetworkBridge;
 
-public class FluidFilterChangePacket extends AbstractPacket {
+public class PacketFluidFilterChange extends AbstractPacket {
 
     private int dimID, x, y, z, fluidID, fluidIDIndex;
 
-    public FluidFilterChangePacket() {
+    public PacketFluidFilterChange() {
 
     }
 
-    public FluidFilterChangePacket(int dimID, int x, int y, int z, int fluidID, int fluidIDIndex) {
+    public PacketFluidFilterChange(int dimID, int x, int y, int z, int fluidID, int fluidIDIndex) {
         this.dimID = dimID;
         this.x = x;
         this.y = y;

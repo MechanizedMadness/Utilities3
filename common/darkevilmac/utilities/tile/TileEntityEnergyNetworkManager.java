@@ -60,7 +60,7 @@ public class TileEntityEnergyNetworkManager extends TileEntityUtilities {
             // Removes bridges that don't exist anymore.
             if (!energyBridges.isEmpty()) {
                 while (i <= energyBridges.size() - 1) {
-                    if (world.getTileEntity(energyBridges.get(i).xCoord, energyBridges.get(i).yCoord, energyBridges.get(i).zCoord) == null) {
+                    if (energyBridges.get(i) == null || world.getTileEntity(energyBridges.get(i).xCoord, energyBridges.get(i).yCoord, energyBridges.get(i).zCoord) == null) {
                         energyBridges.remove(i);
                     }
                     i++;
