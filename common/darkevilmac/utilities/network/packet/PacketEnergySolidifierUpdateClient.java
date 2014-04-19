@@ -9,14 +9,13 @@ import darkevilmac.utilities.tile.TileEntityEnergySolidifier;
 
 public class PacketEnergySolidifierUpdateClient extends AbstractPacket {
 
-    int dimID, x, y, z, fluidAmount;
+    int x, y, z, fluidAmount;
 
     public PacketEnergySolidifierUpdateClient() {
 
     }
 
-    public PacketEnergySolidifierUpdateClient(int dimID, int x, int y, int z, int fluidAmount) {
-        this.dimID = dimID;
+    public PacketEnergySolidifierUpdateClient(int x, int y, int z, int fluidAmount) {
         this.x = x;
         this.y = y;
         this.z = z;
@@ -25,7 +24,6 @@ public class PacketEnergySolidifierUpdateClient extends AbstractPacket {
 
     @Override
     public void encodeInto(ChannelHandlerContext ctx, ByteBuf buffer) {
-        buffer.writeInt(dimID);
         buffer.writeInt(x);
         buffer.writeInt(y);
         buffer.writeInt(z);
@@ -34,7 +32,6 @@ public class PacketEnergySolidifierUpdateClient extends AbstractPacket {
 
     @Override
     public void decodeInto(ChannelHandlerContext ctx, ByteBuf buffer) {
-        dimID = buffer.readInt();
         x = buffer.readInt();
         y = buffer.readInt();
         z = buffer.readInt();
@@ -43,7 +40,7 @@ public class PacketEnergySolidifierUpdateClient extends AbstractPacket {
 
     @Override
     public void handleClientSide(EntityPlayer player) {
-        World world = DimensionManager.getWorld(dimID);
+        World world = player.worldObj;
 
         if (world.getTileEntity(x, y, z) != null && world.getTileEntity(x, y, z) instanceof TileEntityEnergySolidifier) {
             TileEntityEnergySolidifier tile = (TileEntityEnergySolidifier) world.getTileEntity(x, y, z);

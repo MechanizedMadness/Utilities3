@@ -1,5 +1,6 @@
 package darkevilmac.utilities.block;
 
+import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
@@ -81,6 +82,11 @@ public class BlockFluidNetworkBridge extends BlockUtilitiesContainer {
     @Override
     public TileEntity createNewTileEntity(World world, int var2) {
         return new TileEntityFluidNetworkBridge();
+    }
+    
+    @Override
+    public void breakBlock(World world, int x, int y, int z, Block block, int par6) {
+        super.breakBlock(world, x, y, z, block, par6);
     }
 
 }

@@ -5,8 +5,10 @@ import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
+import net.minecraftforge.fluids.FluidStack;
 import darkevilmac.utilities.Utilities;
 import darkevilmac.utilities.block.base.BlockUtilitiesContainer;
+import darkevilmac.utilities.fluid.ModFluids;
 import darkevilmac.utilities.lib.GuiIDS;
 import darkevilmac.utilities.lib.Strings;
 import darkevilmac.utilities.tile.TileEntityEnergySolidifier;
@@ -38,6 +40,6 @@ public class BlockEnergySolidifier extends BlockUtilitiesContainer {
                 InvUtils.dropInventoryInWorld(world, tile, x, y, z);
             }
         }
+        super.breakBlock(world, x, y, z, block, par6);
     }
-
 }

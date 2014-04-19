@@ -59,8 +59,10 @@ public class BlockItemNetworkManager extends BlockUtilitiesContainer {
                     i++;
                 }
                 ((TileEntityItemNetworkManager) world.getTileEntity(x, y, z)).itemBridges.clear();
+                world.setTileEntity(x, y, z, null);
             }
         }
+        super.breakBlock(world, x, y, z, block, par6);
     }
 
 }

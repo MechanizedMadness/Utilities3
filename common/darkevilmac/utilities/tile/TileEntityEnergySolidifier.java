@@ -25,6 +25,7 @@ public class TileEntityEnergySolidifier extends TileEntityUtilities implements I
     private ItemStack[] inventory;
     public FluidTank tank;
     private int conversionTick;
+    private int tick;
 
     private int clientDisplayEnergy;
 
@@ -51,6 +52,7 @@ public class TileEntityEnergySolidifier extends TileEntityUtilities implements I
         nbt.setTag("inventory", nbttaglist);
         nbt.setInteger("conversionTick", conversionTick);
         tank.writeToNBT(nbt);
+        nbt.setInteger("tick", tick);
     }
 
     @Override
@@ -71,6 +73,7 @@ public class TileEntityEnergySolidifier extends TileEntityUtilities implements I
 
         conversionTick = nbt.getInteger("conversionTick");
         tank.readFromNBT(nbt);
+        tick = nbt.getInteger("tick");
     }
 
     @Override
@@ -91,20 +94,36 @@ public class TileEntityEnergySolidifier extends TileEntityUtilities implements I
         super.updateEntity();
 
         if (!world.isRemote) {
-            if (conversionTick >= 20 * 3) {
+            if (tank != null) {
                 if (tank.getFluidAmount() >= FluidContainerRegistry.BUCKET_VOLUME) {
-                    tank.setFluid(new FluidStack(ModFluids.fluidEnergy, tank.getFluidAmount() - FluidContainerRegistry.BUCKET_VOLUME));
-                    if (inventory[0] == null) {
-                        inventory[0] = new ItemStack(ModItems.solidEnergy, 1);
-                    } else if (inventory[0].stackSize < 64) {
-                        inventory[0] = new ItemStack(inventory[0].getItem(), inventory[0].stackSize + 1);
+                    conversionTick++;
+                    if (conversionTick >= 20 * 3) {
+                        tank.setFluid(new FluidStack(ModFluids.fluidEnergy, tank.getFluidAmount() - FluidContainerRegistry.BUCKET_VOLUME));
+                        if (inventory[0] == null) {
+                            inventory[0] = new ItemStack(ModItems.solidEnergy, 1);
+                        } else if (inventory[0].stackSize < 64) {
+                            inventory[0] = new ItemStack(inventory[0].getItem(), inventory[0].stackSize + 1);
+                        }
+                        conversionTick = 0;
                     }
+                    conversionTick++;
+                } else {
+                    conversionTick = 0;
                 }
-                conversionTick = 0;
             }
-            conversionTick++;
-            Utilities.packetPipeline.sendToAll(new PacketEnergySolidifierUpdateClient(world.provider.dimensionId, xCoord, yCoord, zCoord, tank.getFluidAmount()));
+
+            if (tank != null) {
+                if (tick == 20) {
+                    Utilities.packetPipeline.sendToDimension(new PacketEnergySolidifierUpdateClient(xCoord, yCoord, zCoord, tank.getFluidAmount()), world.provider.dimensionId);
+                }
+            }
         }
+
+        if (tick >= 20) {
+            tick = 0;
+        }
+
+        tick++;
     }
 
     public void setClientDisplayEnergy(int set) {

@@ -14,9 +14,6 @@ public class TileEntityUtilities extends TileEntity {
     public String owner;
     public World world;
     public int worldid;
-    public int xCoordinate;
-    public int yCoordinate;
-    public int zCoordinate;
 
     @Override
     public void validate() {
@@ -24,9 +21,6 @@ public class TileEntityUtilities extends TileEntity {
         owner = null;
         world = worldObj;
         worldid = world.provider.dimensionId;
-        xCoordinate = xCoord;
-        yCoordinate = yCoord;
-        zCoordinate = zCoord;
     }
 
     @Override

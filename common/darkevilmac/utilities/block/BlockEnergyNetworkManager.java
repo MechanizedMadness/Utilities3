@@ -1,5 +1,6 @@
 package darkevilmac.utilities.block;
 
+import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -47,6 +48,12 @@ public class BlockEnergyNetworkManager extends BlockUtilitiesContainer {
     @Override
     public TileEntity createNewTileEntity(World world, int var2) {
         return new TileEntityEnergyNetworkManager();
+    }
+
+    @Override
+    public void breakBlock(World world, int x, int y, int z, Block block, int par6) {
+        super.breakBlock(world, x, y, z, block, par6);
+
     }
 
 }

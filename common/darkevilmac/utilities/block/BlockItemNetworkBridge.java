@@ -91,8 +91,10 @@ public class BlockItemNetworkBridge extends BlockUtilitiesContainer {
             if (world.getTileEntity(x, y, z) != null && world.getTileEntity(x, y, z) instanceof TileEntityItemNetworkBridge) {
                 TileEntityItemNetworkBridge tile = (TileEntityItemNetworkBridge) world.getTileEntity(x, y, z);
                 InvUtils.dropInventoryInWorld(world, tile, x, y, z);
+                world.setTileEntity(x, y, z, null);
             }
         }
+        super.breakBlock(world, x, y, z, block, par6);
     }
 
 }
